@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructures
 {
-    public class UnitOfWork
+    internal class UnitOfWork
     {
     }
 }
