@@ -9,7 +9,7 @@ public partial class Feedback
 
     public int? UserId { get; set; }
 
-    public int? Content { get; set; }
+    public string Content { get; set; }
 
     public DateTime? CreateDate { get; set; }
 

@@ -9,9 +9,9 @@ public partial class User
 
     public string FirstName { get; set; }
 
-    public byte[] LastName { get; set; }
+    public string LastName { get; set; }
 
-    public byte[] Email { get; set; }
+    public string Email { get; set; }
 
     public string Password { get; set; }
 
@@ -20,6 +20,8 @@ public partial class User
     public string Phone { get; set; }
 
     public int? RoleId { get; set; }
+
+    public string ConfirmToken { get; set; }
 
     public int? Status { get; set; }
 
