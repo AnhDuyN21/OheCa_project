@@ -17,6 +17,8 @@ public partial class Comment
 
     public int? Status { get; set; }
 
+    public virtual User User { get; set; }
+
     public virtual Post Post { get; set; }
 
     public virtual ICollection<ReportOfUser> ReportOfUsers { get; set; } = new List<ReportOfUser>();

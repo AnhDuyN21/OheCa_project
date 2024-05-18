@@ -19,5 +19,5 @@ public partial class Post
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    public virtual User CreateByNavigation { get; set; }
+    public virtual User User { get; set; }
 }

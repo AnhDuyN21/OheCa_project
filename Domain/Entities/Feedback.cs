@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class Feedback
+public  class Feedback
 {
     public int Id { get; set; }
 

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class Product
+public class Product
 {
     public int Id { get; set; }
 
-    public string Name { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
 
     public double? UnitPrice { get; set; }
 
@@ -23,6 +24,7 @@ public partial class Product
 
     public int? Status { get; set; }
 
+    public string ConfirmationToken { get; set; }
     public DateTime? CreateDate { get; set; }
 
     public int? CreateBy { get; set; }

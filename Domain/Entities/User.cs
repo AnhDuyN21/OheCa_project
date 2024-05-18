@@ -21,7 +21,7 @@ public partial class User
 
     public int? RoleId { get; set; }
 
-    public string ConfirmToken { get; set; }
+    public string? ConfirmToken { get; set; }
 
     public int? Status { get; set; }
 
@@ -40,6 +40,8 @@ public partial class User
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual Role Role { get; set; }
 }
