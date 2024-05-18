@@ -7,7 +7,7 @@ public partial class Discount
 {
     public int Id { get; set; }
 
-    public double? Discount1 { get; set; }
+    public double? DiscountPercent { get; set; }
 
     public int? ProductId { get; set; }
 

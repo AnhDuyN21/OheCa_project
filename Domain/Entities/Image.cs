@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 
 namespace Domain.Entities;
 
-public partial class Image
+public class Image
 {
     public int Id { get; set; }
 
