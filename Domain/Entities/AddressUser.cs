@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class AddressUser
+public class AddressUser : BaseEntity
 {
-    public int Id { get; set; }
 
     public int? UserId { get; set; }
 

@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.ViewModels.OrderDTOs;
+using AutoMapper;
+using Domain.Entities;
 
 namespace Infrastructures.Mappers
 {
@@ -11,6 +8,7 @@ namespace Infrastructures.Mappers
     {
         public MapperConfigurationsProfile()
         {
+            CreateMap<Order, OrderDTO>().ReverseMap();
         }
 
     }

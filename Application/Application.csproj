@@ -11,12 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="Utils\" />
-    <Folder Include="Services\" />
-    <Folder Include="ServiceResponse\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
