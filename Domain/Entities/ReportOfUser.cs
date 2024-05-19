@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class ReportOfUser
+public class ReportOfUser : BaseEntity
 {
-    public int Id { get; set; }
-
     public int? CommentId { get; set; }
 
     public int? ReportTypeId { get; set; }

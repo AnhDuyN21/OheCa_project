@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application;
+using Application.Repositories;
+
 
 namespace Infrastructures
 {
-    internal class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
+        private readonly AppDbContext _dbContext;
+        private readonly IOrderRepository _orderRepository;
+        public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository)
+        {
+            _dbContext = dbContext;
+            _orderRepository = orderRepository;
+        }
+        public IOrderRepository OrderRepository => _orderRepository;
+        public Task<int> SaveChangeAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -30,9 +30,21 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DetailAddress")
                         .IsRequired()
@@ -41,6 +53,15 @@ namespace Infrastructures.Migrations
                     b.Property<string>("District")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -70,6 +91,27 @@ namespace Infrastructures.Migrations
                     b.Property<int?>("AddressToShipId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
@@ -90,6 +132,27 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -106,6 +169,27 @@ namespace Infrastructures.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -129,20 +213,32 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CommentBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CommentDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PostId")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PostId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -165,10 +261,31 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<double?>("DiscountPercent")
                         .HasColumnType("float");
 
                     b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ProductId")
@@ -176,9 +293,6 @@ namespace Infrastructures.Migrations
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -199,7 +313,25 @@ namespace Infrastructures.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreateDate")
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ProductId")
@@ -228,24 +360,36 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreateDate")
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("ImageCode")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Thumbnail")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -264,6 +408,27 @@ namespace Infrastructures.Migrations
 
                     b.Property<int?>("ChildCategoryId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -287,13 +452,31 @@ namespace Infrastructures.Migrations
                     b.Property<int?>("AddressToShipId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<double?>("FreightCost")
                         .HasColumnType("float");
 
                     b.Property<int?>("IsConfirm")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("OrderDate")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("PaymentId")
@@ -341,6 +524,27 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
@@ -370,6 +574,27 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -387,9 +612,30 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Method")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -408,14 +654,29 @@ namespace Infrastructures.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CreateBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreateDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("LikeQuantity")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -442,25 +703,36 @@ namespace Infrastructures.Migrations
                     b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ConfirmationToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CreateBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreateDate")
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<double?>("PriceSold")
                         .HasColumnType("float");
@@ -477,9 +749,6 @@ namespace Infrastructures.Migrations
                     b.Property<double?>("UnitPrice")
                         .HasColumnType("float");
 
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
@@ -495,12 +764,33 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Detail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MaterialId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
@@ -525,6 +815,27 @@ namespace Infrastructures.Migrations
                     b.Property<int?>("CommentId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("ReportTypeId")
                         .HasColumnType("int");
 
@@ -545,9 +856,30 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -566,9 +898,30 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -587,6 +940,27 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -603,6 +977,27 @@ namespace Infrastructures.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -637,13 +1032,16 @@ namespace Infrastructures.Migrations
                     b.Property<string>("ConfirmToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DeletedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DeletedDate")
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -654,9 +1052,22 @@ namespace Infrastructures.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -671,9 +1082,6 @@ namespace Infrastructures.Migrations
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -690,7 +1098,16 @@ namespace Infrastructures.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreateTime")
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<double?>("Discount")
@@ -699,14 +1116,20 @@ namespace Infrastructures.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("TotalQuantityVoucher")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<int?>("UsedQuanity")
                         .HasColumnType("int");
@@ -723,6 +1146,27 @@ namespace Infrastructures.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeleteBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModificationBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");

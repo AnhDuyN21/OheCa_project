@@ -3,15 +3,11 @@ using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class Order
+public class Order : BaseEntity
 {
-    public int Id { get; set; }
-
     public int? UserId { get; set; }
 
     public int? ShipperId { get; set; }
-
-    public DateTime? OrderDate { get; set; }
 
     public DateTime? ShipDate { get; set; }
 

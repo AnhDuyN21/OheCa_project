@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace Domain.Entities;
 
-public partial class VoucherUsage
+public class VoucherUsage : BaseEntity
 {
-    public int Id { get; set; }
-
     public int? VoucherId { get; set; }
 
     public int? OrderId { get; set; }

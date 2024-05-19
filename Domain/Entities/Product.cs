@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public class Product
+public class Product : BaseEntity
 {
-    public int Id { get; set; }
-
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
 
@@ -23,13 +21,6 @@ public class Product
     public string Country { get; set; }
 
     public int? Status { get; set; }
-
-    public string ConfirmationToken { get; set; }
-    public DateTime? CreateDate { get; set; }
-
-    public int? CreateBy { get; set; }
-
-    public DateTime? UpdateDate { get; set; }
 
     public virtual Brand Brand { get; set; }
 

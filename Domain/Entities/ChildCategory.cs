@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class ChildCategory
+public class ChildCategory : BaseEntity
 {
-    public int Id { get; set; }
-
     public string Name { get; set; }
 
     public int? ParentCategoryId { get; set; }
