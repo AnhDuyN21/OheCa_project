@@ -1,3 +1,7 @@
+using Application.Interfaces;
+using Application.Repositories;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using Application.Interfaces;
 using Application.Repositories;
@@ -10,55 +14,30 @@ namespace Infrastructures.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly AppDbContext _context;
         protected DbSet<TEntity> _dbSet;
         private readonly ICurrentTime _timeService;
         private readonly IClaimsService _claimsService;
 
         public GenericRepository(AppDbContext context, ICurrentTime timeService, IClaimsService claimsService)
         {
-            _context = context;
             _dbSet = context.Set<TEntity>();
             _timeService = timeService;
             _claimsService = claimsService;
-            /*_context.Classes.Include(x => x.ClassDetails).ToList();*/
         }
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null, string? includeProperties = null)
-        {
-            IQueryable<TEntity> query = _dbSet;
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
+        public Task<List<TEntity>> GetAllAsync() => _dbSet.ToListAsync();
 
-            if (includeProperties != null)
-            {
-                foreach (var includeProp in includeProperties.Split(new char[] { ',' },
-                             StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
-            return await query.ToListAsync();
+        public async Task<TEntity?> GetByIdAsync(int id)
+        {
+            var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            // todo should throw exception when not found
+            return result;
         }
 
-        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>>? filter = null, string? includeProperties = null)
+        public async Task AddAsync(TEntity entity)
         {
-            IQueryable<TEntity> query = _dbSet;
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            if (includeProperties != null)
-            {
-                foreach (var includeProp in includeProperties.Split(new char[] { ',' },
-                             StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
-            return await query.FirstOrDefaultAsync();
+            entity.CreationDate = _timeService.GetCurrentTime();
+            entity.CreatedBy = _claimsService.GetCurrentUserId;
+            await _dbSet.AddAsync(entity);
         }
 
         public async Task<TEntity?> GetByIdAsync(int id)
@@ -144,4 +123,5 @@ namespace Infrastructures.Repositories
             _dbSet.RemoveRange(entities);
         }
     }
+
 }

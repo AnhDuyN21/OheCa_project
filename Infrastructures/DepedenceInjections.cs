@@ -19,7 +19,8 @@ namespace Infrastructures
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddSingleton<ICurrentTime, CurrentTime>();
 
-            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<ICurrentTime, CurrentTime>();
             services.AddDbContext<AppDbContext>(option =>
             {
                 option.UseSqlServer(databaseConnection);

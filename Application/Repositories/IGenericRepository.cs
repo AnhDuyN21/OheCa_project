@@ -6,8 +6,7 @@ namespace Application.Repositories
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null, string? includeProperties = null);
-        Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>>? filter = null, string? includeProperties = null);
+        Task<List<TEntity>> GetAllAsync();
         Task<TEntity?> GetByIdAsync(int id);
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
