@@ -1,4 +1,5 @@
-﻿using Application.Repositories;
+﻿using Application.Interfaces;
+using Application.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,9 +9,11 @@ namespace Infrastructures.Repositories
     {
         private readonly AppDbContext _dbContext;
         public OrderRepository(
-            AppDbContext context
+            AppDbContext context,
+            ICurrentTime timeService,
+            IClaimsService claimsService
         )
-            : base(context)
+            : base(context, timeService, claimsService)
         {
             _dbContext = context;
         }
