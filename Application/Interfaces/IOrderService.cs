@@ -1,18 +1,21 @@
 ﻿using Application.ServiceResponse;
 using Application.ViewModels.OrderDTOs;
+using Domain.Entities;
+using System.Linq.Expressions;
+using System.Security.Claims;
 
 
 namespace Application.Interfaces
 {
     public interface IOrderService
     {
-        Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrders();
-        Task<ServiceResponse<OrderDTO>> GetOrderById(int orderId);
-        Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderByUserID(int userId);
-        Task<ServiceResponse<OrderDTO>> CreateOrder(CreateOrderDTO order);
-        Task<ServiceResponse<OrderDTO>> UpdateOrder(UpdateOrderDTO order);
-        Task<ServiceResponse<bool>> CancelOrder(int id);
-        Task<ServiceResponse<IEnumerable<OrderDTO>>> GetSortedOrders(string sortName);
+        Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrdersAsync();
+        Task<ServiceResponse<OrderDTO>> GetOrderByIdAsync(int orderId);
+        Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderByUserIDAsync(int userId);
+        Task<ServiceResponse<OrderDTO>> CreateOrderAsync(CreateOrderDTO order);
+        Task<ServiceResponse<OrderDTO>> UpdateOrderAsync(int id,UpdateOrderDTO order);
+        Task<ServiceResponse<bool>> CancelOrderAsync(int id);
+        Task<ServiceResponse<IEnumerable<OrderDTO>>> GetSortedOrdersAsync(string sortName);
 
     }
 }

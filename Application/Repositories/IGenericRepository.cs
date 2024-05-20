@@ -9,8 +9,17 @@ namespace Application.Repositories
 {
     public interface IGenericRepository<TEntity>
     {
-        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null, string? includeProperties = null);
-        Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>>? filter = null, string? includeProperties = null);
+        Task<List<TEntity>> GetAllAsync();
+        Task<TEntity?> GetByIdAsync(int id);
+        Task AddAsync(TEntity entity);
+        void Update(TEntity entity);
+        void UpdateRange(List<TEntity> entities);
+        void SoftRemove(TEntity entity);
+        Task AddRangeAsync(List<TEntity> entities);
+        void SoftRemoveRange(List<TEntity> entities);
+
+        //Task<Pagination<TEntity>> ToPagination(int pageNumber = 0, int pageSize = 10);
+
 
     }
 }

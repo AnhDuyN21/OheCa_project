@@ -1,4 +1,6 @@
 ﻿
+using Application.Interfaces;
+using EXE_02.Services;
 using System.Diagnostics;
 
 
@@ -15,8 +17,9 @@ namespace EXE_02
             //services.AddSingleton<GlobalExceptionMiddleware>();
             //services.AddSingleton<PerformanceMiddleware>();
             services.AddSingleton<Stopwatch>();
-            
+            services.AddScoped<IClaimsService, ClaimsService>();
             services.AddHttpContextAccessor();
+            services.AddMemoryCache();
             //services.AddFluentValidationAutoValidation();
             //services.AddFluentValidationClientsideAdapters();
             return services;

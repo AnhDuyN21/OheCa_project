@@ -3,6 +3,8 @@ using Application.ServiceResponse;
 using Application.ViewModels.OrderDTOs;
 using AutoMapper;
 using Domain.Entities;
+using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace Application.Services
 {
@@ -17,12 +19,12 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public Task<ServiceResponse<bool>> CancelOrder(int id)
+        public Task<ServiceResponse<bool>> CancelOrderAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<OrderDTO>> CreateOrder(CreateOrderDTO order)
+        public async Task<ServiceResponse<OrderDTO>> CreateOrderAsync(CreateOrderDTO order)
         {
             var reponse = new ServiceResponse<OrderDTO>();
 
@@ -52,7 +54,7 @@ namespace Application.Services
 
         }
 
-        public async Task<ServiceResponse<OrderDTO>> GetOrderById(int orderId)
+        public async Task<ServiceResponse<OrderDTO>> GetOrderByIdAsync(int orderId)
         {
             var _response = new ServiceResponse<OrderDTO>();
             try
@@ -80,7 +82,7 @@ namespace Application.Services
 
         }
 
-        public async Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderByUserID(int userId)
+        public async Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderByUserIDAsync(int userId)
         {
             var reponse = new ServiceResponse<IEnumerable<OrderDTO>>();
             List<OrderDTO> OrderDTOs = new List<OrderDTO>();
@@ -114,16 +116,15 @@ namespace Application.Services
                 reponse.ErrorMessages = new List<string> { ex.Message };
                 return reponse;
             }
-
         }
 
-        public async Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrders()
+        public async Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrdersAsync()
         {
             var reponse = new ServiceResponse<IEnumerable<OrderDTO>>();
             List<OrderDTO> OrderDTOs = new List<OrderDTO>();
             try
             {
-                List<Order> orders = await _unitOfWork.OrderRepository.GetAllAsync();
+                var orders = await _unitOfWork.OrderRepository.GetAllAsync();
                 foreach (var order in orders)
                 {
                     OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
@@ -154,19 +155,19 @@ namespace Application.Services
 
         }
 
-        public Task<ServiceResponse<IEnumerable<OrderDTO>>> GetSortedOrders(string sortName)
+        public Task<ServiceResponse<IEnumerable<OrderDTO>>> GetSortedOrdersAsync(string sortName)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<OrderDTO>> UpdateOrder(UpdateOrderDTO order)
+        public async Task<ServiceResponse<OrderDTO>> UpdateOrderAsync(int id, UpdateOrderDTO order)
         {
             var reponse = new ServiceResponse<OrderDTO>();
             try
             {
-                var orderChecked = await _unitOfWork.OrderRepository.GetOrderByIDAsync(order.Id);
+                var orderChecked = await _unitOfWork.OrderRepository.GetOrderByIDAsync(id);
 
-                if (orderChecked == null)
+                if (orderChecked == null && orderChecked.IsDeleted == false)
                 {
                     reponse.Success = false;
                     reponse.Message = "Not found order, you are sure input";

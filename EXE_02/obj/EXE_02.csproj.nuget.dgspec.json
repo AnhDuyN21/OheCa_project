@@ -201,6 +201,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "D:\\EXE201\\Git\\OheCa_project\\Domain\\Domain.csproj": {
+                "projectPath": "D:\\EXE201\\Git\\OheCa_project\\Domain\\Domain.csproj"
+              },
               "D:\\EXE201\\Git\\OheCa_project\\Infrastructures\\Infrastructures.csproj": {
                 "projectPath": "D:\\EXE201\\Git\\OheCa_project\\Infrastructures\\Infrastructures.csproj"
               }

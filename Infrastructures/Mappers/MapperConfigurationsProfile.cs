@@ -9,6 +9,9 @@ namespace Infrastructures.Mappers
         public MapperConfigurationsProfile()
         {
             CreateMap<Order, OrderDTO>().ReverseMap();
+            CreateMap<Order, CreateOrderDTO>().ReverseMap();
+            CreateMap<Order, UpdateOrderDTO>().ReverseMap();
+
         }
 
     }
