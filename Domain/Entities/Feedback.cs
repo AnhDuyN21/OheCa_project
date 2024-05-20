@@ -2,15 +2,11 @@
 
 namespace Domain.Entities;
 
-public  class Feedback
+public  class Feedback : BaseEntity
 {
-    public int Id { get; set; }
-
     public int? UserId { get; set; }
 
     public string Content { get; set; }
-
-    public DateTime? CreateDate { get; set; }
 
     public int? Rate { get; set; }
 

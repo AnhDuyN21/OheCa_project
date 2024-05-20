@@ -12,7 +12,8 @@ public class User : BaseEntity
 
     public string? Email { get; set; }
 
-    public string? Password { get; set; }
+    public string Password { get; set; }
+    public string Gender { get; set; }
 
     public byte[] Avatar { get; set; }
 
@@ -23,7 +24,6 @@ public class User : BaseEntity
     public string? ConfirmToken { get; set; }
 
     public int? Status { get; set; }
-
 
     public virtual ICollection<AddressUser> AddressUsers { get; set; } = new List<AddressUser>();
 

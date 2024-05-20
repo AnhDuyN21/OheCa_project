@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace Application.ServiceResponse
 {
     public class ServiceResponse<T>
@@ -8,4 +14,5 @@ namespace Application.ServiceResponse
         public string? Error { get; set; } = null;
         public List<string>? ErrorMessages { get; set; } = null;
     }
+
 }

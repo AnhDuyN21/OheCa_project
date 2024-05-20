@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class ProductMaterial
+public class ProductMaterial : BaseEntity
 {
-    public int Id { get; set; }
-
     public string Detail { get; set; }
 
     public int? ProductId { get; set; }
