@@ -1,4 +1,5 @@
-﻿using Application.Repositories;
+﻿using Application.Interfaces;
+using Application.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,18 +8,24 @@ namespace Infrastructures.Repositories
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
         private readonly AppDbContext _dbContext;
+        private readonly ICurrentTime _timeService;
+        private readonly IClaimsService _claimsService;
+
         public OrderRepository(
-            AppDbContext context
+            AppDbContext context,
+            ICurrentTime timeService,
+            IClaimsService claimsService
         )
-            : base(context)
+            : base(context, timeService, claimsService)
         {
             _dbContext = context;
         }
 
-        public async Task AddAsync(Order order)
-        {
-            await _dbSet.AddAsync(order);
-        }
+
+        //public async Task AddAsync(Order order)
+        //{
+        //    await _dbSet.AddAsync(order);
+        //}
 
         public async Task<IEnumerable<Order>> GetAllByStatusAsync(int status)
         {
@@ -40,17 +47,17 @@ namespace Infrastructures.Repositories
             return Orders;
         }
 
-        public void Update(Order order)
-        {
-            order.IsConfirm = 1;
-            _dbSet.Update(order);
-        }
+        //public void Update(Order order)
+        //{
+        //    order.IsConfirm = 1;
+        //    _dbSet.Update(order);
+        //}
 
-        public void Delete(Order order)
-        {
-            order.Status = 0;
-            _dbSet.Update(order);
-        }
+        //public void Delete(Order order)
+        //{
+        //    order.Status = 0;
+        //    _dbSet.Update(order);
+        //}
 
         public async Task<Order> GetOrderByIDAsync(int id)
         {
