@@ -1,7 +1,10 @@
 ﻿
+using Application;
 using Application.Interfaces;
 using EXE_02.Services;
+using Infrastructures;
 using System.Diagnostics;
+using WebAPI.Middlewares;
 
 
 namespace EXE_02
@@ -14,12 +17,14 @@ namespace EXE_02
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddHealthChecks();
-            //services.AddSingleton<GlobalExceptionMiddleware>();
-            //services.AddSingleton<PerformanceMiddleware>();
+            services.AddSingleton<GlobalExceptionMiddleware>();
+            services.AddSingleton<PerformanceMiddleware>();
             services.AddSingleton<Stopwatch>();
             services.AddScoped<IClaimsService, ClaimsService>();
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IClaimsService, ClaimsService>();
             //services.AddFluentValidationAutoValidation();
             //services.AddFluentValidationClientsideAdapters();
             return services;
