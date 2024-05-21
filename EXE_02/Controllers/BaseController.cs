@@ -8,4 +8,5 @@ namespace EXE_02.Controllers
     public class BaseController : ControllerBase
     {
     }
+
 }

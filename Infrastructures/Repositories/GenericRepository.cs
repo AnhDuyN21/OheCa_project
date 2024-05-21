@@ -1,14 +1,8 @@
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Application.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Application.Interfaces;
-using Application.Repositories;
-using Application.Commons;
-using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Infrastructures.Repositories
 {
@@ -25,20 +19,6 @@ namespace Infrastructures.Repositories
             _claimsService = claimsService;
         }
         public Task<List<TEntity>> GetAllAsync() => _dbSet.ToListAsync();
-
-        public async Task<TEntity?> GetByIdAsync(int id)
-        {
-            var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-            // todo should throw exception when not found
-            return result;
-        }
-
-        public async Task AddAsync(TEntity entity)
-        {
-            entity.CreationDate = _timeService.GetCurrentTime();
-            entity.CreatedBy = _claimsService.GetCurrentUserId;
-            await _dbSet.AddAsync(entity);
-        }
 
         public async Task<TEntity?> GetByIdAsync(int id)
         {
@@ -89,25 +69,25 @@ namespace Infrastructures.Repositories
             _dbSet.UpdateRange(entities);
         }
 
-        public async Task<Pagination<TEntity>> ToPagination(int pageIndex = 0, int pageSize = 10)
-        {
-            var itemCount = await _dbSet.CountAsync();
-            var items = await _dbSet.OrderByDescending(x => x.CreationDate)
-                                    .Skip(pageIndex * pageSize)
-                                    .Take(pageSize)
-                                    .AsNoTracking()
-                                    .ToListAsync();
+        //public async Task<Pagination<TEntity>> ToPagination(int pageIndex = 0, int pageSize = 10)
+        //{
+        //    var itemCount = await _dbSet.CountAsync();
+        //    var items = await _dbSet.OrderByDescending(x => x.CreationDate)
+        //                            .Skip(pageIndex * pageSize)
+        //                            .Take(pageSize)
+        //                            .AsNoTracking()
+        //                            .ToListAsync();
 
-            var result = new Pagination<TEntity>()
-            {
-                PageIndex = pageIndex,
-                PageSize = pageSize,
-                TotalItemsCount = itemCount,
-                Items = items,
-            };
+        //    var result = new Pagination<TEntity>()
+        //    {
+        //        PageIndex = pageIndex,
+        //        PageSize = pageSize,
+        //        TotalItemsCount = itemCount,
+        //        Items = items,
+        //    };
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public void UpdateRange(List<TEntity> entities)
         {
@@ -117,10 +97,6 @@ namespace Infrastructures.Repositories
                 entity.CreatedBy = _claimsService.GetCurrentUserId;
             }
             _dbSet.UpdateRange(entities);
-        }
-        public async void DeleteRange(List<TEntity> entities)
-        {
-            _dbSet.RemoveRange(entities);
         }
     }
 

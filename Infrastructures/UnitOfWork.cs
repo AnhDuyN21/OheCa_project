@@ -1,5 +1,4 @@
 ﻿using Application;
-using Application.Interfaces;
 using Application.Repositories;
 
 
@@ -15,10 +14,9 @@ namespace Infrastructures
             _orderRepository = orderRepository;
         }
         public IOrderRepository OrderRepository => _orderRepository;
-        public ICurrentTime CurrentRepository => throw new NotImplementedException();
-        public async Task<int> SaveChangeAsync()
+        public Task<int> SaveChangeAsync()
         {
-            return await _dbContext.SaveChangesAsync();
+            throw new NotImplementedException();
         }
     }
 }
