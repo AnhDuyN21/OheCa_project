@@ -18,9 +18,12 @@
 		<Compile Include="Migrations\20240517221553_Oheca_Init.Designer.cs" />
 		<Compile Include="Migrations\20240519103501_Oheca_Second.cs" />
 		<Compile Include="Migrations\20240519103501_Oheca_Second.Designer.cs" />
+		<Compile Include="Migrations\20240521134646_AddIsConfirmToUserAndNullableToUser.cs" />
+		<Compile Include="Migrations\20240521134646_AddIsConfirmToUserAndNullableToUser.Designer.cs" />
 		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
 		<Compile Include="Repositories\OrderRepository.cs" />
+		<Compile Include="Repositories\UserRepository.cs" />
 		<Compile Include="UnitOfWork.cs" />
 		<Compile Include="Mappers\**\*.cs" />
 		
