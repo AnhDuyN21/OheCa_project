@@ -21,12 +21,6 @@ namespace Infrastructures.Repositories
             _dbContext = context;
         }
 
-
-        //public async Task AddAsync(Order order)
-        //{
-        //    await _dbSet.AddAsync(order);
-        //}
-
         public async Task<IEnumerable<Order>> GetAllByStatusAsync(int status)
         {
             var Orders = await _dbContext.Orders.Where(o => o.Status == status).ToListAsync();
@@ -47,17 +41,6 @@ namespace Infrastructures.Repositories
             return Orders;
         }
 
-        //public void Update(Order order)
-        //{
-        //    order.IsConfirm = 1;
-        //    _dbSet.Update(order);
-        //}
-
-        //public void Delete(Order order)
-        //{
-        //    order.Status = 0;
-        //    _dbSet.Update(order);
-        //}
 
         public async Task<Order> GetOrderByIDAsync(int id)
         {

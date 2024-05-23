@@ -19,9 +19,66 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public Task<ServiceResponse<bool>> CancelOrderAsync(int id)
+        public async Task<ServiceResponse<OrderDTO>> CancelOrderAsync(int id)
         {
-            throw new NotImplementedException();
+            var reponse = new ServiceResponse<OrderDTO>();
+            try
+            {
+                var orderChecked = await _unitOfWork.OrderRepository.GetOrderByIDAsync(id);
+
+                if (orderChecked == null )
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Not found order, you are sure input";
+                    reponse.Error = "Not found order";
+                }
+                else if (orderChecked.IsDeleted == true)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Order are deleted, can not cancel order.";
+                }
+                else if (orderChecked.IsConfirm == 1)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Order is confirm, can not cancel order.";
+                }
+                else
+                {
+                    //trang thai đơn hàng chưa active thì cho phép update
+                    if (orderChecked.Status == 1)
+                    {
+                        //var orderFofUpdate = _mapper.Map(order, orderChecked);
+                        orderChecked.Status = 0;
+                        var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
+                        var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
+                        if (await _unitOfWork.SaveChangeAsync() > 0)
+                        {
+                            reponse.Data = orderDTOAfterUpdate;
+                            reponse.Success = true;
+                            reponse.Message = "Update order successfully";
+                        }
+                        else
+                        {
+                            reponse.Data = orderDTOAfterUpdate;
+                            reponse.Success = false;
+                            reponse.Message = "Update order fail!";
+                        }
+                    }
+                    else
+                    {
+                        reponse.Success = false;
+                        reponse.Message = "Update order fail, order is deleted, cannot update";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                reponse.Success = false;
+                reponse.Message = "Update order fail!, exception";
+                reponse.ErrorMessages = new List<string> { e.Message };
+            }
+
+            return reponse;
         }
 
         public async Task<ServiceResponse<OrderDTO>> CreateOrderAsync(CreateOrderDTO order)
@@ -33,12 +90,12 @@ namespace Application.Services
                 var orderentity = _mapper.Map<Order>(order);
                 
                     await _unitOfWork.OrderRepository.AddAsync(orderentity);
-                    var addSuccessfully = await _unitOfWork.SaveChangeAsync();
-                    if (addSuccessfully > 0)
+                    
+                    if (await _unitOfWork.SaveChangeAsync() > 0)
                     {
                         reponse.Data = _mapper.Map<OrderDTO>(orderentity);
                         reponse.Success = true;
-                        reponse.Message = "Create new location successfully";
+                        reponse.Message = "Create new order successfully";
                         reponse.Error = string.Empty;
                         return reponse;
                     }

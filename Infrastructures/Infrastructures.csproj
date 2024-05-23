@@ -20,6 +20,7 @@
 		<Compile Include="Migrations\20240519103501_Oheca_Second.Designer.cs" />
 		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
+		<Compile Include="Repositories\OrderDetailRepository.cs" />
 		<Compile Include="Repositories\OrderRepository.cs" />
 		<Compile Include="UnitOfWork.cs" />
 		<Compile Include="Mappers\**\*.cs" />

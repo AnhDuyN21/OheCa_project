@@ -8,15 +8,18 @@ namespace Infrastructures
     {
         private readonly AppDbContext _dbContext;
         private readonly IOrderRepository _orderRepository;
-        public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository)
+        private readonly IOrderDetailRepository _orderDetailRepository;
+        public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository)
         {
             _dbContext = dbContext;
             _orderRepository = orderRepository;
+            _orderDetailRepository = orderDetailRepository;
         }
         public IOrderRepository OrderRepository => _orderRepository;
-        public Task<int> SaveChangeAsync()
+        public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
+        public async Task<int> SaveChangeAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.SaveChangesAsync();
         }
     }
 }

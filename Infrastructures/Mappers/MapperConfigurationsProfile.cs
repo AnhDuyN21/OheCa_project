@@ -1,4 +1,5 @@
-﻿using Application.ViewModels.OrderDTOs;
+﻿using Application.ViewModels.OrderDetailDTOs;
+using Application.ViewModels.OrderDTOs;
 using AutoMapper;
 using Domain.Entities;
 
@@ -12,6 +13,9 @@ namespace Infrastructures.Mappers
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
             CreateMap<Order, UpdateOrderDTO>().ReverseMap();
 
+            CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
+            CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
+            CreateMap<OrderDetail, UpdateOrderDetailDTO>().ReverseMap();
         }
 
     }
