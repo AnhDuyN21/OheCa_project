@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels.MaterialDTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,6 @@ namespace Application.ViewModels.ProductMaterialDTOs
     {
         public string Detail { get; set; }
 
-        public int? MaterialId { get; set; }
-
-        
+        public MaterialDTO Material { get; set; }
     }
 }

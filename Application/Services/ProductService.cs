@@ -102,17 +102,22 @@ namespace Application.Services
                 if (product != null)
                 {
                     var productDTO = _mapper.Map<ProductDetailDTO>(product);
-                    productDTO.BrandName = product.Brand.Name;
-                    productDTO.Feeback = _mapper.Map<List<FeedbackDTO>>(product.Feedbacks);
-                    productDTO.Discounts = _mapper.Map<List<DiscountDTO>>(product.Discounts);
-                    productDTO.ProductMaterials = _mapper.Map<List<ProductMaterialDTO>>(product.ProductMaterials);
+                //    productDTO.BrandName = product.Brand.Name;
+                //    productDTO.Feeback = _mapper.Map<List<FeedbackDTO>>(product.Feedbacks);
+                //    productDTO.Discounts = _mapper.Map<List<DiscountDTO>>(product.Discounts);
+                 //   productDTO.ProductMaterials = _mapper.Map<List<ProductMaterialDTO>>(product.ProductMaterials);
+                    
 
                     _response.Data = productDTO;
                     _response.Success = true;
                     _response.Message = "Found Product By Id";
                 }
-                _response.Success = false;
-                _response.Message = "Don't Have Any Product ";
+                else
+                {
+                    _response.Success = false;
+                    _response.Message = "Don't Have Any Product ";
+                }
+                
             }
             catch (Exception ex)
             {

@@ -36,6 +36,9 @@ namespace Infrastructures.Repositories
                                               .Include(p => p.Feedbacks)
                                               .Include(p => p.Discounts)
                                               .Include(p => p.ProductMaterials)
+                                                   .ThenInclude(pm => pm.Material)
+                                                   .ThenInclude(m => m.ChildCategory)
+                                                   .ThenInclude(cc => cc.ParentCategory)
                                               .Select(p => new Product()
                                               {
                                                   Id = p.Id,
@@ -50,7 +53,8 @@ namespace Infrastructures.Repositories
                                                   Brand = p.Brand,
                                                   Feedbacks = p.Feedbacks,
                                                   Discounts = p.Discounts,
-                                                  ProductMaterials = p.ProductMaterials,
+                                                  ProductMaterials = p.ProductMaterials
+                                                  
                                               }).FirstOrDefaultAsync();
                                      
 

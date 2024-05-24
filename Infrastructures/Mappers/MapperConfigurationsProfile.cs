@@ -29,11 +29,11 @@ namespace Infrastructures.Mappers
             CreateMap<Feedback, FeedbackDTO>().ReverseMap();
             CreateMap<Discount, DiscountDTO>().ReverseMap();
             CreateMap<ProductMaterial, ProductMaterialDTO>()
-                .ForMember(dest => dest.MaterialId, opt => opt.MapFrom(src => src.MaterialId));
+                .ForMember(dest => dest.Material, opt => opt.MapFrom(src => src.Material));
             CreateMap<Material, MaterialDTO>()
-                .ForMember(dest => dest.ChildCategoryId, opt => opt.MapFrom(src => src.ChildCategoryId));
+                .ForMember(dest => dest.ChildCategory, opt => opt.MapFrom(src => src.ChildCategory));
             CreateMap<ChildCategory, ChildCategoriesDTO>()
-                .ForMember(dest => dest.ParentCategoryId, opt => opt.MapFrom(src => src.ParentCategoryId));
+                .ForMember(dest => dest.ParentCategory, opt => opt.MapFrom(src => src.ParentCategory));
             CreateMap<ParentCategory, ParentCategoriesDTO>().ReverseMap();
                
             //  CreateMap<Orders, OrderResponse>()

@@ -14,6 +14,5 @@ namespace Application.ViewModels.FeedbackDTOs
 
         public int? Rate { get; set; }
 
-        public int? ProductId { get; set; }
     }
 }
