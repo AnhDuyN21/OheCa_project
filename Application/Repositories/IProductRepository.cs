@@ -12,5 +12,7 @@ namespace Application.Repositories
     {
         public Task<Product> GetProductByIDAsync(int id);
 
+        public Task<IEnumerable<Product>> GetProductByCategoryAsync(int categoryId);
+
     }
 }
