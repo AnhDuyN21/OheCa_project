@@ -14,7 +14,7 @@ namespace Domain.Entities
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
             public int Id { get; set; }
 
-            public DateTime CreationDate { get; set; }
+            public DateTime? CreationDate { get; set; }
 
             public int? CreatedBy { get; set; }
 
@@ -26,7 +26,7 @@ namespace Domain.Entities
 
             public int? DeleteBy { get; set; }
 
-            public bool IsDeleted { get; set; }
+            public bool? IsDeleted { get; set; }
         }
 
     

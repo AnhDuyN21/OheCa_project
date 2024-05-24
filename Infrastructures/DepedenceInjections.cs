@@ -14,13 +14,25 @@ namespace Infrastructures
         public static IServiceCollection AddInfrastructuresService(this IServiceCollection services, string databaseConnection)
         {
             
-
+            //DanhDev
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+<<<<<<< HEAD
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
+=======
+            services.AddScoped<IOrderDetailService, OrderDetailService>();
+            services.AddScoped<IOrderDetailService, OrderDetailService>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+>>>>>>> 129aedc82e6d237017c2fe12af7bc8a7b6acc561
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //Users
+            services.AddScoped<IUserRepository, UserRepository>();
+            //Authentication
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
             services.AddSingleton<ICurrentTime, CurrentTime>();
             services.AddDbContext<AppDbContext>(option =>
             {

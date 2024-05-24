@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using Application.ViewModels.ChildCategoriesDTOs;
 using Application.ViewModels.DiscountDTOs;
 using Application.ViewModels.FeedbackDTOs;
@@ -6,6 +7,11 @@ using Application.ViewModels.OrderDTOs;
 using Application.ViewModels.ParentCategoriesDTOs;
 using Application.ViewModels.ProductDTOs;
 using Application.ViewModels.ProductMaterialDTOs;
+=======
+using Application.ViewModels.OrderDetailDTOs;
+using Application.ViewModels.OrderDTOs;
+using Application.ViewModels.UserDTO;
+>>>>>>> 129aedc82e6d237017c2fe12af7bc8a7b6acc561
 using AutoMapper;
 using Domain.Entities;
 
@@ -15,9 +21,11 @@ namespace Infrastructures.Mappers
     {
         public MapperConfigurationsProfile()
         {
+            //Orders
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
             CreateMap<Order, UpdateOrderDTO>().ReverseMap();
+<<<<<<< HEAD
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Product, ProductDetailDTO>()
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
@@ -39,6 +47,17 @@ namespace Infrastructures.Mappers
             //  CreateMap<Orders, OrderResponse>()
             // .ForMember(dest => dest.Itemss, opt => opt.MapFrom(src => src.OrderDetails))
             //    .ReverseMap();
+=======
+            //Users
+            CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, RegisterUserDTO>().ReverseMap();
+
+
+
+            CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
+            CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
+            CreateMap<OrderDetail, UpdateOrderDetailDTO>().ReverseMap();
+>>>>>>> 129aedc82e6d237017c2fe12af7bc8a7b6acc561
         }
 
     }

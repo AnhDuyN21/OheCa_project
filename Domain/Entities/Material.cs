@@ -5,7 +5,7 @@ namespace Domain.Entities;
 
 public class Material : BaseEntity
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     public int? ChildCategoryId { get; set; }
 
