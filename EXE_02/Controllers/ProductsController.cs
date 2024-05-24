@@ -31,5 +31,14 @@ namespace EXE_02.Controllers
             var result = await _productService.GetProductByIdAsync(id);
             return Ok(result);
         }
+
+        [HttpGet("{childCategoryId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ViewProductByCategoryID(int childCategoryId)
+        {
+            var result = await _productService.GetProductByCategoryAsync(childCategoryId);
+            return Ok(result);
+        }
     }
 }

@@ -27,6 +27,48 @@ namespace Infrastructures.Repositories
             _dbContext = context;
         }
 
+        public async Task<IEnumerable<Product>> GetProductByCategoryAsync(int childCategoryId)
+        {
+            var product = await _dbContext.Products
+                                              .Include(p => p.Brand)
+                                              .Include(p => p.Feedbacks)
+                                              .Include(p => p.Discounts)
+                                              .Include(p => p.ProductMaterials)
+                                                   .ThenInclude(pm => pm.Material)
+                                                   .ThenInclude(m => m.ChildCategory)
+                                                   .ThenInclude(cc => cc.ParentCategory)
+                                              .Where(p => p.ProductMaterials.Any(pm => pm.Material.ChildCategory.Id == childCategoryId))
+                                              .Select(p => new Product()
+                                              {
+                                                  Id = p.Id,
+                                                  Name = p.Name,
+                                                  UnitPrice = p.UnitPrice,
+                                                  PriceSold = p.PriceSold,
+                                                  Quantity = p.Quantity,
+                                                  QuantitySold = p.QuantitySold,
+                                                  Country = p.Country,
+                                                  Status = p.Status,
+                                                  BrandId = p.BrandId,
+                                                  Brand = p.Brand,
+                                                  Feedbacks = p.Feedbacks,
+                                                  Discounts = p.Discounts,
+                                                  ProductMaterials = p.ProductMaterials
+
+                                              }).ToListAsync();
+
+
+
+
+            if (product != null)
+            {
+                return product;
+            }
+            else
+            {
+                throw new Exception("Don't find Product By Id");
+            }
+        }
+
         public  async Task<Product> GetProductByIDAsync(int id)
         {
            
