@@ -22,9 +22,17 @@ namespace Infrastructures.Repositories
 
         public async Task<TEntity?> GetByIdAsync(int id)
         {
-            var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-            // todo should throw exception when not found
-            return result;
+            try
+            {
+                var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+                // todo should throw exception when not found
+                return result;
+
+            }catch (Exception ex)
+            {
+                throw new Exception(" Not Find by ID");
+            }
+            
         }
 
         public async Task AddAsync(TEntity entity)
