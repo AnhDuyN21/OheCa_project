@@ -8,10 +8,6 @@ namespace Infrastructures
     {
         private readonly AppDbContext _dbContext;
         private readonly IOrderRepository _orderRepository;
-<<<<<<< HEAD
-        private readonly IProductRepository _productRepository;
-        public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository, IProductRepository productRepository)
-=======
         private readonly IOrderDetailRepository _orderDetailRepository;
         public readonly IUserRepository _userRepository;
 
@@ -19,30 +15,26 @@ namespace Infrastructures
             IOrderRepository orderRepository,
             IOrderDetailRepository orderDetailRepository,
             IUserRepository userRepository)
->>>>>>> 129aedc82e6d237017c2fe12af7bc8a7b6acc561
+        private readonly IProductRepository _productRepository;
+        public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository, IProductRepository productRepository)
         {
             _dbContext = dbContext;
 
             _orderRepository = orderRepository;
-<<<<<<< HEAD
-            _productRepository = productRepository;
-
-        }
-        public IOrderRepository OrderRepository => _orderRepository;
-
-        public IProductRepository ProductRepository => _productRepository;
-        public Task<int> SaveChangeAsync()
-=======
 
             _orderDetailRepository = orderDetailRepository;
 
             _userRepository = userRepository;
+            _productRepository = productRepository;
+
         }
         public IOrderRepository OrderRepository => _orderRepository;
         public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
         public IUserRepository UserRepository => _userRepository;
         public async Task<int> SaveChangeAsync()
->>>>>>> 129aedc82e6d237017c2fe12af7bc8a7b6acc561
+
+        public IProductRepository ProductRepository => _productRepository;
+        public Task<int> SaveChangeAsync()
         {
             return await _dbContext.SaveChangesAsync();
         }

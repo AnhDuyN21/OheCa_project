@@ -26,11 +26,8 @@
 		<Compile Include="Repositories\GenericRepository.cs" />
 		<Compile Include="Repositories\OrderDetailRepository.cs" />
 		<Compile Include="Repositories\OrderRepository.cs" />
-<<<<<<< HEAD
-		<Compile Include="Repositories\ProductRepository.cs" />
-=======
 		<Compile Include="Repositories\UserRepository.cs" />
->>>>>>> 129aedc82e6d237017c2fe12af7bc8a7b6acc561
+		<Compile Include="Repositories\ProductRepository.cs" />
 		<Compile Include="UnitOfWork.cs" />
 		<Compile Include="Mappers\**\*.cs" />
 		
