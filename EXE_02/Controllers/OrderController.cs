@@ -24,7 +24,7 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Customer")]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,7 +34,7 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Manager")]
+        //[Authorize(Roles = "Manager")]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -44,7 +44,7 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
-        [Authorize (Roles = "Manager")]
+        //[Authorize (Roles = "Manager")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,11 +63,11 @@ namespace EXE_02.Controllers
             return Ok(c);
         }
 
-        [Authorize(Roles = "Manager")]
+        //[Authorize(Roles = "Manager")]
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateClass(int id, [FromBody] UpdateOrderDTO updateDto)
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] UpdateOrderDTO updateDto)
         {
             var c = await _orderService.UpdateOrderAsync(id, updateDto);
             if (!c.Success)
@@ -77,11 +77,11 @@ namespace EXE_02.Controllers
             return Ok(c);
         }
 
-        [Authorize(Roles = "Manager, Customer")]
+        //[Authorize(Roles = "Manager, Customer")]
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CancelClass(int id)
+        public async Task<IActionResult> CancelOrder(int id)
         {
             var c = await _orderService.CancelOrderAsync(id);
             if (!c.Success)
