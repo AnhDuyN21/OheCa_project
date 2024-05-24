@@ -1,0 +1,45 @@
+﻿using Application.Interfaces;
+using Application.Repositories;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Infrastructures.Repositories
+{
+    public class UserRepository : GenericRepository<User>, IUserRepository
+    {
+        private readonly AppDbContext _dbContext;
+        public UserRepository(AppDbContext context, ICurrentTime timeService, IClaimsService claimsService) : base(context, timeService, claimsService)
+        {
+            _dbContext = context;
+        }
+
+        public async Task<User> GetUserByEmailAndPassword(string email, string password)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync( record => record.Email == email 
+                                                                && record.Password == password);
+            if (user is null)
+            {
+                throw new Exception("Email & password is not correct");
+            }
+
+            return user;
+        }
+        public Task<bool> CheckEmailNameExited(string email) =>
+                                                _dbContext.Users.AnyAsync(u => u.Email == email);
+
+        public Task<bool> CheckPhoneNumberExited(string phonenumber) =>
+                                                _dbContext.Users.AnyAsync(u => u.Phone == phonenumber);
+
+        public async Task<User> GetUserByConfirmationToken(string token)
+        {
+            return await _dbContext.Users.SingleOrDefaultAsync(
+                u => u.ConfirmToken == token
+            );
+        }
+    }
+}

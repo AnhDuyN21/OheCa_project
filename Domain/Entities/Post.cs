@@ -5,9 +5,9 @@ namespace Domain.Entities;
 
 public partial class Post : BaseEntity
 {
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
-    public string Content { get; set; }
+    public string? Content { get; set; }
 
     public int? LikeQuantity { get; set; }
 

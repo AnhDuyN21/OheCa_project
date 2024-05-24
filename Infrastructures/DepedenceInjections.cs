@@ -21,8 +21,13 @@ namespace Infrastructures
             services.AddScoped<IOrderDetailService, OrderDetailService>();
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //Users
+            services.AddScoped<IUserRepository, UserRepository>();
+            //Authentication
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
             services.AddSingleton<ICurrentTime, CurrentTime>();
             services.AddDbContext<AppDbContext>(option =>
             {

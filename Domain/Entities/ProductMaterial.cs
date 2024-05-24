@@ -5,7 +5,7 @@ namespace Domain.Entities;
 
 public class ProductMaterial : BaseEntity
 {
-    public string Detail { get; set; }
+    public string? Detail { get; set; }
 
     public int? ProductId { get; set; }
 
