@@ -1,5 +1,6 @@
 ﻿using Application;
 using Application.Repositories;
+using Infrastructures.Repositories;
 
 
 namespace Infrastructures
@@ -10,10 +11,9 @@ namespace Infrastructures
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
         public readonly IUserRepository _userRepository;
-
-        public UnitOfWork(AppDbContext dbContext,
-            IOrderRepository orderRepository,
-            IOrderDetailRepository orderDetailRepository,
+        private readonly IProductRepository _productRepository;
+        
+        public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository, IProductRepository productRepository,IOrderDetailRepository orderDetailRepository,
             IUserRepository userRepository)
         {
             _dbContext = dbContext;
@@ -23,13 +23,19 @@ namespace Infrastructures
             _orderDetailRepository = orderDetailRepository;
 
             _userRepository = userRepository;
+            _productRepository = productRepository;
+
         }
         public IOrderRepository OrderRepository => _orderRepository;
         public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
         public IUserRepository UserRepository => _userRepository;
+
+        public IProductRepository ProductRepository => _productRepository;
         public async Task<int> SaveChangeAsync()
         {
             return await _dbContext.SaveChangesAsync();
         }
+
+
     }
 }
