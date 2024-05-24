@@ -42,7 +42,7 @@ namespace Infrastructures.Repositories
                                               .Select(p => new Product()
                                               {
                                                   Id = p.Id,
-                                                  FirstName = p.FirstName,
+                                                  Name = p.Name,
                                                   UnitPrice = p.UnitPrice,
                                                   PriceSold = p.PriceSold,
                                                   Quantity = p.Quantity,

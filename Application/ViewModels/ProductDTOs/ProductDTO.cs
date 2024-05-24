@@ -10,7 +10,7 @@ namespace Application.ViewModels.ProductDTOs
     public class ProductDTO
     {
         public int Id { get; set; }
-        public string? FirstName { get; set; }
+        public string? Name { get; set; }
 
         public double? UnitPrice { get; set; }
 

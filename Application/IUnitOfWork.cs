@@ -5,7 +5,6 @@ namespace Application
     public interface IUnitOfWork
     {
         public IOrderRepository OrderRepository { get; }
-
         public IOrderDetailRepository OrderDetailRepository { get; }
 
         public IUserRepository UserRepository { get; }
