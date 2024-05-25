@@ -1,5 +1,6 @@
 ﻿using Application.ViewModels.DiscountDTOs;
 using Application.ViewModels.FeedbackDTOs;
+using Application.ViewModels.ImageProductDTOs;
 using Application.ViewModels.ProductMaterialDTOs;
 using Domain.Entities;
 using System;
@@ -37,7 +38,8 @@ namespace Application.ViewModels.ProductDTOs
 
         public List<DiscountDTO> Discounts { get; set; }
 
-        //  public List<Image> Images { get; set; }
+
+        public List<ImageDTO> Images { get; set; }
 
         public List<ProductMaterialDTO> ProductMaterials { get; set; }
     }
