@@ -27,6 +27,24 @@ namespace Infrastructures.Repositories
             _dbContext = context;
         }
 
+        
+
+      
+
+        public async Task<IEnumerable<Product>> GetProductAsync()
+        {
+            var products = await _dbContext.Products.Include(im => im.Images)
+                                              .Where(im => im.Images.Any(im => im.Thumbnail == 1)).ToListAsync();
+            if (products != null)
+            {
+                return products;
+            }
+            else
+            {
+                throw new Exception("Don't have any Product ");
+            }
+        }
+
         public async Task<IEnumerable<Product>> GetProductByCategoryAsync(int childCategoryId)
         {
             var product = await _dbContext.Products
@@ -77,6 +95,7 @@ namespace Infrastructures.Repositories
                                               .Include(p => p.Brand)
                                               .Include(p => p.Feedbacks)
                                               .Include(p => p.Discounts)
+                                              .Include(p => p.Images)
                                               .Include(p => p.ProductMaterials)
                                                    .ThenInclude(pm => pm.Material)
                                                    .ThenInclude(m => m.ChildCategory)
@@ -95,7 +114,8 @@ namespace Infrastructures.Repositories
                                                   Brand = p.Brand,
                                                   Feedbacks = p.Feedbacks,
                                                   Discounts = p.Discounts,
-                                                  ProductMaterials = p.ProductMaterials
+                                                  ProductMaterials = p.ProductMaterials,
+                                                  Images = p.Images,
                                                   
                                               }).FirstOrDefaultAsync();
                                      

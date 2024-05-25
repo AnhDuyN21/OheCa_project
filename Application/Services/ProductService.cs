@@ -2,11 +2,13 @@
 using Application.ServiceResponse;
 using Application.ViewModels.DiscountDTOs;
 using Application.ViewModels.FeedbackDTOs;
+using Application.ViewModels.ImageProductDTOs;
 using Application.ViewModels.OrderDTOs;
 using Application.ViewModels.ProductDTOs;
 using Application.ViewModels.ProductMaterialDTOs;
 using AutoMapper;
 using Azure;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +35,7 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        Task<ServiceResponse<OrderDTO>> IProductService.CreateOrderAsync(CreateOrderDTO order)
-        {
-            throw new NotImplementedException();
-        }
-
+ 
         
 
         
@@ -48,7 +46,7 @@ namespace Application.Services
             List<ProductDTO> productDTOs = new List<ProductDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetAllAsync();
+                var products = await _unitOfWork.ProductRepository.GetProductAsync();
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDTO>(product));
@@ -154,6 +152,44 @@ namespace Application.Services
                 reponse.ErrorMessages = new List<string> { ex.Message };
                 return reponse;
             }
+        }
+
+        public async Task<ServiceResponse<ProductDetailDTO>> CreateProductAsync(CreateProductDTO product)
+        {
+            var reponse = new ServiceResponse<ProductDetailDTO>();
+           
+
+            try
+            {
+                var newproduct = _mapper.Map<Product>(product);
+
+                await _unitOfWork.ProductRepository.AddAsync(newproduct);
+                await _unitOfWork.SaveChangeAsync();
+                if (product.Images != null && product.Images.Length > 0)
+                {
+                    
+                    foreach( var image in product.Images )
+                    {
+                     //   imageDTOs.Add(_mapper.Map<ImageDTO>(image));
+                        await _unitOfWork.ImageRepository.CreateImageAsync(image, newproduct.Id);
+                    }
+                    
+
+                    reponse.Data = _mapper.Map<ProductDetailDTO>(newproduct);
+                    reponse.Success = true;
+                    reponse.Message = "Create new product successfully";
+                    reponse.Error = string.Empty;
+                    return reponse;
+                }
+
+            }catch (Exception ex) 
+            { 
+                reponse.Success = false;
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+
+            return reponse;
         }
     }
 }

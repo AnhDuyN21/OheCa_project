@@ -22,7 +22,8 @@ namespace Infrastructures
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
-
+            services.AddScoped<IUrlService, UrlService>();
+            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //Users

@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels.ProductMaterialDTOs;
+using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.ProductDTOs
 {
-    public class ProductDTO
+    public class CreateProductDTO
     {
-        public int Id { get; set; }
         public string? Name { get; set; }
 
         public double? UnitPrice { get; set; }
@@ -20,14 +21,14 @@ namespace Application.ViewModels.ProductDTOs
 
         public int? QuantitySold { get; set; }
 
-        public int? BrandName { get; set; }
+        public int? BrandId { get; set; }
 
-        public string Country { get; set; }
+        public string? Country { get; set; }
 
         public int? Status { get; set; }
 
-        public string? ImageLink { get; set; }
+        public IFormFile[] Images { get; set; }
 
-
+    //    public List<ProductMaterialDTO> ProductMaterials { get; set; }
     }
 }

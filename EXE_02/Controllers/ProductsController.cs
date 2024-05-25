@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Services;
+using Application.ViewModels.ProductDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,5 +41,16 @@ namespace EXE_02.Controllers
             var result = await _productService.GetProductByCategoryAsync(childCategoryId);
             return Ok(result);
         }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateProductAsync(CreateProductDTO product)
+        {
+            var result = await _productService.CreateProductAsync(product);
+            return Ok(result);
+        }
+
+
     }
 }
