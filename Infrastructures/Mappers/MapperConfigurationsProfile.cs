@@ -65,7 +65,7 @@ namespace Infrastructures.Mappers
             CreateMap<ParentCategory, ParentCategoriesDTO>().ReverseMap();
             CreateMap<Image, ImageDTO>().ReverseMap();
             CreateMap<CreateProductDTO, Product>()
-                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images))
+                .ForMember(dest => dest.Images, opt => opt.Ignore())
                 .ForMember(dest => dest.ProductMaterials, opt => opt.MapFrom(src => src.ProductMaterials));
             CreateMap<CreateImageDTO, Image>()
                 .ForMember(dest => dest.ImageLink, opt => opt.Ignore());
