@@ -41,6 +41,6 @@ namespace Application.ViewModels.ProductDTOs
 
         public List<ImageDTO> Images { get; set; }
 
-        public List<ProductMaterialDTO> ProductMaterials { get; set; }
+        public List<ProductMaterialDTO> ProductMaterials { get; set; } 
     }
 }

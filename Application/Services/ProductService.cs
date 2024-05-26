@@ -12,6 +12,7 @@ using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -165,24 +166,31 @@ namespace Application.Services
 
                 await _unitOfWork.ProductRepository.AddAsync(newproduct);
                 await _unitOfWork.SaveChangeAsync();
-                if (product.Images != null && product.Images.Length > 0)
+
+               
+
+
+                if (product.Images != null && product.Images.Count > 0)
                 {
                     
                     foreach( var image in product.Images )
                     {
-                     //   imageDTOs.Add(_mapper.Map<ImageDTO>(image));
+                     
                         await _unitOfWork.ImageRepository.CreateImageAsync(image, newproduct.Id);
                     }
-                    
-
-                    reponse.Data = _mapper.Map<ProductDetailDTO>(newproduct);
+                    var productafter = await _unitOfWork.ProductRepository.GetProductByIDAsync(newproduct.Id);
+                    reponse.Data = _mapper.Map<ProductDetailDTO>(productafter);
                     reponse.Success = true;
                     reponse.Message = "Create new product successfully";
                     reponse.Error = string.Empty;
                     return reponse;
                 }
 
-            }catch (Exception ex) 
+
+                
+
+            }
+            catch (Exception ex) 
             { 
                 reponse.Success = false;
                 reponse.ErrorMessages = new List<string> { ex.Message };

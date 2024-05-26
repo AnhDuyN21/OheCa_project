@@ -45,7 +45,7 @@ namespace EXE_02.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateProductAsync(CreateProductDTO product)
+        public async Task<IActionResult> CreateProductAsync([FromForm]CreateProductDTO product)
         {
             var result = await _productService.CreateProductAsync(product);
             return Ok(result);

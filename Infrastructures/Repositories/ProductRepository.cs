@@ -27,14 +27,31 @@ namespace Infrastructures.Repositories
             _dbContext = context;
         }
 
-        
+        public async Task<Product> CreateProductAsync(CreateProductDTO product)
+        {
+            var newproduct = new Product()
+            {
+                Name = product.Name,
+                UnitPrice = product.UnitPrice,
+                PriceSold = product.PriceSold,
+                Quantity = product.Quantity,
+                QuantitySold = product.QuantitySold,
+                BrandId = product.BrandId,
+                Country = product.Country,
+                Status = product.Status
 
-      
+            };
+
+             _dbContext.Add(newproduct);
+            
+            return newproduct;
+
+        }
 
         public async Task<IEnumerable<Product>> GetProductAsync()
         {
             var products = await _dbContext.Products.Include(im => im.Images)
-                                              .Where(im => im.Images.Any(im => im.Thumbnail == 1)).ToListAsync();
+                                              .Where(im => im.Images.Any(im => im.Thumbnail == true)).ToListAsync();
             if (products != null)
             {
                 return products;

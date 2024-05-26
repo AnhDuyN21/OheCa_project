@@ -1,4 +1,5 @@
-﻿using Application.ViewModels.ProductMaterialDTOs;
+﻿using Application.ViewModels.ImageProductDTOs;
+using Application.ViewModels.ProductMaterialDTOs;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -26,9 +27,14 @@ namespace Application.ViewModels.ProductDTOs
         public string? Country { get; set; }
 
         public int? Status { get; set; }
+        public List<CreateProductMaterialDTO> ProductMaterials { get; set; }
 
-        public IFormFile[] Images { get; set; }
+        //  public IFormFile Description { get; set; }
+        public List<CreateImageDTO> Images { get; set; }
 
-    //    public List<ProductMaterialDTO> ProductMaterials { get; set; }
+        
     }
+
+
+  
 }
