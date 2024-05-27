@@ -14,7 +14,7 @@ namespace Application.Interfaces
         Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderByUserIDAsync(int userId);
         Task<ServiceResponse<OrderDTO>> CreateOrderAsync(CreateOrderDTO order);
         Task<ServiceResponse<OrderDTO>> UpdateOrderAsync(int id,UpdateOrderDTO order);
-        Task<ServiceResponse<bool>> CancelOrderAsync(int id);
+        Task<ServiceResponse<OrderDTO>> CancelOrderAsync(int id);
         Task<ServiceResponse<IEnumerable<OrderDTO>>> GetSortedOrdersAsync(string sortName);
 
     }

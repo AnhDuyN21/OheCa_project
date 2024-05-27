@@ -20,10 +20,14 @@
 		<Compile Include="Migrations\20240519103501_Oheca_Second.Designer.cs" />
 		<Compile Include="Migrations\20240521134646_AddIsConfirmToUserAndNullableToUser.cs" />
 		<Compile Include="Migrations\20240521134646_AddIsConfirmToUserAndNullableToUser.Designer.cs" />
+		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.cs" />
+		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.Designer.cs" />
 		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
+		<Compile Include="Repositories\OrderDetailRepository.cs" />
 		<Compile Include="Repositories\OrderRepository.cs" />
 		<Compile Include="Repositories\UserRepository.cs" />
+		<Compile Include="Repositories\ProductRepository.cs" />
 		<Compile Include="UnitOfWork.cs" />
 		<Compile Include="Mappers\**\*.cs" />
 		

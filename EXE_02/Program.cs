@@ -10,10 +10,8 @@ using WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 var configuration = builder.Configuration.Get<AppConfiguration>() ?? new AppConfiguration();
 builder.Services.AddInfrastructuresService(configuration.DatabaseConnection);

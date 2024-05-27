@@ -13,13 +13,10 @@ namespace Infrastructures.FluentAPIs
 
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
-            builder.Property(p => p.FirstName)
+            builder.Property(p => p.Name)
             .IsRequired()
             .HasMaxLength(100);
 
-            builder.Property(p => p.LastName)
-            .IsRequired()
-            .HasMaxLength(100);
 
             builder.HasMany(p => p.Discounts)
                 .WithOne(p => p.Product);

@@ -13,10 +13,19 @@ namespace Infrastructures
     {
         public static IServiceCollection AddInfrastructuresService(this IServiceCollection services, string databaseConnection)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //Orders
+            
+            //DanhDev
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderDetailService, OrderDetailService>();
+            services.AddScoped<IOrderDetailService, OrderDetailService>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUrlService, UrlService>();
+            services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             //Users
             services.AddScoped<IUserRepository, UserRepository>();
             //Authentication
