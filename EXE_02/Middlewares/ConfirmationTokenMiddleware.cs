@@ -30,6 +30,7 @@ namespace WebAPI.Middlewares
                         // Xác nhận tài khoản
                         
                         user.ConfirmToken = null;
+                        user.IsConfirmed = true;
                         await unitOfWork.SaveChangeAsync();
 
                         await context.Response.WriteAsync("Email has been confirmed successfully!");

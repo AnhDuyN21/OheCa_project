@@ -47,7 +47,7 @@ namespace Application.Services
                     response.Message = "Invalid username or password";
                     return response;
                 }
-                if (user.ConfirmToken != null)
+                if (user.ConfirmToken != null || user.IsConfirmed == false)
                 {
                     //System.Console.WriteLine(user.ConfirmationToken + user.IsConfirmed);
                     response.Success = false;
@@ -95,7 +95,8 @@ namespace Application.Services
                 // Tạo token ngẫu nhiên
                 user.ConfirmToken = Guid.NewGuid().ToString();
                 user.Status = 1;
-                user.RoleId = 1;
+                user.RoleId = 2;
+                user.IsConfirmed = false;
                 await _unitOfWork.UserRepository.AddAsync(user);
                 var confirmationLink = $"https://localhost:5001/swagger/confirm?token={user.ConfirmToken}";
                 // Gửi email xác nhận
