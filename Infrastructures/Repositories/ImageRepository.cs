@@ -86,6 +86,26 @@ namespace Infrastructures.Repositories
             }
         }
 
+        public async Task DeleteImageAsync(int productId)
+        {
+           string Filepath = GetFileProductPath(productId);
+            if(System.IO.Directory.Exists(Filepath))
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(Filepath);
+                FileInfo[] fileInfos = directoryInfo.GetFiles();
+                foreach (FileInfo fileInfo in fileInfos)
+                {
+                    fileInfo.Delete();
+                }
+            }
+
+            var imagesToRemove = await _dbContext.Images.Where(i => i.ProductId == productId).ToListAsync();
+            _dbContext.Images.RemoveRange(imagesToRemove);
+            await _dbContext.SaveChangesAsync();
+
+            
+        }
+
         private string GetFileProductPath(int productId)
         {
             return this._enviroment.WebRootPath + "\\user-content\\product\\" + productId.ToString();

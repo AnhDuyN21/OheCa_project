@@ -12,5 +12,7 @@ namespace Application.Repositories
     public interface IImageRepository : IGenericRepository<Image>
     {
         public Task<Image> CreateImageAsync(CreateImageDTO file, int productId);
+
+        public Task DeleteImageAsync(int productId);
     }
 }

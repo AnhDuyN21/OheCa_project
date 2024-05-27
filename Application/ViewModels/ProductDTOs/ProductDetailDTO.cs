@@ -32,7 +32,8 @@ namespace Application.ViewModels.ProductDTOs
 
         public string BrandName { get; set; }
 
-    //    public double? DiscountPercent { get; set; }
+        public bool? IsDeleted { get; set; }
+        //    public double? DiscountPercent { get; set; }
 
         public List<FeedbackDTO>  Feeback { get; set; }
 

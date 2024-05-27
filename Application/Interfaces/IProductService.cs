@@ -1,6 +1,7 @@
 ﻿using Application.ServiceResponse;
 using Application.ViewModels.OrderDTOs;
 using Application.ViewModels.ProductDTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,10 @@ namespace Application.Interfaces
         Task<ServiceResponse<ProductDetailDTO>> GetProductByIdAsync(int productId);
         Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int userId);
         Task<ServiceResponse<ProductDetailDTO>> CreateProductAsync(CreateProductDTO product);
-        Task<ServiceResponse<OrderDTO>> UpdateOrderAsync(int id, UpdateOrderDTO order);
-        Task<ServiceResponse<bool>> CancelOrderAsync(int id);
-        Task<ServiceResponse<IEnumerable<OrderDTO>>> GetSortedOrdersAsync(string sortName);
+
+        Task<ServiceResponse<ProductDetailDTO>> DeleteProductAsync(int productId);
+
+
+        Task<ServiceResponse<ProductDetailDTO>> UpdateProductAsync(int id, UpdateProductDTO product);
     }
 }

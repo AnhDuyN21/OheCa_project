@@ -31,16 +31,6 @@ namespace Application.Services
         }
 
 
-        Task<ServiceResponse<bool>> IProductService.CancelOrderAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
- 
-        
-
-        
-
         async Task<ServiceResponse<IEnumerable<ProductDTO>>> IProductService.GetProductsAsync()
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
@@ -56,15 +46,15 @@ namespace Application.Services
                 {
                     reponse.Data = productDTOs;
                     reponse.Success = true;
-                    reponse.Message = $"Have {productDTOs.Count} order.";
+                    reponse.Message = $"Have {productDTOs.Count} product.";
                     reponse.Error = "Not error";
                     return reponse;
                 }
                 else
                 {
                     reponse.Success = false;
-                    reponse.Message = $"Have {productDTOs.Count} order.";
-                    reponse.Error = "Not have a order";
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
                     return reponse;
                 }
             }
@@ -77,16 +67,7 @@ namespace Application.Services
             }
         }
 
-        Task<ServiceResponse<IEnumerable<OrderDTO>>> IProductService.GetSortedOrdersAsync(string sortName)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ServiceResponse<OrderDTO>> IProductService.UpdateOrderAsync(int id, UpdateOrderDTO order)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         async Task<ServiceResponse<ProductDetailDTO>> IProductService.GetProductByIdAsync(int productId)
         {
             var _response = new ServiceResponse<ProductDetailDTO>();
@@ -192,6 +173,85 @@ namespace Application.Services
             }
             catch (Exception ex) 
             { 
+                reponse.Success = false;
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+
+            return reponse;
+        }
+
+        public async Task<ServiceResponse<ProductDetailDTO>> DeleteProductAsync(int productId)
+        {
+            var _response = new ServiceResponse<ProductDetailDTO>();
+            var product = await _unitOfWork.ProductRepository.GetProductByIDAsync(productId);
+
+            if (product != null)
+            {
+                _unitOfWork.ProductRepository.SoftRemove(product);
+                await _unitOfWork.SaveChangeAsync();
+
+                 
+
+
+                _response.Data = _mapper.Map<ProductDetailDTO>(product); 
+                _response.Success = true;
+                _response.Message = "Deleted Product Successfully!";
+            }
+            else
+            {
+                _response.Success = false;
+                _response.Message = "Product not found";
+            }
+
+            return _response;
+        }
+
+        public async Task<ServiceResponse<ProductDetailDTO>> UpdateProductAsync(int id, UpdateProductDTO product)
+        {
+            var reponse = new ServiceResponse<ProductDetailDTO>();
+
+            try
+            {
+                var productById = await _unitOfWork.ProductRepository.GetByIdAsync(id);
+
+                if (productById != null)
+                {
+                    var newproduct = _mapper.Map(product, productById);
+                    var productafter = _mapper.Map<Product>(newproduct);
+                    _unitOfWork.ProductRepository.Update(newproduct);
+                    await _unitOfWork.SaveChangeAsync();
+                    
+
+                    if (product.Images == null || product.Images.Count == 0)
+                    {
+                        await _unitOfWork.SaveChangeAsync();
+
+                    }
+                    else
+                    {
+                      await  _unitOfWork.ImageRepository.DeleteImageAsync(id);
+
+                        if (product.Images != null && product.Images.Count > 0)
+                        {
+
+                            foreach (var image in product.Images)
+                            {
+
+                                await _unitOfWork.ImageRepository.CreateImageAsync(image, id);
+                            }
+                            var productrespone = await _unitOfWork.ProductRepository.GetProductByIDAsync(id);
+                            reponse.Data = _mapper.Map<ProductDetailDTO>(productafter);
+                            reponse.Success = true;
+                            reponse.Message = "Updated product successfully";
+                            reponse.Error = string.Empty;
+                            return reponse;
+                        }
+                    }
+                }
+
+            }catch (Exception ex)
+            {
                 reponse.Success = false;
                 reponse.ErrorMessages = new List<string> { ex.Message };
                 return reponse;
