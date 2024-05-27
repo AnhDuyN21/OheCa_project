@@ -18,9 +18,11 @@ namespace Infrastructures
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderDetailService, OrderDetailService>();
-            services.AddScoped<IOrderDetailService, OrderDetailService>();
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
-
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IShipCompanyService, ShipCompanyService>();
+            services.AddScoped<IShipCompanyRepository, ShipCompanyRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //Users

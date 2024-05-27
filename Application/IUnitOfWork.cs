@@ -10,6 +10,9 @@ namespace Application
 
         public IUserRepository UserRepository { get; }
 
+        public IPaymentRepository PaymentRepository { get; }
+
+        public IShipCompanyRepository ShipCompanyRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }
