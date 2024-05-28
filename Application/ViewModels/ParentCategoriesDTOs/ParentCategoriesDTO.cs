@@ -9,6 +9,7 @@ namespace Application.ViewModels.ParentCategoriesDTOs
 {
     public class ParentCategoriesDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

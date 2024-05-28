@@ -221,8 +221,26 @@ namespace Application.Services
                     var productafter = _mapper.Map<Product>(newproduct);
                     _unitOfWork.ProductRepository.Update(newproduct);
                     await _unitOfWork.SaveChangeAsync();
-                    
 
+                    if (product.ProductMaterials == null || product.ProductMaterials.Count == 0)
+                    {
+                        await _unitOfWork.SaveChangeAsync();
+                    }
+                    else
+                    {
+                        if (product.ProductMaterials.Count > 0 || product.ProductMaterials != null)
+                        {
+                            foreach(var productMaterial in product.ProductMaterials)
+                            {
+                                var productMaterialById = await _unitOfWork.ProductMaterialRepository.GetByIdAsync(productMaterial.Id);
+                                var newProMaterial = _mapper.Map(productMaterial, productMaterialById);
+                                var proMaterialAfter = _mapper.Map<ProductMaterial>(newProMaterial);
+                                _unitOfWork.ProductMaterialRepository.Update(proMaterialAfter);
+                                await _unitOfWork.SaveChangeAsync();
+                            }
+
+                        }
+                    }
                     if (product.Images == null || product.Images.Count == 0)
                     {
                         await _unitOfWork.SaveChangeAsync();

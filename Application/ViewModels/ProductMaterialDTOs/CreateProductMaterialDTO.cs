@@ -9,6 +9,7 @@ namespace Application.ViewModels.ProductMaterialDTOs
 {
     public class CreateProductMaterialDTO
     {
+        public int Id { get; set; }
         public string Detail { get; set; }
 
         public int? MaterialId { get; set; }

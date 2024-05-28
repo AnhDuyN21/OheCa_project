@@ -10,8 +10,10 @@ namespace Application.ViewModels.MaterialDTOs
 {
     public class MaterialDTO
     {
+        
         public string Name { get; set; }
 
+        public int? ChildCategoryId { get; set; }
         public ChildCategoriesDTO ChildCategory { get; set; }
     }
 }
