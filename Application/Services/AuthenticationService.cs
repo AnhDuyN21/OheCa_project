@@ -38,10 +38,12 @@ namespace Application.Services
         public async Task<ServiceResponse<string>> LoginAsync(AuthenUserDTO usertDTO)
         {
             var response = new ServiceResponse<string>();
-            var user = await _unitOfWork.UserRepository.GetUserByEmailAndPassword(usertDTO.Email, usertDTO.Password);
+           // var user = await _unitOfWork.UserRepository.GetUserByEmailAndPassword(usertDTO.Email, usertDTO.Password);
             try
             {
-                if(user == null)
+                var hashedPassword = Utils.HashPassword.HashWithSHA256(usertDTO.Password);
+                var user = await _unitOfWork.UserRepository.GetUserByEmailAndPassword(usertDTO.Email, hashedPassword);
+                if (user == null)
                 {
                     response.Success = false;
                     response.Message = "Invalid username or password";
@@ -52,6 +54,12 @@ namespace Application.Services
                     //System.Console.WriteLine(user.ConfirmationToken + user.IsConfirmed);
                     response.Success = false;
                     response.Message = "Please confirm via link in your mail";
+                    return response;
+                }
+                if(user.Status == 0)
+                {
+                    response.Success = false;
+                    response.Message = "Your account have been deleted!";
                     return response;
                 }
                 var token = user.GenerateJsonWebToken(
@@ -92,10 +100,12 @@ namespace Application.Services
                     return response;
                 }
                 var user = _mapper.Map<User>(registerUserDTO);
+                user.Password = Utils.HashPassword.HashWithSHA256(registerUserDTO.Password);
                 // Tạo token ngẫu nhiên
                 user.ConfirmToken = Guid.NewGuid().ToString();
                 user.Status = 1;
                 user.RoleId = 2;
+                user.IsDeleted = false;
                 user.IsConfirmed = false;
                 await _unitOfWork.UserRepository.AddAsync(user);
                 var confirmationLink = $"https://localhost:5001/swagger/confirm?token={user.ConfirmToken}";
