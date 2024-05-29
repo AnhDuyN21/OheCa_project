@@ -41,5 +41,10 @@ namespace Infrastructures.Repositories
                 u => u.ConfirmToken == token
             );
         }
+
+        public async Task<IEnumerable<User>> SearchAccountByNameAsync(string name)
+        {
+            return await _dbContext.Users.Where(u => u.FirstName.Contains(name) || u.LastName.Contains(name)).ToListAsync();
+        }
     }
 }

@@ -24,6 +24,7 @@
 		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.Designer.cs" />
 		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
+		<Compile Include="Repositories\ImageRepository.cs" />
 		<Compile Include="Repositories\OrderDetailRepository.cs" />
 		<Compile Include="Repositories\OrderRepository.cs" />
 		<Compile Include="Repositories\UserRepository.cs" />

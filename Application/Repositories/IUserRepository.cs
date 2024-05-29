@@ -13,5 +13,6 @@ namespace Application.Repositories
         Task<bool> CheckEmailNameExited(string username);
         Task<bool> CheckPhoneNumberExited(string phonenumber);
         Task<User> GetUserByConfirmationToken(string token);
+        Task<IEnumerable<User>> SearchAccountByNameAsync(string name);
     }
 }
