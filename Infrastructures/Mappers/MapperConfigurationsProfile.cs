@@ -25,6 +25,7 @@ namespace Infrastructures.Mappers
             //Users
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<User, RegisterUserDTO>().ReverseMap();
+            CreateMap<User, CreateUserDTO>().ReverseMap();
 
 
             CreateMap<Product, ProductDTO>()

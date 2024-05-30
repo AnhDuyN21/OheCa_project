@@ -1,7 +1,11 @@
 ﻿
 using Application;
 using Application.Interfaces;
+using Application.ViewModels.UserDTO;
 using EXE_02.Services;
+using EXE_02.Validations.UserValidations;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructures;
 using System.Diagnostics;
 using WebAPI.Middlewares;
@@ -25,8 +29,12 @@ namespace EXE_02
             services.AddMemoryCache();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClaimsService, ClaimsService>();
-            //services.AddFluentValidationAutoValidation();
-            //services.AddFluentValidationClientsideAdapters();
+            //Fluent Validator
+            services.AddFluentValidationAutoValidation();
+            services.AddFluentValidationClientsideAdapters();
+            //Fluent Validator / User
+            services.AddTransient<IValidator<CreateUserDTO>, CreateAccountViewModelValidation>();
+            services.AddTransient<IValidator<RegisterUserDTO>, RegisterAccountViewModelValidation>();
             return services;
         }
     }

@@ -31,6 +31,8 @@ namespace Infrastructures
 
             //Users
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+
             //Authentication
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
