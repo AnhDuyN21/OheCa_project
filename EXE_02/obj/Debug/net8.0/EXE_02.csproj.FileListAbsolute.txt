@@ -139,7 +139,6 @@ D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.GeneratedMSBuildEdito
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.AssemblyInfoInputs.cache
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.AssemblyInfo.cs
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.csproj.CoreCompileInputs.cache
-D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.MvcApplicationPartsAssemblyInfo.cs
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.MvcApplicationPartsAssemblyInfo.cache
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.sourcelink.json
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\staticwebassets.build.json
@@ -156,3 +155,4 @@ D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\refint\EXE_02.dll
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.pdb
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.genruntimeconfig.cache
 D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\ref\EXE_02.dll
+D:\EXE201\Git\OheCa_project\EXE_02\obj\Debug\net8.0\EXE_02.MvcApplicationPartsAssemblyInfo.cs

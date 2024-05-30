@@ -50,7 +50,7 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{method:string}")]
+        [HttpGet("{method}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> SearchPaymentByName(string method)
@@ -71,7 +71,7 @@ namespace EXE_02.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateOrderDetail([FromBody] CreatePaymentDTO createDto)
+        public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentDTO createDto)
         {
             if (createDto == null)
             {

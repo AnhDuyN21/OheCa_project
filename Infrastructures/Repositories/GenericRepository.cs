@@ -18,12 +18,24 @@ namespace Infrastructures.Repositories
             _timeService = timeService;
             _claimsService = claimsService;
         }
-        public Task<List<TEntity>> GetAllAsync() => _dbSet.ToListAsync();
-
-        public async Task<TEntity?> GetByIdAsync(int id)
+        public Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes)
         {
-            var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-            // todo should throw exception when not found
+            IQueryable<TEntity> query = _dbSet;
+            foreach(var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return query.ToListAsync();
+        }
+
+        public async Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = _dbSet;
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            var result = await query.FirstOrDefaultAsync(x => x.Id == id);
             return result;
         }
 

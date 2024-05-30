@@ -202,14 +202,88 @@ namespace Application.Services
             return response;
         }
 
-        public Task<ServiceResponse<IEnumerable<ShipCompanyViewDTO>>> searchShipCompanyByNameAsync(string name)
+        public async Task<ServiceResponse<IEnumerable<ShipCompanyViewDTO>>> searchShipCompanyByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            var reponse = new ServiceResponse<IEnumerable<ShipCompanyViewDTO>>();
+            try
+            {
+                var c = await _unitOfWork.ShipCompanyRepository.GetAllAsync();
+                if (c == null)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Don't Have Any ShipCompany";
+                }
+                else
+                {
+                    var s = c.Where(x => x.Name.ToLower().Contains(name.ToLower()) && x.IsDeleted == false).ToList();
+                    if (s.Count <= 0 || s == null)
+                    {
+                        reponse.Success = false;
+                        reponse.Message = "Don't Have Any ShipCompany";
+                    }
+                    else
+                    {
+                        reponse.Data = _mapper.Map<IEnumerable<ShipCompanyViewDTO>>(s);
+                        reponse.Success = true;
+                        reponse.Message = "ShipCompany Retrieved Successfully";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Message = ex.Message;
+                reponse.ErrorMessages = new List<string> { ex.InnerException.ToString() };
+            }
+            return reponse;
         }
 
-        public Task<ServiceResponse<ShipCompanyViewDTO>> UpdateShipCompanyAsync(int id, UpdateShipCompanyDTO updateDTO)
+        public async Task<ServiceResponse<ShipCompanyViewDTO>> UpdateShipCompanyAsync(int id, UpdateShipCompanyDTO updateDTO)
         {
-            throw new NotImplementedException();
+            var reponse = new ServiceResponse<ShipCompanyViewDTO>();
+            try
+            {
+                var scChecked = await _unitOfWork.ShipCompanyRepository.GetByIdAsync(id);
+
+                if (scChecked == null)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Not found ship company, you are sure input, please checked company";
+                    reponse.Error = "Not found company";
+                }
+                else if (scChecked.IsDeleted == true)
+                {
+
+                    reponse.Success = false;
+                    reponse.Message = "company is deleted, cant dleted this object";
+                    reponse.Error = "This company detail is deleted";
+                }
+                else
+                {
+
+                    var spFofUpdate = _mapper.Map(updateDTO, scChecked);
+                    var spDTOAfterUpdate = _mapper.Map<ShipCompanyViewDTO>(spFofUpdate);
+                    if (await _unitOfWork.SaveChangeAsync() > 0)
+                    {
+                        reponse.Data = spDTOAfterUpdate;
+                        reponse.Success = true;
+                        reponse.Message = "Update company successfully";
+                    }
+                    else
+                    {
+                        reponse.Success = false;
+                        reponse.Message = "Update company fail!";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                reponse.Success = false;
+                reponse.Message = "Update company fail!, exception";
+                reponse.ErrorMessages = new List<string> { e.Message };
+            }
+
+            return reponse;
         }
     }
 }

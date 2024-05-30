@@ -23,12 +23,17 @@
 		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.cs" />
 		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.Designer.cs" />
 		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
+		<Compile Include="Repositories\AddressToShipRepository.cs" />
+		<Compile Include="Repositories\AddressUserRepository.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
 		<Compile Include="Repositories\OrderDetailRepository.cs" />
 		<Compile Include="Repositories\OrderRepository.cs" />
 		<Compile Include="Repositories\PaymentRepository.cs" />
 		<Compile Include="Repositories\ShipCompanyRepository.cs" />
+		<Compile Include="Repositories\ShipperRepository.cs" />
 		<Compile Include="Repositories\UserRepository.cs" />
+		<Compile Include="Repositories\VoucherRepository.cs" />
+		<Compile Include="Repositories\VoucherUsageRepository.cs" />
 		<Compile Include="UnitOfWork.cs" />
 		<Compile Include="Mappers\**\*.cs" />
 		

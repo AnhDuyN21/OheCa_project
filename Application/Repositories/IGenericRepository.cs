@@ -9,8 +9,8 @@ namespace Application.Repositories
 {
     public interface IGenericRepository<TEntity>
     {
-        Task<List<TEntity>> GetAllAsync();
-        Task<TEntity?> GetByIdAsync(int id);
+        Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
+        Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes);
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
         void UpdateRange(List<TEntity> entities);

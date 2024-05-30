@@ -23,6 +23,15 @@ namespace Infrastructures
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IShipCompanyService, ShipCompanyService>();
             services.AddScoped<IShipCompanyRepository, ShipCompanyRepository>();
+            services.AddScoped<IShipperService, ShipperService>();
+            services.AddScoped<IShipperRepository, ShipperRepository>();
+            services.AddScoped<IAddressToShipService, AddressToShipService>();
+            services.AddScoped<IAddressToShipRepository, AddressToShipRepository>();
+            services.AddScoped<IAddressUserService, AddressUserService>();
+            services.AddScoped<IAddressUserRepository, AddressUserRepository>();
+            services.AddScoped<IVoucherService, VoucherService>();
+            services.AddScoped<IVoucherRepository, VoucherRepository>();
+            services.AddScoped<IVoucherUsageRepository, VoucherUsageRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //Users

@@ -1,8 +1,12 @@
+using Application.ViewModels.AddressToShipDTOs;
+using Application.ViewModels.AddressUserDTOs;
 using Application.ViewModels.OrderDetailDTOs;
 using Application.ViewModels.OrderDTOs;
 using Application.ViewModels.PaymentDTOs;
 using Application.ViewModels.ShipCompanyDTOs;
+using Application.ViewModels.ShipperDTOs;
 using Application.ViewModels.UserDTO;
+using Application.ViewModels.VoucherDTOs;
 using AutoMapper;
 using Domain.Entities;
 
@@ -37,6 +41,26 @@ namespace Infrastructures.Mappers
             CreateMap<ShipCompany, CreateShipCompanyDTO>().ReverseMap();
             CreateMap<ShipCompany, UpdateShipCompanyDTO>().ReverseMap();
 
+            //Shipper
+            CreateMap<Shipper, ShipperViewDTO>().ReverseMap();
+            CreateMap<Shipper, CreateShipperDTO>().ReverseMap();
+            CreateMap<Shipper, UpdateShipperDTO>().ReverseMap();
+
+            //AddressToShip
+            CreateMap<AddressToShip, ViewAddressToShipDTO>().ReverseMap();
+            CreateMap<AddressToShip, CreateAddressToShipDTO>().ReverseMap();
+            CreateMap<AddressToShip, UpdateAddressToShipDTO>().ReverseMap();
+
+            //AddressUser
+            CreateMap<AddressUser, ViewAddressUserDTO>().ReverseMap();
+            CreateMap<AddressUser, CreateAddressUserDTO>().ReverseMap();
+            CreateMap<AddressUser, UpdateAddressUserDTO>().ReverseMap();
+
+            //Voucher
+            CreateMap<Voucher, ViewVoucherDTO>().ReverseMap();
+            CreateMap<Voucher, CreateVoucherDTO>().ReverseMap();
+            CreateMap<Voucher, UpdateVoucherDTO>().ReverseMap();
+            CreateMap<VoucherUsage, CreateVoucherUsageDTO>().ReverseMap();
         }
 
     }
