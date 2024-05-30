@@ -148,9 +148,6 @@ namespace Application.Services
                 await _unitOfWork.ProductRepository.AddAsync(newproduct);
                 await _unitOfWork.SaveChangeAsync();
 
-               
-
-
                 if (product.Images != null && product.Images.Count > 0)
                 {
                     
@@ -165,10 +162,7 @@ namespace Application.Services
                     reponse.Message = "Create new product successfully";
                     reponse.Error = string.Empty;
                     return reponse;
-                }
-
-
-                
+                }                
 
             }
             catch (Exception ex) 
@@ -190,9 +184,6 @@ namespace Application.Services
             {
                 _unitOfWork.ProductRepository.SoftRemove(product);
                 await _unitOfWork.SaveChangeAsync();
-
-                 
-
 
                 _response.Data = _mapper.Map<ProductDetailDTO>(product); 
                 _response.Success = true;

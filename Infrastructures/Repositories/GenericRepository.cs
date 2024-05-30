@@ -53,7 +53,7 @@ namespace Infrastructures.Repositories
         {
             entity.ModificationDate = _timeService.GetCurrentTime();
             entity.ModificationBy = _claimsService.GetCurrentUserId;
-            _dbSet.Update(entity);
+            _dbSet.Update(entity); 
         }
 
         public async Task AddRangeAsync(List<TEntity> entities)

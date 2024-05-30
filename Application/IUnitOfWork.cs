@@ -14,6 +14,8 @@ namespace Application
         public IImageRepository ImageRepository { get; }
 
         public IProductMaterialRepository ProductMaterialRepository { get; }
+
+        public IFeedbackRepository FeedbackRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }

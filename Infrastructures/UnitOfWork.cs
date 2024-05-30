@@ -14,9 +14,10 @@ namespace Infrastructures
         private readonly IProductRepository _productRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IProductMaterialRepository _productMaterialRepository;
+        private readonly IFeedbackRepository _feedbackRepository;
         
         public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository, IProductRepository productRepository,IOrderDetailRepository orderDetailRepository,
-            IUserRepository userRepository, IImageRepository imageRepository, IProductMaterialRepository productMaterialRepository)
+            IUserRepository userRepository, IImageRepository imageRepository, IProductMaterialRepository productMaterialRepository, IFeedbackRepository feedbackRepository)
         {
             _dbContext = dbContext;
 
@@ -28,6 +29,7 @@ namespace Infrastructures
             _productRepository = productRepository;
             _imageRepository = imageRepository;
             _productMaterialRepository = productMaterialRepository;
+            _feedbackRepository = feedbackRepository;
 
         }
         public IOrderRepository OrderRepository => _orderRepository;
@@ -39,6 +41,8 @@ namespace Infrastructures
         public IImageRepository ImageRepository => _imageRepository;
 
         public IProductMaterialRepository ProductMaterialRepository => _productMaterialRepository;
+
+        public IFeedbackRepository FeedbackRepository => _feedbackRepository;
         public async Task<int> SaveChangeAsync()
         {
             return await _dbContext.SaveChangesAsync();
