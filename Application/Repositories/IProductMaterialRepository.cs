@@ -1,6 +1,6 @@
 ﻿using Application.ViewModels.ImageProductDTOs;
+using Application.ViewModels.ProductMaterialDTOs;
 using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface IImageRepository : IGenericRepository<Image>
+    public interface IProductMaterialRepository : IGenericRepository<ProductMaterial>
     {
-        public Task<Image> CreateImageAsync(CreateImageDTO file, int productId);
-
-        public Task DeleteImageAsync(int productId);
+       
+        
     }
 }

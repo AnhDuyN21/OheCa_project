@@ -27,14 +27,11 @@ namespace Infrastructures.Repositories
             _dbContext = context;
         }
 
-        
-
-      
 
         public async Task<IEnumerable<Product>> GetProductAsync()
         {
             var products = await _dbContext.Products.Include(im => im.Images)
-                                              .Where(im => im.Images.Any(im => im.Thumbnail == 1)).ToListAsync();
+                                              .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null).ToListAsync();
             if (products != null)
             {
                 return products;
@@ -55,7 +52,7 @@ namespace Infrastructures.Repositories
                                                    .ThenInclude(pm => pm.Material)
                                                    .ThenInclude(m => m.ChildCategory)
                                                    .ThenInclude(cc => cc.ParentCategory)
-                                              .Where(p => p.ProductMaterials.Any(pm => pm.Material.ChildCategory.Id == childCategoryId))
+                                              .Where(p => p.ProductMaterials.Any(pm => pm.Material.ChildCategory.Id == childCategoryId) && p.IsDeleted == null)
                                               .Select(p => new Product()
                                               {
                                                   Id = p.Id,
@@ -116,6 +113,7 @@ namespace Infrastructures.Repositories
                                                   Discounts = p.Discounts,
                                                   ProductMaterials = p.ProductMaterials,
                                                   Images = p.Images,
+                                                  IsDeleted = p.IsDeleted,
                                                   
                                               }).FirstOrDefaultAsync();
                                      

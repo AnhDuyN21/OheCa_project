@@ -10,7 +10,9 @@ namespace Application.ViewModels.ChildCategoriesDTOs
 {
     public class ChildCategoriesDTO
     {
+        
         public string Name { get; set; }
+        public int? ParentCategoryId { get; set; }
         public ParentCategoriesDTO ParentCategory { get; set; }
     }
 }

@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.MaterialDTOs
 {
-    public class MaterialDTO
+    public class CreateMaterialDTO
     {
-        
-        public string Name { get; set; }
-
         public int? ChildCategoryId { get; set; }
-        public ChildCategoriesDTO ChildCategory { get; set; }
+        public CreateChildCategoryDTO ChildCategory { get; set; }
+
     }
 }

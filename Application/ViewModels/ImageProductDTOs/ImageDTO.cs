@@ -9,5 +9,6 @@ namespace Application.ViewModels.ImageProductDTOs
     public class ImageDTO
     {
         public string? ImageLink { get; set; }
+        public bool? Thumbnail { get; set; }
     }
 }

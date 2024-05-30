@@ -52,13 +52,14 @@ Id = JwtBearerDefaults.AuthenticationScheme,
 Type = ReferenceType.SecurityScheme
 }
 };
-
+   
 setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
 
 setup.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         { jwtSecurityScheme, Array.Empty<string>() }
     });
+setup.MapType<IFormFile>(() => new OpenApiSchema {  Type = "string", Format = "json" });
 });
 
 /*
