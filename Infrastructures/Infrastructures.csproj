@@ -22,11 +22,15 @@
 		<Compile Include="Migrations\20240521134646_AddIsConfirmToUserAndNullableToUser.Designer.cs" />
 		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.cs" />
 		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.Designer.cs" />
+		<Compile Include="Migrations\20240525163941_changetypethumbnail.cs" />
+		<Compile Include="Migrations\20240525163941_changetypethumbnail.Designer.cs" />
 		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
+		<Compile Include="Repositories\FeedbackRepository.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
 		<Compile Include="Repositories\ImageRepository.cs" />
 		<Compile Include="Repositories\OrderDetailRepository.cs" />
 		<Compile Include="Repositories\OrderRepository.cs" />
+		<Compile Include="Repositories\ProductMaterialRepository.cs" />
 		<Compile Include="Repositories\UserRepository.cs" />
 		<Compile Include="Repositories\ProductRepository.cs" />
 		<Compile Include="UnitOfWork.cs" />

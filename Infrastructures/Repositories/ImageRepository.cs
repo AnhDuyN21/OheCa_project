@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Application.ViewModels.ImageProductDTOs;
 
 namespace Infrastructures.Repositories
 {
@@ -34,7 +35,7 @@ namespace Infrastructures.Repositories
             _urlService = urlService;
         }
 
-        public async Task<Image> CreateImageAsync(IFormFile file, int productId)
+        public async Task<Image> CreateImageAsync(CreateImageDTO file, int productId)
         {
             
             int passcount = 0;
@@ -52,18 +53,20 @@ namespace Infrastructures.Repositories
                         var image = new Image()
                         {
                             ProductId = productId,
-                            ImageLink = GetImageProductPath(productId)
+                            ImageLink = GetImageProductPath(productId),
+                            Thumbnail = file.Thumbnail
+
 
                         };
 
-                        string imagepath = Path.Combine(filePath, file.FileName);
+                        string imagepath = Path.Combine(filePath, file.File.FileName);
                         if (System.IO.File.Exists(imagepath))
                         {
                             System.IO.File.Delete(imagepath);
                         }
                         using (FileStream stream = System.IO.File.Create(imagepath))
                         {
-                            await file.CopyToAsync(stream);
+                            await file.File.CopyToAsync(stream);
                           
                         }
 
@@ -81,6 +84,26 @@ namespace Infrastructures.Repositories
                 errorcount++;
                 throw new Exception("Đã xảy ra lỗi khi tạo hình ảnh.", ex);
             }
+        }
+
+        public async Task DeleteImageAsync(int productId)
+        {
+           string Filepath = GetFileProductPath(productId);
+            if(System.IO.Directory.Exists(Filepath))
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(Filepath);
+                FileInfo[] fileInfos = directoryInfo.GetFiles();
+                foreach (FileInfo fileInfo in fileInfos)
+                {
+                    fileInfo.Delete();
+                }
+            }
+
+            var imagesToRemove = await _dbContext.Images.Where(i => i.ProductId == productId).ToListAsync();
+            _dbContext.Images.RemoveRange(imagesToRemove);
+            await _dbContext.SaveChangesAsync();
+
+            
         }
 
         private string GetFileProductPath(int productId)

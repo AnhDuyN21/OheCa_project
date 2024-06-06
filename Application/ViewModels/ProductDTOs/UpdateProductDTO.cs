@@ -1,7 +1,5 @@
 ﻿using Application.ViewModels.ImageProductDTOs;
 using Application.ViewModels.ProductMaterialDTOs;
-using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.ProductDTOs
 {
-    public class CreateProductDTO
+    public class UpdateProductDTO
     {
         public string? Name { get; set; }
 
@@ -31,10 +29,5 @@ namespace Application.ViewModels.ProductDTOs
 
         //  public IFormFile Description { get; set; }
         public List<CreateImageDTO> Images { get; set; }
-
-        
     }
-
-
-  
 }
