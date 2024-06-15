@@ -96,7 +96,7 @@ namespace Application.Services
             try
             {
                 var c = await _unitOfWork.ShipCompanyRepository.GetByIdAsync(Id);
-                if (c == null)
+                if (c == null && c.IsDeleted == true)
                 {
                     reponse.Success = false;
                     reponse.Message = "Don't Have Any ShipCompany";
@@ -120,6 +120,7 @@ namespace Application.Services
         public async Task<ServiceResponse<IEnumerable<ShipCompanyViewDTO>>> GetShipCompanysAsync()
         {
             var reponse = new ServiceResponse<IEnumerable<ShipCompanyViewDTO>>();
+            List<ShipCompanyViewDTO> ListDTO = new List<ShipCompanyViewDTO>();
             try
             {
                 var c = await _unitOfWork.ShipCompanyRepository.GetAllAsync();
@@ -130,7 +131,12 @@ namespace Application.Services
                 }
                 else
                 {
-                    reponse.Data = _mapper.Map<IEnumerable<ShipCompanyViewDTO>>(c);
+                    foreach (var item in c)
+                    {
+                        var mapper = _mapper.Map<ShipCompanyViewDTO>(item);
+                        ListDTO.Add(mapper);
+                    }
+                    reponse.Data = ListDTO;
                     reponse.Success = true;
                     reponse.Message = "ShipCompany Retrieved Successfully";
                 }
@@ -215,7 +221,7 @@ namespace Application.Services
                 }
                 else
                 {
-                    var s = c.Where(x => x.Name.ToLower().Contains(name.ToLower()) && x.IsDeleted == false).ToList();
+                    var s = c.Where(x => x.Name.ToLower().Contains(name.ToLower()) && x.IsDeleted != true).ToList();
                     if (s.Count <= 0 || s == null)
                     {
                         reponse.Success = false;

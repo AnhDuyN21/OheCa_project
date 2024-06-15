@@ -9,14 +9,15 @@ namespace Infrastructures
         private readonly AppDbContext _dbContext;
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
-        public readonly IUserRepository _userRepository;
-        public readonly IPaymentRepository _paymentRepository;
-        public readonly IShipCompanyRepository _shipCompanyRepository;
-        public readonly IShipperRepository _shipperRepository;
-        public readonly IAddressToShipRepository _addressToShipRepository;
-        public readonly IAddressUserRepository _addressUserRepository;
-        public readonly IVoucherRepository _voucherRepository;
-        public readonly IVoucherUsageRepository _voucherUsageRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IPaymentRepository _paymentRepository;
+        private readonly IShipCompanyRepository _shipCompanyRepository;
+        private readonly IShipperRepository _shipperRepository;
+        private readonly IAddressToShipRepository _addressToShipRepository;
+        private readonly IAddressUserRepository _addressUserRepository;
+        private readonly IVoucherRepository _voucherRepository;
+        private readonly IVoucherUsageRepository _voucherUsageRepository;
+        private readonly IFeedBackRepository _feedBackRepository;
 
         public UnitOfWork(AppDbContext dbContext,
             IOrderRepository orderRepository,
@@ -28,7 +29,8 @@ namespace Infrastructures
             IAddressToShipRepository addressToShipRepository,
             IAddressUserRepository addressUserRepository,
             IVoucherRepository voucherRepository,
-            IVoucherUsageRepository voucherUsageRepository)
+            IVoucherUsageRepository voucherUsageRepository,
+            IFeedBackRepository feedBackRepository)
         {
             _dbContext = dbContext;
 
@@ -44,6 +46,7 @@ namespace Infrastructures
             _addressUserRepository = addressUserRepository;
             _voucherRepository = voucherRepository;
             _voucherUsageRepository = voucherUsageRepository;
+            _feedBackRepository = feedBackRepository;
         }
         public IOrderRepository OrderRepository => _orderRepository;
         public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
@@ -55,6 +58,7 @@ namespace Infrastructures
         public IAddressUserRepository AddressUserRepository => _addressUserRepository;
         public IVoucherRepository VoucherRepository => _voucherRepository;
         public IVoucherUsageRepository VoucherUsageRepository => _voucherUsageRepository;
+        public IFeedBackRepository FeedBackRepository => _feedBackRepository;
 
         public async Task<int> SaveChangeAsync()
         {

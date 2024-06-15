@@ -154,6 +154,7 @@ namespace Application.Services
         public async Task<ServiceResponse<IEnumerable<ViewVoucherDTO>>> GetVoucherAsync()
         {
             var reponse = new ServiceResponse<IEnumerable<ViewVoucherDTO>>();
+            List<ViewVoucherDTO> ListDTO = new List<ViewVoucherDTO>();
             try
             {
                 var c = await _unitOfWork.VoucherRepository.GetAllAsync();
@@ -164,7 +165,15 @@ namespace Application.Services
                 }
                 else
                 {
-                    reponse.Data = _mapper.Map<IEnumerable<ViewVoucherDTO>>(c);
+                    foreach (var cc in c)
+                    {
+                        if (cc.IsDeleted != true)
+                        {
+                            var mapper = _mapper.Map<ViewVoucherDTO>(c);
+                            ListDTO.Add(mapper);
+                        }
+                    }
+                    reponse.Data = ListDTO;
                     reponse.Success = true;
                     reponse.Message = "Voucher Retrieved Successfully";
                 }
@@ -184,7 +193,7 @@ namespace Application.Services
             try
             {
                 var c = await _unitOfWork.VoucherRepository.GetByIdAsync(Id);
-                if (c == null)
+                if (c == null || c.IsDeleted == true)
                 {
                     reponse.Success = false;
                     reponse.Message = "Don't Have Any Voucher";
@@ -218,7 +227,7 @@ namespace Application.Services
                 }
                 else
                 {
-                    var s = c.Where(x => x.IsDeleted == false && x.VoucherUsages.Any(x => x.OrderId == orderId)).ToList();
+                    var s = c.Where(x => x.IsDeleted != true && x.VoucherUsages.Any(x => x.OrderId == orderId)).ToList();
                     reponse.Data = _mapper.Map<IEnumerable<ViewVoucherDTO>>(c);
                     reponse.Success = true;
                     reponse.Message = "Voucher Retrieved Successfully";

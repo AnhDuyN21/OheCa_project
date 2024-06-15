@@ -62,7 +62,6 @@ namespace Application.Services
                 {
                     if (entity.IsDeleted == true)
                     {
-                        reponse.Data = _mapper.Map<ViewAddressUserDTO>(entity);
                         reponse.Success = false;
                         reponse.Message = "AddressUser is deleted, cant delete again.";
                         reponse.Error = "Is Deleted";
@@ -72,8 +71,6 @@ namespace Application.Services
                         _unitOfWork.AddressUserRepository.SoftRemove(entity);
                         if (await _unitOfWork.SaveChangeAsync() > 0)
                         {
-                            var entityAfterDeleted = await _unitOfWork.AddressUserRepository.GetByIdAsync(id);
-                            reponse.Data = _mapper.Map<ViewAddressUserDTO>(entityAfterDeleted);
                             reponse.Success = true;
                             reponse.Message = "deleted AddressUser successfully";
                         }

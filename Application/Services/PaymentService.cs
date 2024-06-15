@@ -99,7 +99,7 @@ namespace Application.Services
             try
             {
                 var c = await _unitOfWork.PaymentRepository.GetByIdAsync(paymentId);
-                if (c == null)
+                if (c == null && c.IsDeleted != true)
                 {
                     reponse.Success = false;
                     reponse.Message = "Don't Have Any Payment";
@@ -123,6 +123,7 @@ namespace Application.Services
         public async Task<ServiceResponse<IEnumerable<PaymentViewDTO>>> GetPaymentsAsync()
         {
             var reponse = new ServiceResponse<IEnumerable<PaymentViewDTO>>();
+            List<PaymentViewDTO> ListDTO = new List<PaymentViewDTO>();
             try
             {
                 var c = await _unitOfWork.PaymentRepository.GetAllAsync();
@@ -133,7 +134,15 @@ namespace Application.Services
                 }
                 else
                 {
-                    reponse.Data = _mapper.Map<IEnumerable<PaymentViewDTO>>(c);
+                    foreach (var cc in c)
+                    {
+                        if(cc.IsDeleted != true)
+                        {
+                            var mapper = _mapper.Map<PaymentViewDTO>(cc);
+                            ListDTO.Add(mapper);
+                        }
+                    }
+                    reponse.Data = ListDTO;
                     reponse.Success = true;
                     reponse.Message = "Payment Retrieved Successfully";
                 }
@@ -151,6 +160,7 @@ namespace Application.Services
         public async Task<ServiceResponse<IEnumerable<PaymentViewDTO>>> GetSortedPaymentsAsync(string sortName)
         {
             var response = new ServiceResponse<IEnumerable<PaymentViewDTO>>();
+            List<PaymentViewDTO> ListDTO = new List<PaymentViewDTO>();
             try
             {
                 var payments = await _unitOfWork.PaymentRepository.GetAllAsync();
@@ -188,8 +198,15 @@ namespace Application.Services
                         sortedPayments = filteredPayments;
                         break;
                 }
-
-                response.Data = _mapper.Map<IEnumerable<PaymentViewDTO>>(sortedPayments);
+                foreach (var cc in payments)
+                {
+                    if (cc.IsDeleted != true)
+                    {
+                        var mapper = _mapper.Map<PaymentViewDTO>(cc);
+                        ListDTO.Add(mapper);
+                    }
+                }
+                response.Data = ListDTO;
                 response.Success = true;
                 response.Message = "Payments Retrieved Successfully";
             }
@@ -213,7 +230,7 @@ namespace Application.Services
             try
             {
                 var c = await _unitOfWork.PaymentRepository.GetAllAsync();
-                var p = c.Where(x => x.Method.ToLower().Contains(name.ToLower())).ToList();
+                var p = c.Where(x => x.Method.ToLower().Contains(name.ToLower()) && x.IsDeleted != true).ToList();
                 if (p == null)
                 {
                     reponse.Success = false;

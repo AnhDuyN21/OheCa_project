@@ -1,5 +1,6 @@
 using Application.ViewModels.AddressToShipDTOs;
 using Application.ViewModels.AddressUserDTOs;
+using Application.ViewModels.FeedBackDTOs;
 using Application.ViewModels.OrderDetailDTOs;
 using Application.ViewModels.OrderDTOs;
 using Application.ViewModels.PaymentDTOs;
@@ -61,6 +62,11 @@ namespace Infrastructures.Mappers
             CreateMap<Voucher, CreateVoucherDTO>().ReverseMap();
             CreateMap<Voucher, UpdateVoucherDTO>().ReverseMap();
             CreateMap<VoucherUsage, CreateVoucherUsageDTO>().ReverseMap();
+
+            //FeedBack
+            CreateMap<Feedback, FeedBackCreateDTO>().ReverseMap();
+            CreateMap<Feedback, FeedBackUpdateDTO>().ReverseMap();
+            CreateMap<Feedback, FeedBackViewDTO>().ReverseMap();
         }
 
     }

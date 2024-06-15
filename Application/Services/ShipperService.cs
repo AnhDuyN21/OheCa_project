@@ -97,7 +97,7 @@ namespace Application.Services
             try
             {
                 var c = await _unitOfWork.ShipperRepository.GetByIdAsync(Id);
-                if (c == null)
+                if (c == null || c.IsDeleted == true)
                 {
                     reponse.Success = false;
                     reponse.Message = "Don't Have Any Shipper";
@@ -121,6 +121,7 @@ namespace Application.Services
         public async Task<ServiceResponse<IEnumerable<ShipperViewDTO>>> GetShippersAsync()
         {
             var reponse = new ServiceResponse<IEnumerable<ShipperViewDTO>>();
+            List<ShipperViewDTO> ListDTO = new List<ShipperViewDTO>();
             try
             {
                 var c = await _unitOfWork.ShipperRepository.GetAllAsync();
@@ -131,7 +132,15 @@ namespace Application.Services
                 }
                 else
                 {
-                    reponse.Data = _mapper.Map<IEnumerable<ShipperViewDTO>>(c);
+                    foreach (var cc in c)
+                    {
+                        if (cc.IsDeleted != true)
+                        {
+                            var mapper = _mapper.Map<ShipperViewDTO>(c);
+                            ListDTO.Add(mapper);
+                        }
+                    }
+                    reponse.Data = ListDTO;
                     reponse.Success = true;
                     reponse.Message = "Shipper Retrieved Successfully";
                 }
@@ -148,6 +157,7 @@ namespace Application.Services
         public async Task<ServiceResponse<IEnumerable<ShipperViewDTO>>> GetShippersByCompanyAsync(int companyId)
         {
             var reponse = new ServiceResponse<IEnumerable<ShipperViewDTO>>();
+            List<ShipperViewDTO> ListDTO = new List<ShipperViewDTO>();
             try
             {
                 var c = await _unitOfWork.ShipperRepository.GetAllAsync();
@@ -158,10 +168,25 @@ namespace Application.Services
                 }
                 else
                 {
-                    var s = c.Where(x => x.IsDeleted == false && x.ShipCompanyId == companyId).ToList();
-                    reponse.Data = _mapper.Map<IEnumerable<ShipperViewDTO>>(c);
-                    reponse.Success = true;
-                    reponse.Message = "Shipper Retrieved Successfully";
+                    foreach (var cc in c)
+                    {
+                        if (cc.IsDeleted != true && cc.ShipCompanyId == companyId)
+                        {
+                            var mapper = _mapper.Map<ShipperViewDTO>(c);
+                            ListDTO.Add(mapper);
+                        }
+                    }
+                    if (ListDTO.Count <= 0)
+                    {
+                        reponse.Success = false;
+                        reponse.Message = "Don't Have Any Shipper";
+                    }
+                    else
+                    {
+                        reponse.Data = ListDTO;
+                        reponse.Success = true;
+                        reponse.Message = "Shipper Retrieved Successfully";
+                    }
                 }
             }
             catch (Exception ex)
@@ -244,7 +269,7 @@ namespace Application.Services
                 }
                 else
                 {
-                    var s = c.Where(x => x.Name.ToLower().Contains(name.ToLower()) && x.IsDeleted == false).ToList();
+                    var s = c.Where(x => x.Name.ToLower().Contains(name.ToLower()) && x.IsDeleted != true).ToList();
                     if (s.Count <= 0 || s == null)
                     {
                         reponse.Success = false;

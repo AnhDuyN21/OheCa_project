@@ -98,9 +98,9 @@ namespace EXE_02.Controllers
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletedShipCompany(int Id)
+        public async Task<IActionResult> DeletedShipCompany(int id)
         {
-            var c = await _shipCompanyService.DeleteShipCompanyAsync(Id);
+            var c = await _shipCompanyService.DeleteShipCompanyAsync(id);
             if (!c.Success)
             {
                 return BadRequest(c);

@@ -1,15 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.ServiceResponse;
 using Application.ViewModels.AddressToShipDTOs;
-using Application.ViewModels.ShipperDTOs;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Services
 {
@@ -109,9 +103,18 @@ namespace Application.Services
                 }
                 else
                 {
-                    reponse.Data = _mapper.Map<IEnumerable<ViewAddressToShipDTO>>(c);
-                    reponse.Success = true;
-                    reponse.Message = "AddressToShip Retrieved Successfully";
+                    if(c.Count <= 0)
+                    {
+                        reponse.Success = true;
+                        reponse.Message = "AddressToShip Retrieved Successfully, But List is empty , please add new.";
+                    }
+                    else
+                    {
+                        reponse.Data = _mapper.Map<IEnumerable<ViewAddressToShipDTO>>(c);
+                        reponse.Success = true;
+                        reponse.Message = "AddressToShip Retrieved Successfully";
+                    }
+                    
                 }
             }
             catch (Exception ex)
@@ -137,7 +140,7 @@ namespace Application.Services
                 else
                 {
                     var s = c.Where(x => x.IsDeleted == false && x.AddressUsers.Select(x => x.UserId == userID).First()).ToList();
-                    reponse.Data = _mapper.Map<IEnumerable<ViewAddressToShipDTO>>(c);
+                    reponse.Data = _mapper.Map<IEnumerable<ViewAddressToShipDTO>>(s);
                     reponse.Success = true;
                     reponse.Message = "Address to Ship Retrieved Successfully";
                 }

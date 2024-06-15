@@ -46,12 +46,12 @@ namespace EXE_02.Controllers
             return Ok(c);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletedAddressUser(int Id)
+        public async Task<IActionResult> DeletedAddressUser(int id)
         {
-            var c = await _addressUserService.DeleteAddressUserAsync(Id);
+            var c = await _addressUserService.DeleteAddressUserAsync(id);
             if (!c.Success)
             {
                 return BadRequest(c);

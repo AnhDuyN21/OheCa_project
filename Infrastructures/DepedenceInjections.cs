@@ -32,6 +32,8 @@ namespace Infrastructures
             services.AddScoped<IVoucherService, VoucherService>();
             services.AddScoped<IVoucherRepository, VoucherRepository>();
             services.AddScoped<IVoucherUsageRepository, VoucherUsageRepository>();
+            services.AddScoped<IFeedBackService, FeedBackService>();
+            services.AddScoped<IFeedBackRepository, FeedBackRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //Users
