@@ -28,7 +28,12 @@
 		<Compile Include="Repositories\AddressToShipRepository.cs" />
 		<Compile Include="Repositories\AddressUserRepository.cs" />
 		<Compile Include="Repositories\FeedBackRepository.cs" />
+		<Compile Include="Migrations\20240525163941_changetypethumbnail.cs" />
+		<Compile Include="Migrations\20240525163941_changetypethumbnail.Designer.cs" />
+		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
+		<Compile Include="Repositories\FeedbackRepository.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
+		<Compile Include="Repositories\ImageRepository.cs" />
 		<Compile Include="Repositories\OrderDetailRepository.cs" />
 		<Compile Include="Repositories\OrderRepository.cs" />
 		<Compile Include="Repositories\PaymentRepository.cs" />
@@ -37,6 +42,9 @@
 		<Compile Include="Repositories\UserRepository.cs" />
 		<Compile Include="Repositories\VoucherRepository.cs" />
 		<Compile Include="Repositories\VoucherUsageRepository.cs" />
+		<Compile Include="Repositories\ProductMaterialRepository.cs" />
+		<Compile Include="Repositories\UserRepository.cs" />
+		<Compile Include="Repositories\ProductRepository.cs" />
 		<Compile Include="UnitOfWork.cs" />
 		<Compile Include="Mappers\**\*.cs" />
 		

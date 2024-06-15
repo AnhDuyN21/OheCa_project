@@ -378,8 +378,8 @@ namespace Infrastructures.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Thumbnail")
-                        .HasColumnType("int");
+                    b.Property<bool?>("Thumbnail")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

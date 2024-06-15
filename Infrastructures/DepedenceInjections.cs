@@ -14,7 +14,6 @@ namespace Infrastructures
         public static IServiceCollection AddInfrastructuresService(this IServiceCollection services, string databaseConnection)
         {
             
-            //DanhDev
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderDetailService, OrderDetailService>();
@@ -34,10 +33,19 @@ namespace Infrastructures
             services.AddScoped<IVoucherUsageRepository, VoucherUsageRepository>();
             services.AddScoped<IFeedBackService, FeedBackService>();
             services.AddScoped<IFeedBackRepository, FeedBackRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUrlService, UrlService>();
+            services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IProductMaterialRepository, ProductMaterialRepository>();
+            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
 
             //Users
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+
             //Authentication
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 

@@ -2,6 +2,7 @@
 using Application.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+
 using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
@@ -57,7 +58,7 @@ namespace Infrastructures.Repositories
         {
             entity.ModificationDate = _timeService.GetCurrentTime();
             entity.ModificationBy = _claimsService.GetCurrentUserId;
-            _dbSet.Update(entity);
+            _dbSet.Update(entity); 
         }
 
         public async Task AddRangeAsync(List<TEntity> entities)
@@ -80,7 +81,6 @@ namespace Infrastructures.Repositories
             }
             _dbSet.UpdateRange(entities);
         }
-
         //public async Task<Pagination<TEntity>> ToPagination(int pageIndex = 0, int pageSize = 10)
         //{
         //    var itemCount = await _dbSet.CountAsync();
@@ -110,6 +110,18 @@ namespace Infrastructures.Repositories
             }
             _dbSet.UpdateRange(entities);
         }
+        //public async Task UpdateAsync(TEntity entity)
+        //{
+        //    // Cập nhật thông tin thời gian và người dùng
+        //    entity.ModificationDate = _timeService.GetCurrentTime();
+        //    entity.ModificationBy = _claimsService.GetCurrentUserId;
+
+        //    // Đánh dấu thực thể là đã được sửa đổi
+        //    _dbSet.Update(entity);
+
+        //    // Lưu các thay đổi vào cơ sở dữ liệu
+        //    await _dbSet.SaveChangesAsync();
+        //}
     }
 
 }
