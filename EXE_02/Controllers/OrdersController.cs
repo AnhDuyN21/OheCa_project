@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
 {
-    public class OrderController : BaseController
+    public class OrdersController : BaseController
     {
         private readonly IOrderService _orderService;
-        public OrderController(IOrderService orderService)
+        public OrdersController(IOrderService orderService)
         {
             _orderService = orderService;
         }

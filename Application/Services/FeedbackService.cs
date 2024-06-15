@@ -31,7 +31,7 @@ namespace Application.Services
 
             try
             {
-                var feedbacks = await _unitOfWork.FeedbackRepository.GetAllFeedbacksByProductAsync(productId);
+                var feedbacks = await _unitOfWork.FeedBackRepository.GetAllFeedbacksByProductAsync(productId);
                 foreach (var feedback in feedbackDTOs)
                 {
                     feedbackDTOs.Add(_mapper.Map<FeedbackDTO>(feedback));
