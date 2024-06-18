@@ -16,7 +16,13 @@ namespace Application.Repositories
 
         public Task<IEnumerable<Product>> GetProductAsync();
 
-        
+        public Task<IEnumerable<Product>> GetProductByDiscount();
+
+        public Task<IEnumerable<Product>> GetProductByBrand(int brandId);
+
+        public Task<IEnumerable<Product>> GetProductByFeedback(int rate);
+
+        public Task<IEnumerable<Product>> GetProductByChildCategory(int childcategoryId);
 
         
 

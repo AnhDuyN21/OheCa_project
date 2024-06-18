@@ -268,5 +268,118 @@ namespace Application.Services
 
             return reponse;
         }
+
+        public Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync(int a)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByBrand(int brandId)
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductByBrand(brandId);
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByFeedback(int rate)
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductByFeedback(rate);
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByChildCategory(int childcategoryId)
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductByChildCategory(childcategoryId);
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
     }
 }
