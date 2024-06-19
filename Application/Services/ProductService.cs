@@ -244,7 +244,7 @@ namespace Application.Services
                     }
                     else
                     {
-                      await  _unitOfWork.ImageRepository.DeleteImageAsync(id);
+                      await  _unitOfWork.ImageRepository.DeleteImageAsync(id);                                        
 
                         if (product.Images != null && product.Images.Count > 0)
                         {
