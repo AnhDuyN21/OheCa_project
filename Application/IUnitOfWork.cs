@@ -14,7 +14,7 @@ namespace Application
         public IAddressUserRepository AddressUserRepository { get; }
         public IVoucherRepository VoucherRepository { get; }
         public IVoucherUsageRepository VoucherUsageRepository { get; }
-        public IFeedBackRepository FeedBackRepository { get; }
+      
 
         public IProductRepository ProductRepository { get; }
 

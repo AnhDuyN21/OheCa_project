@@ -145,6 +145,8 @@ namespace Application.Services
             {
                 var newproduct = _mapper.Map<Product>(product);
 
+                newproduct.PriceSold = newproduct.UnitPrice - (newproduct.UnitPrice * newproduct.DiscountPercent);
+
                 await _unitOfWork.ProductRepository.AddAsync(newproduct);
                 await _unitOfWork.SaveChangeAsync();
 
@@ -210,6 +212,9 @@ namespace Application.Services
                 {
                     var newproduct = _mapper.Map(product, productById);
                     var productafter = _mapper.Map<Product>(newproduct);
+
+                    productafter.PriceSold = productafter.UnitPrice - (productafter.UnitPrice * productafter.DiscountPercent);
+
                     _unitOfWork.ProductRepository.Update(newproduct);
                     await _unitOfWork.SaveChangeAsync();
 
@@ -270,9 +275,40 @@ namespace Application.Services
         }
 
 
-        public Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync(int a)
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync()
         {
-            throw new NotImplementedException();
+            var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductByDiscount();
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
         }
 
         public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByBrand(int brandId)

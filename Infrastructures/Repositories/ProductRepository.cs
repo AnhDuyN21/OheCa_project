@@ -124,7 +124,9 @@ namespace Infrastructures.Repositories
         public async Task<IEnumerable<Product>> GetProductByDiscount()
         {
             var products = await _dbContext.Products.Include(im => im.Images)
-                                                    .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null).ToListAsync();
+                                                    .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null )
+                                                    .OrderByDescending(im => im.DiscountPercent)
+                                                    .ToListAsync();
             if (products != null)
             {
                 return products;

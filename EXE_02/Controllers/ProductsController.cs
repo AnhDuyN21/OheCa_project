@@ -99,7 +99,14 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
-        
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ViewProductByDiscount()
+        {
+            var result = await _productService.GetProductByDiscountAsync();
+            return Ok(result);
+        }
 
 
     }

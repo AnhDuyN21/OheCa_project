@@ -115,7 +115,8 @@ namespace Infrastructures.Mappers
             CreateMap<Image, ImageDTO>().ReverseMap();
             CreateMap<CreateProductDTO, Product>()
                 .ForMember(dest => dest.Images, opt => opt.Ignore())
-                .ForMember(dest => dest.ProductMaterials, opt => opt.MapFrom(src => src.ProductMaterials));
+                .ForMember(dest => dest.ProductMaterials, opt => opt.MapFrom(src => src.ProductMaterials))
+                .ForMember(dest => dest.PriceSold, opt => opt.Ignore());
             CreateMap<UpdateProductDTO, Product>()
                 .ForMember(dest => dest.Images, opt => opt.Ignore())
                 .ForMember(dest => dest.ProductMaterials, opt => opt.Ignore());
