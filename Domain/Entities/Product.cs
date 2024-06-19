@@ -18,6 +18,7 @@ public class Product : BaseEntity
     public int? BrandId { get; set; }
 
     public string? Country { get; set; }
+    public float? DiscountPercent { get; set; }
 
     public int? Status { get; set; }
 

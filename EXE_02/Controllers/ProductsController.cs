@@ -70,6 +70,7 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
+
         [HttpGet("{childCategoryId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -99,6 +100,7 @@ namespace EXE_02.Controllers
         }
 
         
+
 
     }
 }

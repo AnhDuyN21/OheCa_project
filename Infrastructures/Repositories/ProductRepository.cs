@@ -48,6 +48,8 @@ namespace Infrastructures.Repositories
             var products = await _dbContext.Products.Include(br => br.Brand)
                                                     .Include(im => im.Images)
                                                     .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null && im.Brand.Id == brandId).ToListAsync();
+
+                        
             if (products != null)
             {
                 return products;

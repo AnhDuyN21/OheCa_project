@@ -222,40 +222,6 @@ namespace Application.Services
             return response;
         }
 
-        //public async Task<ServiceResponse<UserDTO>> UpdateAvatarAsync(int id, string avatarUrl)
-        //{
-        //    var response = new ServiceResponse<UserDTO>();
-        //    try
-        //    {
-        //        var existingUser = await _unitOfWork.UserRepository.GetByIdAsync(id);
-        //        if (existingUser == null)
-        //        {
-        //            response.Success = false;
-        //            response.Message = "Account not found.";
-        //            return response;
-        //        }
-
-        //        if (existingUser.IsDeleted == true)
-        //        {
-        //            response.Success = false;
-        //            response.Message = "Account is deleted in system";
-        //            return response;
-        //        }
-        //        existingUser.Avatar = avatarUrl;
-
-        //        await _unitOfWork.UserRepository.Update(existingUser);
-
-        //        response.Data = _mapper.Map<UserDTO>(user);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.Success = false;
-        //        response.Message = "Error";
-        //        response.ErrorMessages = new List<string> { ex.Message };
-        //    }
-        //    return response;
-
-        //}
 
         public async Task<ServiceResponse<UserDTO>> UpdateUserAsync(int id, UserDTO userDTO)
         {

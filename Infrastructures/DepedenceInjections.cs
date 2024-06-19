@@ -14,18 +14,32 @@ namespace Infrastructures
         public static IServiceCollection AddInfrastructuresService(this IServiceCollection services, string databaseConnection)
         {
             
-            //DanhDev
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderDetailService, OrderDetailService>();
-            services.AddScoped<IOrderDetailService, OrderDetailService>();
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IShipCompanyService, ShipCompanyService>();
+            services.AddScoped<IShipCompanyRepository, ShipCompanyRepository>();
+            services.AddScoped<IShipperService, ShipperService>();
+            services.AddScoped<IShipperRepository, ShipperRepository>();
+            services.AddScoped<IAddressToShipService, AddressToShipService>();
+            services.AddScoped<IAddressToShipRepository, AddressToShipRepository>();
+            services.AddScoped<IAddressUserService, AddressUserService>();
+            services.AddScoped<IAddressUserRepository, AddressUserRepository>();
+            services.AddScoped<IVoucherService, VoucherService>();
+            services.AddScoped<IVoucherRepository, VoucherRepository>();
+            services.AddScoped<IVoucherUsageRepository, VoucherUsageRepository>();
+            services.AddScoped<IFeedBackService, FeedBackService>();
+            services.AddScoped<IFeedBackRepository, FeedBackRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUrlService, UrlService>();
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IProductMaterialRepository, ProductMaterialRepository>();
-            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
 
