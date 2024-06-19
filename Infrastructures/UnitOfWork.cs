@@ -18,7 +18,7 @@ namespace Infrastructures
         private readonly IAddressUserRepository _addressUserRepository;
         private readonly IVoucherRepository _voucherRepository;
         private readonly IVoucherUsageRepository _voucherUsageRepository;
-        private readonly IFeedBackRepository _feedBackRepository;
+        
 
         private readonly IProductRepository _productRepository;
         private readonly IImageRepository _imageRepository;
@@ -27,7 +27,7 @@ namespace Infrastructures
       
         
         public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository, IProductRepository productRepository,IOrderDetailRepository orderDetailRepository,
-            IUserRepository userRepository, IImageRepository imageRepository, IProductMaterialRepository productMaterialRepository, IFeedBackRepository feedBackRepository,
+            IUserRepository userRepository, IImageRepository imageRepository, IProductMaterialRepository productMaterialRepository,
             IPaymentRepository paymentRepository, IShipCompanyRepository shipCompanyRepository, IShipperRepository shipperRepository, IAddressToShipRepository addressToShipRepository,
             IAddressUserRepository addressUserRepository, IVoucherRepository voucherRepository,
             IVoucherUsageRepository _voucherUsageRepository, IVoucherUsageRepository voucherUsageRepository
@@ -47,7 +47,7 @@ namespace Infrastructures
             _addressUserRepository = addressUserRepository;
             _voucherRepository = voucherRepository;
             _voucherUsageRepository = voucherUsageRepository;
-            _feedBackRepository = feedBackRepository;
+          
             _productRepository = productRepository;
             _imageRepository = imageRepository;
             _productMaterialRepository = productMaterialRepository;
@@ -63,7 +63,7 @@ namespace Infrastructures
         public IAddressUserRepository AddressUserRepository => _addressUserRepository;
         public IVoucherRepository VoucherRepository => _voucherRepository;
         public IVoucherUsageRepository VoucherUsageRepository => _voucherUsageRepository;
-        public IFeedBackRepository FeedBackRepository => _feedBackRepository;
+        
         public IProductRepository ProductRepository => _productRepository;
 
         public IImageRepository ImageRepository => _imageRepository;
