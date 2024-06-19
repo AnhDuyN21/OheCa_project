@@ -1,16 +1,17 @@
 ﻿using Application.ServiceResponse;
-using Application.ViewModels.FeedbackDTOs;
-using Application.ViewModels.ProductDTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Application.ViewModels.FeedBackDTOs;
+
 
 namespace Application.Interfaces
 {
-    public interface IFeedbackService
+    public interface IFeedBackService
     {
-        Task<ServiceResponse<IEnumerable<FeedbackDTO>>> GetFeedbacksAsync(int productId);
+        Task<ServiceResponse<IEnumerable<FeedBackViewDTO>>> GetFeedBackAsync();
+        Task<ServiceResponse<FeedBackViewDTO>> GetFeedBackByIdAsync(int Id);
+        Task<ServiceResponse<IEnumerable<FeedBackViewDTO>>> GetFeedBackByUserIDAsync(int userID);
+        Task<ServiceResponse<IEnumerable<FeedBackViewDTO>>> GetFeedBackInProduct(int pID);
+        Task<ServiceResponse<FeedBackViewDTO>> CreateAFeedBackAsync(FeedBackCreateDTO createDTO);
+        Task<ServiceResponse<FeedBackViewDTO>> UpdateFeedBackAsync(int id, FeedBackUpdateDTO updateDTO);
+        Task<ServiceResponse<FeedBackViewDTO>> DeleteFeedBackAsync(int id);
     }
 }
