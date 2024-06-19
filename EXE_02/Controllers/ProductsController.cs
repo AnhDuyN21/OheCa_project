@@ -71,5 +71,36 @@ namespace EXE_02.Controllers
         }
 
 
+        [HttpGet("{childCategoryId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ViewProductByChildCategoryID(int childCategoryId)
+        {
+            var result = await _productService.GetProductByChildCategory(childCategoryId);
+            return Ok(result);
+        }
+
+
+        [HttpGet("{brandId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ViewProductByBrandID(int brandId)
+        {
+            var result = await _productService.GetProductByBrand(brandId);
+            return Ok(result);
+        }
+
+        [HttpGet("{rate:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ViewProductByRate(int rate)
+        {
+            var result = await _productService.GetProductByFeedback(rate);
+            return Ok(result);
+        }
+
+        
+
+
     }
 }

@@ -20,7 +20,7 @@ namespace Application.ViewModels.ProductDTOs
 
         public int? QuantitySold { get; set; }
 
-        public int? BrandName { get; set; }
+        public string? BrandName { get; set; }
 
         public string Country { get; set; }
 

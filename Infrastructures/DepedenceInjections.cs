@@ -38,6 +38,8 @@ namespace Infrastructures
             services.AddScoped<IUrlService, UrlService>();
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IProductMaterialRepository, ProductMaterialRepository>();
+
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
 

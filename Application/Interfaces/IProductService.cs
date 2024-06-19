@@ -14,7 +14,14 @@ namespace Application.Interfaces
     {
         Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductsAsync();
         Task<ServiceResponse<ProductDetailDTO>> GetProductByIdAsync(int productId);
-        Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int userId);
+        Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int categoryid);
+
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync(int a);
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByBrand(int brandId);
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByFeedback(int rate);
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByChildCategory(int childcategoryId);
+
+
         Task<ServiceResponse<ProductDetailDTO>> CreateProductAsync(CreateProductDTO product);
 
         Task<ServiceResponse<ProductDetailDTO>> DeleteProductAsync(int productId);

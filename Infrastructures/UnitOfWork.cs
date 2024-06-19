@@ -23,6 +23,7 @@ namespace Infrastructures
         private readonly IProductRepository _productRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IProductMaterialRepository _productMaterialRepository;
+
       
         
         public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository, IProductRepository productRepository,IOrderDetailRepository orderDetailRepository,
@@ -68,6 +69,7 @@ namespace Infrastructures
         public IImageRepository ImageRepository => _imageRepository;
 
         public IProductMaterialRepository ProductMaterialRepository => _productMaterialRepository;
+
 
         public async Task<int> SaveChangeAsync()
         {
