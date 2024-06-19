@@ -20,26 +20,17 @@ namespace Infrastructures
         private readonly IVoucherUsageRepository _voucherUsageRepository;
         private readonly IFeedBackRepository _feedBackRepository;
 
-        public UnitOfWork(AppDbContext dbContext,
-            IOrderRepository orderRepository,
-            IOrderDetailRepository orderDetailRepository,
-            IUserRepository userRepository,
-            IPaymentRepository paymentRepository,
-            IShipCompanyRepository shipCompanyRepository,
-            IShipperRepository shipperRepository,
-            IAddressToShipRepository addressToShipRepository,
-            IAddressUserRepository addressUserRepository,
-            IVoucherRepository voucherRepository,
-            IVoucherUsageRepository voucherUsageRepository,
-            IFeedBackRepository feedBackRepository)
-        public readonly IUserRepository _userRepository;
         private readonly IProductRepository _productRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IProductMaterialRepository _productMaterialRepository;
-        private readonly IFeedbackRepository _feedbackRepository;
+      
         
         public UnitOfWork(AppDbContext dbContext, IOrderRepository orderRepository, IProductRepository productRepository,IOrderDetailRepository orderDetailRepository,
-            IUserRepository userRepository, IImageRepository imageRepository, IProductMaterialRepository productMaterialRepository, IFeedbackRepository feedbackRepository)
+            IUserRepository userRepository, IImageRepository imageRepository, IProductMaterialRepository productMaterialRepository, IFeedBackRepository feedBackRepository,
+            IPaymentRepository paymentRepository, IShipCompanyRepository shipCompanyRepository, IShipperRepository shipperRepository, IAddressToShipRepository addressToShipRepository,
+            IAddressUserRepository addressUserRepository, IVoucherRepository voucherRepository,
+            IVoucherUsageRepository _voucherUsageRepository, IVoucherUsageRepository voucherUsageRepository
+            )
         {
             _dbContext = dbContext;
 
@@ -59,7 +50,6 @@ namespace Infrastructures
             _productRepository = productRepository;
             _imageRepository = imageRepository;
             _productMaterialRepository = productMaterialRepository;
-            _feedbackRepository = feedbackRepository;
 
         }
         public IOrderRepository OrderRepository => _orderRepository;
@@ -79,7 +69,6 @@ namespace Infrastructures
 
         public IProductMaterialRepository ProductMaterialRepository => _productMaterialRepository;
 
-        public IFeedbackRepository FeedbackRepository => _feedbackRepository;
         public async Task<int> SaveChangeAsync()
         {
             return await _dbContext.SaveChangesAsync();

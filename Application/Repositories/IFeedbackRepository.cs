@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface IFeedbackRepository : IGenericRepository<Feedback>
+    public interface IFeedBackRepository : IGenericRepository<Feedback>
     {
-        public Task<IEnumerable<Feedback>> GetAllFeedbacksByProductAsync(int productId);
     }
 }
