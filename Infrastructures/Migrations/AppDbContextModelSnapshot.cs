@@ -909,6 +909,22 @@ namespace Infrastructures.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Customer",
+                            IsDeleted = false,
+                            Name = "Customer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Admin",
+                            IsDeleted = false,
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ShipCompany", b =>
