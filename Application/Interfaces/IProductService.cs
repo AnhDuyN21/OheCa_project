@@ -12,14 +12,14 @@ namespace Application.Interfaces
 {
     public interface IProductService
     {
-        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductsAsync();
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductsAsync(int? pageIndex = null, int? pageSize = null);
         Task<ServiceResponse<ProductDetailDTO>> GetProductByIdAsync(int productId);
-        Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int categoryid);
+        Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int categoryid, int? pageIndex, int? pageSize);
 
-        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync();
-        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByBrand(int brandId);
-        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByFeedback(int rate);
-        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByChildCategory(int childcategoryId);
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync(int? pageIndex = null, int? pageSize = null);
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByBrand(int brandId, int? pageIndex, int? pageSize);
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByFeedback(int rate, int? pageIndex = null, int? pageSize = null);
+        Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByChildCategory(int childcategoryId, int? pageIndex = null, int? pageSize = null);
 
 
         Task<ServiceResponse<ProductDetailDTO>> CreateProductAsync(CreateProductDTO product);

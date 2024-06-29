@@ -11,6 +11,7 @@ using Azure;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
@@ -31,13 +32,13 @@ namespace Application.Services
         }
 
 
-        async Task<ServiceResponse<IEnumerable<ProductDTO>>> IProductService.GetProductsAsync()
+        async Task<ServiceResponse<IEnumerable<ProductDTO>>> IProductService.GetProductsAsync(int? pageIndex, int? pageSize)
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
             List<ProductDTO> productDTOs = new List<ProductDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetProductAsync();
+                var products = await _unitOfWork.ProductRepository.GetProductAsync(pageIndex, pageSize);
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDTO>(product));
@@ -100,13 +101,13 @@ namespace Application.Services
             return _response;
         }
 
-        public async Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int childCategoryId)
+        public async Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int childCategoryId, int? pageIndex = null, int? pageSize = null)
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDetailDTO>>();
             List<ProductDetailDTO> productDTOs = new List<ProductDetailDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetProductByCategoryAsync(childCategoryId);
+                var products = await _unitOfWork.ProductRepository.GetProductByCategoryAsync(childCategoryId, pageIndex, pageSize);
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDetailDTO>(product));
@@ -275,13 +276,13 @@ namespace Application.Services
         }
 
 
-        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync()
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync(int? pageIndex = null, int? pageSize = null)
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
             List<ProductDTO> productDTOs = new List<ProductDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetProductByDiscount();
+                var products = await _unitOfWork.ProductRepository.GetProductByDiscount(pageIndex, pageSize);
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDTO>(product));
@@ -311,13 +312,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByBrand(int brandId)
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByBrand(int brandId, int? pageIndex = null, int? pageSize = null)
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
             List<ProductDTO> productDTOs = new List<ProductDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetProductByBrand(brandId);
+                var products = await _unitOfWork.ProductRepository.GetProductByBrand(brandId, pageIndex, pageSize);
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDTO>(product));
@@ -347,13 +348,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByFeedback(int rate)
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByFeedback(int rate, int? pageIndex = null, int? pageSize = null)
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
             List<ProductDTO> productDTOs = new List<ProductDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetProductByFeedback(rate);
+                var products = await _unitOfWork.ProductRepository.GetProductByFeedback(rate, pageIndex, pageSize);
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDTO>(product));
@@ -383,13 +384,13 @@ namespace Application.Services
             }
         }
 
-        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByChildCategory(int childcategoryId)
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByChildCategory(int childcategoryId, int? pageIndex = null, int? pageSize = null)
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
             List<ProductDTO> productDTOs = new List<ProductDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetProductByChildCategory(childcategoryId);
+                var products = await _unitOfWork.ProductRepository.GetProductByChildCategory(childcategoryId, pageIndex, pageSize);
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDTO>(product));
