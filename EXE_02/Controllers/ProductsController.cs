@@ -14,7 +14,7 @@ namespace EXE_02.Controllers
            _productService = productService;
         }
 
-        [HttpGet("{pageIndex:int},{pageSize:int}")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ViewAllProduct(int? pageIndex, int?pageSize)
