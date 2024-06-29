@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructures.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240524141324_ProductAndAvatarUser")]
-    partial class ProductAndAvatarUser
+    [Migration("20240627105444_InitialDatabase")]
+    partial class InitialDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -381,8 +381,8 @@ namespace Infrastructures.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Thumbnail")
-                        .HasColumnType("int");
+                    b.Property<bool?>("Thumbnail")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -706,6 +706,9 @@ namespace Infrastructures.Migrations
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<float?>("DiscountPercent")
+                        .HasColumnType("real");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -909,6 +912,22 @@ namespace Infrastructures.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Customer",
+                            IsDeleted = false,
+                            Name = "Customer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Admin",
+                            IsDeleted = false,
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ShipCompany", b =>
