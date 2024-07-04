@@ -59,7 +59,10 @@ namespace Infrastructures
         public  DbSet<VoucherUsage> VoucherUsages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Role>().HasData(
+                new Role { Id = 1, Name = "Customer", Description = "Customer", IsDeleted = false },
+                new Role { Id = 2, Name = "Admin", Description = "Admin", IsDeleted = false }
+                );
         }
 
 

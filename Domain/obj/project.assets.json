@@ -5084,23 +5084,39 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\thaoh\\.nuget\\packages\\": {},
+=======
+    "C:\\Users\\User\\.nuget\\packages\\": {},
+>>>>>>> 15c01314b7b8d98a373563bf7d68558ec8dc6e6e
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "D:\\EXE201\\Exe201\\OheCa_project\\Domain\\Domain.csproj",
       "projectName": "Domain",
       "projectPath": "D:\\EXE201\\Exe201\\OheCa_project\\Domain\\Domain.csproj",
       "packagesPath": "C:\\Users\\thaoh\\.nuget\\packages\\",
       "outputPath": "D:\\EXE201\\Exe201\\OheCa_project\\Domain\\obj\\",
+=======
+      "projectUniqueName": "D:\\FPT University\\CN8\\EXE02\\project\\OheCa_project\\Domain\\Domain.csproj",
+      "projectName": "Domain",
+      "projectPath": "D:\\FPT University\\CN8\\EXE02\\project\\OheCa_project\\Domain\\Domain.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "D:\\FPT University\\CN8\\EXE02\\project\\OheCa_project\\Domain\\obj\\",
+>>>>>>> 15c01314b7b8d98a373563bf7d68558ec8dc6e6e
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\thaoh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> 15c01314b7b8d98a373563bf7d68558ec8dc6e6e
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5109,7 +5125,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

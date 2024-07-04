@@ -46,7 +46,7 @@ namespace EXE_02.Controllers
         }
 
          [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO createdUserDTO)
+        public async Task<IActionResult> CreateUser([FromForm] CreateUserDTO createdUserDTO)
         {
             //Dòng này kiểm tra xem dữ liệu đầu vào (trong trường hợp này là createdAccountDTO)
             //đã được kiểm tra tính hợp lệ bằng các quy tắc mô hình (model validation) hay chưa.
