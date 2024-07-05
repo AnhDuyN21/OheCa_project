@@ -14,8 +14,23 @@
 		<None Include="FluentAPIs\**\*.txt" />
 		<Compile Include="AppDbContext.cs" />
 		<Compile Include="DepedenceInjections.cs" />
+<<<<<<< HEAD
+		<Compile Include="Migrations\20240517221553_Oheca_Init.cs" />
+		<Compile Include="Migrations\20240517221553_Oheca_Init.Designer.cs" />
+		<Compile Include="Migrations\20240519103501_Oheca_Second.cs" />
+		<Compile Include="Migrations\20240519103501_Oheca_Second.Designer.cs" />
+		<Compile Include="Migrations\20240521134646_AddIsConfirmToUserAndNullableToUser.cs" />
+		<Compile Include="Migrations\20240521134646_AddIsConfirmToUserAndNullableToUser.Designer.cs" />
+		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.cs" />
+		<Compile Include="Migrations\20240524141324_ProductAndAvatarUser.Designer.cs" />
+		<Compile Include="Migrations\20240615071448_UpdateProduct.cs" />
+		<Compile Include="Migrations\20240615071448_UpdateProduct.Designer.cs" />
+		<Compile Include="Migrations\20240705140319_AddFieldDescriptionForProduct.cs" />
+		<Compile Include="Migrations\20240705140319_AddFieldDescriptionForProduct.Designer.cs" />
+=======
 		<Compile Include="Migrations\20240627105444_InitialDatabase.cs" />
 		<Compile Include="Migrations\20240627105444_InitialDatabase.Designer.cs" />
+>>>>>>> 246f8bee82ec5456759338f6c7eb37d8ab09d50c
 		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
 		<Compile Include="Repositories\AddressToShipRepository.cs" />
 		<Compile Include="Repositories\AddressUserRepository.cs" />
