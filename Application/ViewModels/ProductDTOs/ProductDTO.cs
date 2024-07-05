@@ -14,13 +14,15 @@ namespace Application.ViewModels.ProductDTOs
 
         public double? UnitPrice { get; set; }
 
+        public float? DiscountPercent { get; set; }
+
         public double? PriceSold { get; set; }
 
         public int? Quantity { get; set; }
 
         public int? QuantitySold { get; set; }
 
-        public int? BrandName { get; set; }
+        public string? BrandName { get; set; }
 
         public string Country { get; set; }
 

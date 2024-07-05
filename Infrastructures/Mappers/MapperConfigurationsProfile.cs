@@ -76,6 +76,7 @@ namespace Infrastructures.Mappers
             CreateMap<Feedback, FeedBackViewDTO>().ReverseMap();
 
             CreateMap<Product, ProductDTO>()
+                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
                 .ForMember(dest => dest.ImageLink, opt => opt.MapFrom(src => src.Images.FirstOrDefault(img => img.Thumbnail == true).ImageLink));
             CreateMap<Product, ProductDetailDTO>()
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
@@ -114,7 +115,8 @@ namespace Infrastructures.Mappers
             CreateMap<Image, ImageDTO>().ReverseMap();
             CreateMap<CreateProductDTO, Product>()
                 .ForMember(dest => dest.Images, opt => opt.Ignore())
-                .ForMember(dest => dest.ProductMaterials, opt => opt.MapFrom(src => src.ProductMaterials));
+                .ForMember(dest => dest.ProductMaterials, opt => opt.MapFrom(src => src.ProductMaterials))
+                .ForMember(dest => dest.PriceSold, opt => opt.Ignore());
             CreateMap<UpdateProductDTO, Product>()
                 .ForMember(dest => dest.Images, opt => opt.Ignore())
                 .ForMember(dest => dest.ProductMaterials, opt => opt.Ignore());

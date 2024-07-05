@@ -11,6 +11,7 @@ using Azure;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
@@ -31,13 +32,13 @@ namespace Application.Services
         }
 
 
-        async Task<ServiceResponse<IEnumerable<ProductDTO>>> IProductService.GetProductsAsync()
+        async Task<ServiceResponse<IEnumerable<ProductDTO>>> IProductService.GetProductsAsync(int? pageIndex, int? pageSize)
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
             List<ProductDTO> productDTOs = new List<ProductDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetProductAsync();
+                var products = await _unitOfWork.ProductRepository.GetProductAsync(pageIndex, pageSize);
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDTO>(product));
@@ -100,13 +101,13 @@ namespace Application.Services
             return _response;
         }
 
-        public async Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int childCategoryId)
+        public async Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int childCategoryId, int? pageIndex = null, int? pageSize = null)
         {
             var reponse = new ServiceResponse<IEnumerable<ProductDetailDTO>>();
             List<ProductDetailDTO> productDTOs = new List<ProductDetailDTO>();
             try
             {
-                var products = await _unitOfWork.ProductRepository.GetProductByCategoryAsync(childCategoryId);
+                var products = await _unitOfWork.ProductRepository.GetProductByCategoryAsync(childCategoryId, pageIndex, pageSize);
                 foreach (var product in products)
                 {
                     productDTOs.Add(_mapper.Map<ProductDetailDTO>(product));
@@ -144,6 +145,8 @@ namespace Application.Services
             try
             {
                 var newproduct = _mapper.Map<Product>(product);
+
+                newproduct.PriceSold = newproduct.UnitPrice - (newproduct.UnitPrice * newproduct.DiscountPercent);
 
                 await _unitOfWork.ProductRepository.AddAsync(newproduct);
                 await _unitOfWork.SaveChangeAsync();
@@ -210,6 +213,9 @@ namespace Application.Services
                 {
                     var newproduct = _mapper.Map(product, productById);
                     var productafter = _mapper.Map<Product>(newproduct);
+
+                    productafter.PriceSold = productafter.UnitPrice - (productafter.UnitPrice * productafter.DiscountPercent);
+
                     _unitOfWork.ProductRepository.Update(newproduct);
                     await _unitOfWork.SaveChangeAsync();
 
@@ -239,7 +245,7 @@ namespace Application.Services
                     }
                     else
                     {
-                      await  _unitOfWork.ImageRepository.DeleteImageAsync(id);
+                      await  _unitOfWork.ImageRepository.DeleteImageAsync(id);                                        
 
                         if (product.Images != null && product.Images.Count > 0)
                         {
@@ -268,5 +274,151 @@ namespace Application.Services
 
             return reponse;
         }
+
+
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByDiscountAsync(int? pageIndex = null, int? pageSize = null)
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductByDiscount(pageIndex, pageSize);
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByBrand(int brandId, int? pageIndex = null, int? pageSize = null)
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductByBrand(brandId, pageIndex, pageSize);
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByFeedback(int rate, int? pageIndex = null, int? pageSize = null)
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductByFeedback(rate, pageIndex, pageSize);
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductByChildCategory(int childcategoryId, int? pageIndex = null, int? pageSize = null)
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDTO>>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductByChildCategory(childcategoryId, pageIndex, pageSize);
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
     }
 }
