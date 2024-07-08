@@ -53,13 +53,13 @@ namespace Application.Services
                     response.Message = "Invalid username or password";
                     return response;
                 }
-                if (user.ConfirmToken != null || user.IsConfirmed == false)
-                {
-                    //System.Console.WriteLine(user.ConfirmationToken + user.IsConfirmed);
-                    response.Success = false;
-                    response.Message = "Please confirm via link in your mail";
-                    return response;
-                }
+                //if (user.ConfirmToken != null || user.IsConfirmed == false)
+                //{
+                //    //System.Console.WriteLine(user.ConfirmationToken + user.IsConfirmed);
+                //    response.Success = false;
+                //    response.Message = "Please confirm via link in your mail";
+                //    return response;
+                //}
                 if(user.Status == 0)
                 {
                     response.Success = false;

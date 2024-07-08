@@ -1,10 +1,12 @@
 ﻿using Application.Interfaces;
 using Application.ViewModels.UserDTO;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
 {
+    [Authorize(Policy = "Admin")]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
