@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,5 +24,6 @@ namespace Application.ViewModels.UserDTO
         public string Gender { get; set; }
         [Required]
         public int RoleId { get; set; }
+        public IFormFile Avatar { get; set; }
     }
 }

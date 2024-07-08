@@ -62,7 +62,7 @@ setup.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         { jwtSecurityScheme, Array.Empty<string>() }
     });
-setup.MapType<IFormFile>(() => new OpenApiSchema {  Type = "string", Format = "json" });
+//setup.MapType<IFormFile>(() => new OpenApiSchema {  Type = "string", Format = "json" });
 });
 
 /*
@@ -70,6 +70,8 @@ setup.MapType<IFormFile>(() => new OpenApiSchema {  Type = "string", Format = "j
     now we can use dependency injection for AppConfiguratio
 */
 builder.Services.AddSingleton(configuration);
+Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", @"D:\exe02-oheca-firebase-adminsdk-htvjl-97f30ef8b4.json");
+
 
 var app = builder.Build();
 

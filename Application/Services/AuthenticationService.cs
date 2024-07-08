@@ -19,6 +19,8 @@ namespace Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentTime _currentTime;
         private readonly AppConfiguration _configuration;
+        private readonly IFirebaseStorageService _firebaseStorageService;
+
 
         //private IValidator<Account> _validator;
         private readonly IMapper _mapper;
@@ -27,13 +29,15 @@ namespace Application.Services
         IUnitOfWork unitOfWork,
         ICurrentTime currentTime,
         AppConfiguration configuration,
-        IMapper mapper
-)
+        IMapper mapper,
+        IFirebaseStorageService firebaseStorageService
+        )
         {
             _unitOfWork = unitOfWork;
             _currentTime = currentTime;
             _configuration = configuration;
             _mapper = mapper;
+            _firebaseStorageService = firebaseStorageService;
         }
         public async Task<ServiceResponse<string>> LoginAsync(AuthenUserDTO usertDTO)
         {
@@ -107,7 +111,15 @@ namespace Application.Services
                 user.RoleId = 2;
                 user.IsDeleted = false;
                 user.IsConfirmed = false;
+                //Avatar
+                if (registerUserDTO.Avatar != null)
+                {
+                    var folderPath = $"User/{user.Email}";
+                    var imageUrls = await _firebaseStorageService.UploadImageAsync(registerUserDTO.Avatar, folderPath);
+                    user.Avatar = imageUrls;
+                }
                 await _unitOfWork.UserRepository.AddAsync(user);
+
                 var confirmationLink = $"https://localhost:5001/swagger/confirm?token={user.ConfirmToken}";
                 // Gửi email xác nhận
                 var emailSent = await SendEmail.SendConfirmationEmail(user.Email, confirmationLink);

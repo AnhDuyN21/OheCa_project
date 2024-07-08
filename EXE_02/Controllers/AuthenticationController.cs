@@ -12,7 +12,7 @@ namespace EXE_02.Controllers
             _authenticationService = authenticationService;
         }
         [HttpPost]
-        public async Task<IActionResult> RegisterAsync(RegisterUserDTO registerObject)
+        public async Task<IActionResult> RegisterAsync([FromForm]RegisterUserDTO registerObject)
         {
             var result = await _authenticationService.RegisterAsync(registerObject);
 
@@ -26,7 +26,7 @@ namespace EXE_02.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(AuthenUserDTO loginObject)
+        public async Task<IActionResult> LoginAsync([FromForm]AuthenUserDTO loginObject)
         {
             var result = await _authenticationService.LoginAsync(loginObject);
 
