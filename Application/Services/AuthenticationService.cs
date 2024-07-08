@@ -108,7 +108,7 @@ namespace Application.Services
                 // Tạo token ngẫu nhiên
                 user.ConfirmToken = Guid.NewGuid().ToString();
                 user.Status = 1;
-                user.RoleId = 2;
+                user.RoleId = 1;
                 user.IsDeleted = false;
                 user.IsConfirmed = false;
                 //Avatar
