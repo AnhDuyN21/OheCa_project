@@ -16,11 +16,13 @@ namespace Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IFirebaseStorageService _firebaseStorageService;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IFirebaseStorageService firebaseStorageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _firebaseStorageService = firebaseStorageService;
         }
 
         public async Task<ServiceResponse<UserDTO>> CreateAccountAsync(CreateUserDTO createdUserDTO)
@@ -50,6 +52,12 @@ namespace Application.Services
 
                 account.Status = 1;
                 account.IsDeleted = false;
+                if (createdUserDTO.Avatar != null)
+                {
+                    var folderPath = $"User/{createdUserDTO.Email}";
+                    var imageUrls = await _firebaseStorageService.UploadImageAsync(createdUserDTO.Avatar, folderPath);
+                    account.Avatar = imageUrls;
+                }
 
                 await _unitOfWork.UserRepository.AddAsync(account);
 

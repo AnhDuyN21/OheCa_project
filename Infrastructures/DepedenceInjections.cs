@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Repositories;
 using Application.Services;
+using Google.Cloud.Storage.V1;
 using Infrastructures.Mappers;
 using Infrastructures.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -40,8 +41,10 @@ namespace Infrastructures
 
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+            //Firebase
+            services.AddSingleton(opt => StorageClient.Create());
 
+            services.AddScoped<IFirebaseStorageService, FirebaseStorageService>();
             //Users
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
