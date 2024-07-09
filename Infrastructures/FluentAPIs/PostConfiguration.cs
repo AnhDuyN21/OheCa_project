@@ -22,7 +22,8 @@ namespace Infrastructures.FluentAPIs
 
             builder.HasOne(p => p.User)
                 .WithMany(p => p.Posts)
-                .HasForeignKey(p => p.CreatedBy);
+                .HasForeignKey(p => p.UserId);
+
         }
     }
 }

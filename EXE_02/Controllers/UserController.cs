@@ -31,7 +31,7 @@ namespace EXE_02.Controllers
             }
             return Ok(findaccountUser);
         }
-        //[Authorize(Roles = "Admin")]
+        
         [HttpGet("{name}")]
         public async Task<IActionResult> SearchByName(string name)
         {
@@ -70,7 +70,6 @@ namespace EXE_02.Controllers
                 return BadRequest("Invalid request data.");
             }
         }
-        //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO userDTO)
         {
@@ -81,7 +80,6 @@ namespace EXE_02.Controllers
             }
             return Ok(updatedUser);
         }
-        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

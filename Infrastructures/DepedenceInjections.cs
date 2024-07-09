@@ -52,6 +52,10 @@ namespace Infrastructures
             //Authentication
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
+            //Post
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostService, PostService>();
+
             services.AddSingleton<ICurrentTime, CurrentTime>();
             services.AddDbContext<AppDbContext>(option =>
             {
