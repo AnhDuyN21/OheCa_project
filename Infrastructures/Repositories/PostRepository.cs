@@ -4,6 +4,7 @@ using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,5 +22,6 @@ namespace Infrastructures.Repositories
         {
             return await _dbContext.Posts.Where(p => p.Title.Contains(title)).ToListAsync();
         }
+
     }
 }
