@@ -20,6 +20,7 @@ namespace Application.ViewModels.ProductDTOs
 
         public int? QuantitySold { get; set; }
 
+        public string? Description { get; set; }
         public int? BrandId { get; set; }
 
         public string? Country { get; set; }
