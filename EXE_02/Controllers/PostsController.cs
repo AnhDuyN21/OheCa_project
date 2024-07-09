@@ -22,6 +22,12 @@ namespace EXE_02.Controllers
         {
             var postList = await _postService.GetAllPostAsync();
             return Ok(postList);
+        } 
+        [HttpGet]
+        public async Task<IActionResult> GetPostByUser()
+        {
+            var postList = await _postService.GetPostByUserIdAsync();
+            return Ok(postList);
         }
         [HttpGet("{title}")]
         public async Task<IActionResult> SearchPostByTitle(string title)

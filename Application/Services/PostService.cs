@@ -17,12 +17,13 @@ namespace Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IClaimsService _claimsService;
 
-        public PostService(IUnitOfWork unitOfWork, IMapper mapper)
+        public PostService(IUnitOfWork unitOfWork, IMapper mapper, IClaimsService claimsService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-
+            _claimsService = claimsService;
         }
         public async Task<ServiceResponse<IEnumerable<PostDTO>>> GetAllPostAsync()
         {
@@ -98,7 +99,7 @@ namespace Application.Services
         {
             var response = new ServiceResponse<PostDTO>();
             var exist = await _unitOfWork.PostRepository.GetByIdAsync(id);
-            if (exist == null)
+            if (exist == null || exist.IsDeleted == true)
             {
                 response.Success = false;
                 response.Message = "Post is not existed";
@@ -155,8 +156,9 @@ namespace Application.Services
                 var newPost = _mapper.Map<Post>(createPostDTO);
 
                 newPost.IsDeleted = false;
-                newPost.LikeQuantity = 0;
-                newPost.CreatedBy = 0;
+                newPost.LikeQuantity = 0;;
+                newPost.UserId = _claimsService.GetUserId();
+
                 await _unitOfWork.PostRepository.AddAsync(newPost);
                 var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
                 if (isSuccess)
@@ -206,6 +208,12 @@ namespace Application.Services
                     response.Message = "Post is deleted in system";
                     return response;
                 }
+                if(getPost.UserId != _claimsService.GetUserId())
+                {
+                    response.Success = false;
+                    response.Message = "You not have permission";
+                    return response;
+                }
 
                 var updated = _mapper.Map(postNeedUpdate, getPost);
 
@@ -234,7 +242,44 @@ namespace Application.Services
             }
             return response;
         }
+        public async Task<ServiceResponse<IEnumerable<PostDTO>>> GetPostByUserIdAsync()
+        {
+            var response = new ServiceResponse<IEnumerable<PostDTO>>();
+            try
+            {
+                int userId = _claimsService.GetUserId();
+                var newListPosts = new List<PostDTO>();
+                var getAllPosts = await _unitOfWork.PostRepository.GetAllAsync();
+                foreach (var post in getAllPosts)
+                {
+                    if (post.IsDeleted == false && post.UserId == userId)
+                    {
+                        newListPosts.Add(_mapper.Map<PostDTO>(post));
+                    }
+                }
+                if (newListPosts.Count != 0)
+                {
+                    response.Success = true;
+                    response.Message = "List post retrieved successfully";
+                    response.Data = newListPosts;
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "You dont have any post";
+                }
 
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "Error";
+                response.ErrorMessages = new List<string> { Convert.ToString(ex.Message) };
+            }
+
+
+            return response;
+        }
 
     }
 }
