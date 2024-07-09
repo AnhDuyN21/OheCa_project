@@ -18,6 +18,7 @@ namespace Infrastructures
         private readonly IAddressUserRepository _addressUserRepository;
         private readonly IVoucherRepository _voucherRepository;
         private readonly IVoucherUsageRepository _voucherUsageRepository;
+        private readonly IPostRepository _postRepository;
         
 
         private readonly IProductRepository _productRepository;
@@ -30,15 +31,13 @@ namespace Infrastructures
             IUserRepository userRepository, IImageRepository imageRepository, IProductMaterialRepository productMaterialRepository,
             IPaymentRepository paymentRepository, IShipCompanyRepository shipCompanyRepository, IShipperRepository shipperRepository, IAddressToShipRepository addressToShipRepository,
             IAddressUserRepository addressUserRepository, IVoucherRepository voucherRepository,
-            IVoucherUsageRepository _voucherUsageRepository, IVoucherUsageRepository voucherUsageRepository
+            IVoucherUsageRepository _voucherUsageRepository, IVoucherUsageRepository voucherUsageRepository,
+            IPostRepository postRepository
             )
         {
             _dbContext = dbContext;
-
             _orderRepository = orderRepository;
-
             _orderDetailRepository = orderDetailRepository;
-
             _userRepository = userRepository;
             _paymentRepository = paymentRepository;
             _shipCompanyRepository = shipCompanyRepository;
@@ -47,10 +46,10 @@ namespace Infrastructures
             _addressUserRepository = addressUserRepository;
             _voucherRepository = voucherRepository;
             _voucherUsageRepository = voucherUsageRepository;
-          
             _productRepository = productRepository;
             _imageRepository = imageRepository;
             _productMaterialRepository = productMaterialRepository;
+            _postRepository = postRepository;
 
         }
         public IOrderRepository OrderRepository => _orderRepository;
@@ -69,6 +68,7 @@ namespace Infrastructures
         public IImageRepository ImageRepository => _imageRepository;
 
         public IProductMaterialRepository ProductMaterialRepository => _productMaterialRepository;
+        public IPostRepository PostRepository => _postRepository;
 
 
         public async Task<int> SaveChangeAsync()

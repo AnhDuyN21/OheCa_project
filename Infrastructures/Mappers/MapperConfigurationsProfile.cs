@@ -18,6 +18,7 @@ using Application.ViewModels.ProductMaterialDTOs;
 using AutoMapper;
 using Domain.Entities;
 using Application.ViewModels.ImageProductDTOs;
+using Application.ViewModels.PostDTOs;
 
 namespace Infrastructures.Mappers
 {
@@ -25,6 +26,9 @@ namespace Infrastructures.Mappers
     {
         public MapperConfigurationsProfile()
         {
+            //Posts
+            CreateMap<Post, PostDTO>().ReverseMap();
+            CreateMap<Post, CreatePostDTO>().ReverseMap();
             //Orders
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
