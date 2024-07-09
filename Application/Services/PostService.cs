@@ -123,7 +123,12 @@ namespace Application.Services
                 response.Message = "Post is not existed";
                 return response;
             }
-
+            if (exist.UserId != _claimsService.GetUserId())
+            {
+                response.Success = false;
+                response.Message = "You not have permission";
+                return response;
+            }
             try
             {
                 _unitOfWork.PostRepository.SoftRemove(exist);
