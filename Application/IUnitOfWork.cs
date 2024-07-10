@@ -21,6 +21,7 @@ namespace Application
         public IImageRepository ImageRepository { get; }
 
         public IProductMaterialRepository ProductMaterialRepository { get; }
+        public ICommentRepository CommentRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }

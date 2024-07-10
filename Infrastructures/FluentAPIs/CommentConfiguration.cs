@@ -26,7 +26,7 @@ namespace Infrastructures.FluentAPIs
 
             builder.HasOne(c => c.User)
                 .WithMany(c => c.Comments)
-                .HasForeignKey(c => c.CreatedBy);
+                .HasForeignKey(c => c.UserId);
         }
     }
 }

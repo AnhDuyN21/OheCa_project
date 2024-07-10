@@ -19,6 +19,7 @@ using AutoMapper;
 using Domain.Entities;
 using Application.ViewModels.ImageProductDTOs;
 using Application.ViewModels.PostDTOs;
+using Application.ViewModels.CommentDTOs;
 
 namespace Infrastructures.Mappers
 {
@@ -26,13 +27,19 @@ namespace Infrastructures.Mappers
     {
         public MapperConfigurationsProfile()
         {
+            //Comments
+            CreateMap<Comment, CommentDTO>().ReverseMap();
+            CreateMap<Comment, CreateCommentDTO>().ReverseMap();
+
             //Posts
             CreateMap<Post, PostDTO>().ReverseMap();
             CreateMap<Post, CreatePostDTO>().ReverseMap();
+
             //Orders
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
             CreateMap<Order, UpdateOrderDTO>().ReverseMap();
+
             //Users
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<User, RegisterUserDTO>().ReverseMap();
