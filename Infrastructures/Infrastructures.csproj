@@ -14,11 +14,12 @@
 		<None Include="FluentAPIs\**\*.txt" />
 		<Compile Include="AppDbContext.cs" />
 		<Compile Include="DepedenceInjections.cs" />
-		<Compile Include="Migrations\20240709162516_InitialDatabase.cs" />
-		<Compile Include="Migrations\20240709162516_InitialDatabase.Designer.cs" />
+		<Compile Include="Migrations\20240710072542_InitialDatabase.cs" />
+		<Compile Include="Migrations\20240710072542_InitialDatabase.Designer.cs" />
 		<Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
 		<Compile Include="Repositories\AddressToShipRepository.cs" />
 		<Compile Include="Repositories\AddressUserRepository.cs" />
+		<Compile Include="Repositories\CommentRepository.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
 		<Compile Include="Repositories\ImageRepository.cs" />
 		<Compile Include="Repositories\OrderDetailRepository.cs" />
