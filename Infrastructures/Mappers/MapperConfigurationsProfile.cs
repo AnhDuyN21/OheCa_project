@@ -34,6 +34,7 @@ namespace Infrastructures.Mappers
             //Posts
             CreateMap<Post, PostDTO>().ReverseMap();
             CreateMap<Post, CreatePostDTO>().ReverseMap();
+            CreateMap<Post, UpdatePostDTO>().ReverseMap();
 
             //Orders
             CreateMap<Order, OrderDTO>().ReverseMap();

@@ -15,7 +15,7 @@ namespace Application.Interfaces
         Task<ServiceResponse<PostDTO>> GetPostByPostIdAsync(int id);
         Task<ServiceResponse<bool>> DeletePostAsync(int id); 
         Task<ServiceResponse<PostDTO>> CreatePostAsync(CreatePostDTO createPostDTO);
-        Task<ServiceResponse<PostDTO>> UpdatePostAsync(int id, CreatePostDTO postNeedUpdate);
+        Task<ServiceResponse<PostDTO>> UpdatePostAsync(int id, UpdatePostDTO updatePostDTO);
         Task<ServiceResponse<IEnumerable<PostDTO>>> GetPostByUserIdAsync();
     }
 }

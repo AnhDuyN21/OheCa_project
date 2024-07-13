@@ -71,9 +71,9 @@ namespace EXE_02.Controllers
                 }
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePost(int id, [FromForm] CreatePostDTO createPostDTO)
+        public async Task<IActionResult> UpdatePost(int id, [FromForm] UpdatePostDTO updatePostDTO)
         {
-            var postToUpdate = await _postService.UpdatePostAsync(id, createPostDTO);
+            var postToUpdate = await _postService.UpdatePostAsync(id, updatePostDTO);
             if (!postToUpdate.Success)
             {
                 return NotFound(postToUpdate);
