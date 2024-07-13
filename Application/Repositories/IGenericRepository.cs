@@ -11,6 +11,7 @@ namespace Application.Repositories
     {
         Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes);
+        Task<TEntity> GetById(int id);
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
         //Task UpdateAsync(TEntity entity);
@@ -18,6 +19,7 @@ namespace Application.Repositories
         void SoftRemove(TEntity entity);
         Task AddRangeAsync(List<TEntity> entities);
         void SoftRemoveRange(List<TEntity> entities);
+        void HardRemoveRange(TEntity entities);
 
         //Task<Pagination<TEntity>> ToPagination(int pageNumber = 0, int pageSize = 10);
 

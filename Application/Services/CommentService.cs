@@ -76,6 +76,22 @@ namespace Application.Services
                 var comment = _mapper.Map<Comment>(createCommentDTO);
                 comment.PostId = postId;
                 comment.UserId = _claimsService.GetUserId();
+                comment.IsDeleted = false;
+
+                await _unitOfWork.CommentRepository.AddAsync(comment);
+                var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
+                if (isSuccess)
+                {
+                    var commentDTO = _mapper.Map<CommentDTO>(comment);
+                    response.Data = commentDTO; 
+                    response.Success = true;
+                    response.Message = "Comment created successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error saving comment.";
+                }
             }
             catch (Exception ex)
             {
@@ -92,13 +108,24 @@ namespace Application.Services
             var response = new ServiceResponse<bool>();
             try
             {
-                var comment = _unitOfWork.CommentRepository.GetByIdAsync(id);
+                var comment = await _unitOfWork.CommentRepository.GetById(id);
                 if(comment == null)
                 {
                     response.Success = false;
                     response.Message = "Comment ID không tồn tại";
                 }
-                
+                 _unitOfWork.CommentRepository.HardRemoveRange(comment);
+                var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
+                if (isSuccess)
+                {
+                    response.Success = true;
+                    response.Message = "Comment deleted successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error deleting comment.";
+                }
             }
             catch(Exception ex)
             {

@@ -1,4 +1,6 @@
 ﻿using Application.Repositories;
+using Application.ServiceResponse;
+using Application.ViewModels.CommentDTOs;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,5 +12,8 @@ namespace Application.Interfaces
 {
     public interface ICommentService
     {
+        Task<ServiceResponse<IEnumerable<CommentDTO>>> GetCommnetByPostId(int postId);
+        Task<ServiceResponse<CommentDTO>> CreateCommentAsync(int postId, CreateCommentDTO createCommentDTO);
+        Task<ServiceResponse<bool>> DeleteCommentAsync(int id);
     }
 }
