@@ -91,5 +91,16 @@ namespace EXE_02.Controllers
 
             return Ok(deletedPost);
         }
+        [HttpGet]
+        public async Task<IActionResult> LikePost(int postId)
+        {
+            var result = await _postService.LikePostAsync(postId);
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
+
+            return Ok(result);
+        }
     }
 }

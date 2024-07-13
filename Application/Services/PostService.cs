@@ -116,6 +116,8 @@ namespace Application.Services
         public async Task<ServiceResponse<bool>> DeletePostAsync(int id)
         {
             var response = new ServiceResponse<bool>();
+
+            #region check validate
             var exist = await _unitOfWork.PostRepository.GetByIdAsync(id);
             if (exist == null)
             {
@@ -129,6 +131,14 @@ namespace Application.Services
                 response.Message = "You not have permission";
                 return response;
             }
+            if(exist.IsDeleted == true)
+            {
+                response.Success = false;
+                response.Message = "Post have been deleted by owner";
+                return response;
+            }
+            #endregion
+
             try
             {
                 _unitOfWork.PostRepository.SoftRemove(exist);
@@ -302,6 +312,33 @@ namespace Application.Services
             }
 
 
+            return response;
+        }
+        public async Task<ServiceResponse<bool>> LikePostAsync(int postId)
+        {
+            var response = new ServiceResponse<bool>();
+
+            var getPost = await _unitOfWork.PostRepository.GetByIdAsync(postId);
+            if(getPost.IsDeleted == true || getPost == null)
+            {
+                response.Success = false;
+                response.Message = "Post not exist";
+                return response;
+            }
+            getPost.LikeQuantity ++;
+            _unitOfWork.PostRepository.Update(getPost);
+            var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
+
+            if (isSuccess)
+            {
+                response.Success = true;
+                response.Message = "Like successfully.";
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = "Error.";
+            }
             return response;
         }
 
