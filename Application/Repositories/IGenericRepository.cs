@@ -18,6 +18,7 @@ namespace Application.Repositories
         void SoftRemove(TEntity entity);
         Task AddRangeAsync(List<TEntity> entities);
         void SoftRemoveRange(List<TEntity> entities);
+        void HardRemoveRange(TEntity entities);
 
         //Task<Pagination<TEntity>> ToPagination(int pageNumber = 0, int pageSize = 10);
 

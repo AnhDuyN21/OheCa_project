@@ -137,6 +137,16 @@ namespace Application.Services
                 {
                     response.Success = true;
                     response.Message = "Post deleted successfully.";
+                    //Xóa các comment ở trong post
+                    var commentList = await _unitOfWork.CommentRepository.GetAllAsync();
+                    foreach(var comment in commentList)
+                    {
+                        if(comment.PostId == exist.Id)
+                        {
+                            comment.IsDeleted = true;
+                            await _unitOfWork.SaveChangeAsync();
+                        }
+                    }
                 }
                 else
                 {
@@ -193,7 +203,7 @@ namespace Application.Services
             }
             return response;
         }
-        public async Task<ServiceResponse<PostDTO>> UpdatePostAsync(int id, CreatePostDTO postNeedUpdate)
+        public async Task<ServiceResponse<PostDTO>> UpdatePostAsync(int id, UpdatePostDTO updatePostDTO)
         {
             var response = new ServiceResponse<PostDTO>();
             try
@@ -220,11 +230,20 @@ namespace Application.Services
                     return response;
                 }
 
-                var updated = _mapper.Map(postNeedUpdate, getPost);
-
+                if (updatePostDTO != null)
+                {
+                    if (updatePostDTO.Title != null)
+                    {
+                        getPost.Title = updatePostDTO.Title;
+                    }
+                    if (updatePostDTO.Content != null)
+                    {
+                        getPost.Content = updatePostDTO.Content;
+                    }
+                }
                 _unitOfWork.PostRepository.Update(getPost);
 
-                var updatedPost = _mapper.Map<PostDTO>(updated);
+                var updatedPost = _mapper.Map<PostDTO>(getPost);
                 var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
 
                 if (isSuccess)

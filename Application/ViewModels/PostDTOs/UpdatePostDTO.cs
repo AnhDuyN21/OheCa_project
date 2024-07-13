@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.ViewModels.CommentDTOs
+namespace Application.ViewModels.PostDTOs
 {
-    public class CreateCommentDTO
+    public class UpdatePostDTO
     {
-        [Required]
-        public string Content {  get; set; }
+        public string? Title { get; set; }
+        public string? Content { get; set; }
     }
 }

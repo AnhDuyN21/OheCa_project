@@ -122,6 +122,11 @@ namespace Infrastructures.Repositories
         //    // Lưu các thay đổi vào cơ sở dữ liệu
         //    await _dbSet.SaveChangesAsync();
         //}
+        public void HardRemoveRange(TEntity entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
+
     }
 
 }

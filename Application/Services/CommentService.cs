@@ -34,7 +34,7 @@ namespace Application.Services
                 var newListComment = new List<CommentDTO>();
                 foreach (var comment in getAllComment)
                 {
-                    if (comment.PostId == postId)
+                    if (comment.PostId == postId && comment.IsDeleted == false)
                     {
                         newListComment.Add(_mapper.Map<CommentDTO>(comment));
                     }
@@ -48,7 +48,7 @@ namespace Application.Services
                 else
                 {
                     response.Success = true;
-                    response.Message = "Not have commnet in this post";
+                    response.Message = "Not have commnet in this post or post have been deleted";
                 }
             }
             catch (Exception ex)
@@ -64,18 +64,40 @@ namespace Application.Services
         public async Task<ServiceResponse<CommentDTO>> CreateCommentAsync(int postId, CreateCommentDTO createCommentDTO)
         {
             var response = new ServiceResponse<CommentDTO>();
+
+            #region Check validation
+
             var checkPostId = await _unitOfWork.PostRepository.GetByIdAsync(postId);
-            if (checkPostId == null)
+            if (checkPostId == null || checkPostId.IsDeleted == true)
             {
                 response.Success = true;
-                response.Message = "Post không tồn tại";
+                response.Message = "Post not exist";
                 return response;
             }
+
+            #endregion
+
             try
             {
                 var comment = _mapper.Map<Comment>(createCommentDTO);
                 comment.PostId = postId;
                 comment.UserId = _claimsService.GetUserId();
+                comment.IsDeleted = false;
+
+                await _unitOfWork.CommentRepository.AddAsync(comment);
+                var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
+                if (isSuccess)
+                {
+                    var commentDTO = _mapper.Map<CommentDTO>(comment);
+                    response.Data = commentDTO; 
+                    response.Success = true;
+                    response.Message = "Comment created successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error saving comment.";
+                }
             }
             catch (Exception ex)
             {
@@ -92,13 +114,44 @@ namespace Application.Services
             var response = new ServiceResponse<bool>();
             try
             {
-                var comment = _unitOfWork.CommentRepository.GetByIdAsync(id);
+                #region check validation
+                //Check comment có tồn tại hay không
+                var comment = await _unitOfWork.CommentRepository.GetByIdAsync(id);
                 if(comment == null)
                 {
                     response.Success = false;
-                    response.Message = "Comment ID không tồn tại";
+                    response.Message = "Comment ID not exist";
+                    return response;
                 }
-                
+                //Check chủ sở hữu comment
+                var getUser = _claimsService.GetUserId();
+                if(comment.UserId !=  getUser)
+                {
+                    response.Success = false;
+                    response.Message = "This is not your comment";
+                    return response;
+                }
+                //Check comment isDelete 
+                if(comment.IsDeleted == true)
+                {
+                    response.Success = false;
+                    response.Message = "Comment have been deleted or post been deleted";
+                    return response;
+                }
+                #endregion
+
+                _unitOfWork.CommentRepository.SoftRemove(comment);
+                var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
+                if (isSuccess)
+                {
+                    response.Success = true;
+                    response.Message = "Comment deleted successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error deleting comment.";
+                }
             }
             catch(Exception ex)
             {

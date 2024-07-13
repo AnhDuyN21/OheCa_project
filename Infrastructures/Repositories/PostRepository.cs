@@ -3,7 +3,7 @@ using Application.Repositories;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
@@ -20,7 +20,10 @@ namespace Infrastructures.Repositories
         }
         public async Task<IEnumerable<Post>> SearchPostByTitleAsync(string title)
         {
-            return await _dbContext.Posts.Where(p => p.Title.Contains(title)).ToListAsync();
+
+            return await _dbContext.Posts.AsQueryable().Where(p => p.Title.ToLower().Contains(title.ToLower()))
+                                         .Include(c => c.Comments)
+                                         .ToListAsync();
         }
 
     }
