@@ -137,6 +137,16 @@ namespace Application.Services
                 {
                     response.Success = true;
                     response.Message = "Post deleted successfully.";
+                    //Xóa các comment ở trong post
+                    var commentList = await _unitOfWork.CommentRepository.GetAllAsync();
+                    foreach(var comment in commentList)
+                    {
+                        if(comment.PostId == exist.Id)
+                        {
+                            comment.IsDeleted = true;
+                            await _unitOfWork.SaveChangeAsync();
+                        }
+                    }
                 }
                 else
                 {

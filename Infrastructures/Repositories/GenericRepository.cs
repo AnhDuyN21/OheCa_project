@@ -40,12 +40,6 @@ namespace Infrastructures.Repositories
             return result;
         }
 
-        public async Task<TEntity> GetById(int id)
-        {
-            var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
-
-            return result;
-        }
         public async Task AddAsync(TEntity entity)
         {
             entity.CreationDate = _timeService.GetCurrentTime();

@@ -33,10 +33,10 @@ namespace EXE_02.Controllers
             var comment = await _commentService.DeleteCommentAsync(id);
             if (!comment.Success)
             {
-                return NotFound("Xóa thất bại");
+                return NotFound(comment);
             }
 
-            return Ok("Xóa thành công");
+            return Ok(comment);
         }
     }
 }

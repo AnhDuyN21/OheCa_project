@@ -11,7 +11,6 @@ namespace Application.Repositories
     {
         Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes);
-        Task<TEntity> GetById(int id);
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
         //Task UpdateAsync(TEntity entity);
