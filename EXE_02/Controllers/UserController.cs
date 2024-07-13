@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
 {
-    [Authorize(Policy = "Admin")]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
@@ -14,7 +13,7 @@ namespace EXE_02.Controllers
         {
             _userService = userService;
         }
-
+        [Authorize(Policy = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAccountList()
         {
@@ -31,7 +30,7 @@ namespace EXE_02.Controllers
             }
             return Ok(findaccountUser);
         }
-        
+        [Authorize(Policy = "Admin")]
         [HttpGet("{name}")]
         public async Task<IActionResult> SearchByName(string name)
         {
@@ -46,8 +45,8 @@ namespace EXE_02.Controllers
                 return BadRequest(result);
             }
         }
-
-         [HttpPost]
+        [Authorize(Policy = "Admin")]
+        [HttpPost]
         public async Task<IActionResult> CreateUser([FromForm] CreateUserDTO createdUserDTO)
         {
             //Dòng này kiểm tra xem dữ liệu đầu vào (trong trường hợp này là createdAccountDTO)
@@ -70,6 +69,7 @@ namespace EXE_02.Controllers
                 return BadRequest("Invalid request data.");
             }
         }
+        [Authorize(Policy = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO userDTO)
         {
@@ -80,6 +80,7 @@ namespace EXE_02.Controllers
             }
             return Ok(updatedUser);
         }
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
