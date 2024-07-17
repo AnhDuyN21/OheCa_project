@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Net.payOS;
 using System.Text;
 using WebAPI.Middlewares;
 
@@ -20,7 +21,11 @@ var configuration = builder.Configuration.Get<AppConfiguration>() ?? new AppConf
 builder.Services.AddInfrastructuresService(configuration.DatabaseConnection);
 builder.Services.AddWebAPIService();
 builder.Services.AddSingleton(configuration);
-
+//PayOS
+PayOS payOs = new PayOS(configuration.PayOSConfig.PAYOS_CLIENT_ID,
+                        configuration.PayOSConfig.PAYOS_API_KEY,
+                        configuration.PayOSConfig.PAYOS_CHECKSUM_KEY);
+builder.Services.AddSingleton(payOs);
 
 // Load JWT settings from configuration
 var jwtSettings = builder.Configuration.GetSection("JWTSection").Get<JWTSection>();

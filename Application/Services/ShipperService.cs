@@ -25,6 +25,7 @@ namespace Application.Services
             {
                 var shipperEntity = _mapper.Map<Shipper>(createDTO);
                 await _unitOfWork.ShipperRepository.AddAsync(shipperEntity);
+                shipperEntity.IsDeleted = false;
                 if (await _unitOfWork.SaveChangeAsync() > 0)
                 {
                     reponse.Data = _mapper.Map<ShipperViewDTO>(shipperEntity);
@@ -136,7 +137,7 @@ namespace Application.Services
                     {
                         if (cc.IsDeleted != true)
                         {
-                            var mapper = _mapper.Map<ShipperViewDTO>(c);
+                            var mapper = _mapper.Map<ShipperViewDTO>(cc);
                             ListDTO.Add(mapper);
                         }
                     }
