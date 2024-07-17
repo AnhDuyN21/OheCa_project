@@ -137,7 +137,7 @@ namespace Application.Services
                     {
                         if (cc.IsDeleted != true)
                         {
-                            var mapper = _mapper.Map<ShipperViewDTO>(c);
+                            var mapper = _mapper.Map<ShipperViewDTO>(cc);
                             ListDTO.Add(mapper);
                         }
                     }

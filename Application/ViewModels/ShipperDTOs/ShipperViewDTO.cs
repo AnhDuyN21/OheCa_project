@@ -15,7 +15,6 @@ namespace Application.ViewModels.ShipperDTOs
         public string? Phone { get; set; }
 
         public string? Name { get; set; }
-        public virtual ShipCompanyViewDTO ShipCompany { get; set; }
 
     }
 }
