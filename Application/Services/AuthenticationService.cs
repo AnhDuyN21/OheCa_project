@@ -39,10 +39,9 @@ namespace Application.Services
             _mapper = mapper;
             _firebaseStorageService = firebaseStorageService;
         }
-        public async Task<ServiceResponse<string>> LoginAsync(AuthenUserDTO usertDTO)
+        public async Task<ServiceResponse<AuthResponseDTO>> LoginAsync(AuthenUserDTO usertDTO)
         {
-            var response = new ServiceResponse<string>();
-           // var user = await _unitOfWork.UserRepository.GetUserByEmailAndPassword(usertDTO.Email, usertDTO.Password);
+            var response = new ServiceResponse<AuthResponseDTO>();
             try
             {
                 var hashedPassword = Utils.HashPassword.HashWithSHA256(usertDTO.Password);
@@ -53,13 +52,6 @@ namespace Application.Services
                     response.Message = "Invalid username or password";
                     return response;
                 }
-                //if (user.ConfirmToken != null || user.IsConfirmed == false)
-                //{
-                //    //System.Console.WriteLine(user.ConfirmationToken + user.IsConfirmed);
-                //    response.Success = false;
-                //    response.Message = "Please confirm via link in your mail";
-                //    return response;
-                //}
                 if(user.Status == 0)
                 {
                     response.Success = false;
@@ -71,10 +63,15 @@ namespace Application.Services
                     _configuration.JWTSection.SecretKey,
                     _currentTime.GetCurrentTime()
                     );
-
+                var userDTO = _mapper.Map<UserDTO>(user);
+                var authResponse = new AuthResponseDTO
+                {
+                    User = userDTO,
+                    AccessToken = token
+                };
                 response.Success = true;
                 response.Message = "Login successfully.";
-                response.Data = token;
+                response.Data = authResponse;
             }
             catch (DbException ex)
             {
