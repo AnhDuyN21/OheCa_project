@@ -11,6 +11,6 @@ namespace Application.Interfaces
     public interface IAuthenticationService
     {
         public Task<ServiceResponse<UserDTO>> RegisterAsync(RegisterUserDTO registerUserDTO);
-        public Task<ServiceResponse<string>> LoginAsync(AuthenUserDTO usertDTO);
+        public Task<ServiceResponse<AuthResponseDTO>> LoginAsync(AuthenUserDTO usertDTO);
     }
 }
