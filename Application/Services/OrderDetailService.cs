@@ -2,10 +2,12 @@
 using Application.ServiceResponse;
 using Application.ViewModels.OrderDetailDTOs;
 using Application.ViewModels.OrderDTOs;
+using Application.ViewModels.UserDTO;
 using AutoMapper;
 using Azure;
 using Domain.Entities;
 using MailKit.Search;
+using static Google.Apis.Requests.BatchRequest;
 
 namespace Application.Services
 {
@@ -95,6 +97,7 @@ namespace Application.Services
                 {
                     reponse.Success = false;
                     reponse.Message = "Don't Have Any Order Detail";
+                    return reponse;
                 }
                 else
                 {
@@ -159,7 +162,7 @@ namespace Application.Services
                 {
                     reponse.Success = false;
                     reponse.Message = $"Don't Have Any Order Detail";
-                    
+                    return reponse;
                 }
                 else
                 {
@@ -225,5 +228,28 @@ namespace Application.Services
             return reponse;
         }
         
+        public async Task<ServiceResponse<List<OrderDetailDTO>>> GetOrderDetailByOrderId (int id)
+        {
+            var reponse = new ServiceResponse<List<OrderDetailDTO>>();
+            try
+            {
+                var orderDetailList = await _unitOfWork.OrderDetailRepository.GetOrderDetailByOrderID(id);
+                List<OrderDetailDTO> result = new List<OrderDetailDTO>();
+                foreach (var orderDetail in orderDetailList)
+                {
+                    result.Add(_mapper.Map<OrderDetailDTO>(orderDetail));
+                }
+                reponse.Success = true;
+                reponse.Message = "Get order detail by order id success";
+                reponse.Data = result;
+            }
+            catch (Exception e)
+            {
+                reponse.Success = false;
+                reponse.Message = "Error";
+                reponse.ErrorMessages = new List<string> { e.Message };
+            }
+            return reponse;
+        }
     }
 }
