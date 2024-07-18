@@ -107,7 +107,12 @@ namespace EXE_02.Controllers
             var result = await _productService.GetProductByDiscountAsync(pageIndex, pageSize);
             return Ok(result);
         }
-
+        [HttpGet]
+        public async Task<IActionResult> GetCountProduct()
+        {
+            var result = await _productService.GetCountProduct();
+            return Ok(result);
+        }
 
     }
 }
