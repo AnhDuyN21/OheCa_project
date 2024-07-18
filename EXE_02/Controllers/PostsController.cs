@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
 {
-    [Authorize]
+    
     public class PostsController : BaseController
     {
         private readonly IPostService _postService;
@@ -58,6 +58,7 @@ namespace EXE_02.Controllers
 
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreatePost([FromForm] CreatePostDTO createPostDTO)
         {
                 var response = await _postService.CreatePostAsync(createPostDTO);
@@ -71,6 +72,8 @@ namespace EXE_02.Controllers
                 }
         }
         [HttpPut("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> UpdatePost(int id, [FromForm] UpdatePostDTO updatePostDTO)
         {
             var postToUpdate = await _postService.UpdatePostAsync(id, updatePostDTO);
@@ -81,6 +84,8 @@ namespace EXE_02.Controllers
             return Ok(postToUpdate);
         }
         [HttpDelete("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> DeletePost(int id)
         {
             var deletedPost = await _postService.DeletePostAsync(id);
