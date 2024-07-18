@@ -1,11 +1,13 @@
 using Application.Commons;
 using EXE_02;
+using Google.Apis.Auth.OAuth2;
 using Infrastructures;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Net.payOS;
+using Newtonsoft.Json.Linq;
 using System.Text;
 using WebAPI.Middlewares;
 
@@ -21,11 +23,13 @@ var configuration = builder.Configuration.Get<AppConfiguration>() ?? new AppConf
 builder.Services.AddInfrastructuresService(configuration.DatabaseConnection);
 builder.Services.AddWebAPIService();
 builder.Services.AddSingleton(configuration);
+
 //PayOS
 PayOS payOs = new PayOS(configuration.PayOSConfig.PAYOS_CLIENT_ID,
                         configuration.PayOSConfig.PAYOS_API_KEY,
                         configuration.PayOSConfig.PAYOS_CHECKSUM_KEY);
 builder.Services.AddSingleton(payOs);
+//End PayOS
 
 // Load JWT settings from configuration
 var jwtSettings = builder.Configuration.GetSection("JWTSection").Get<JWTSection>();
@@ -82,13 +86,14 @@ setup.AddSecurityRequirement(new OpenApiSecurityRequirement
 //setup.MapType<IFormFile>(() => new OpenApiSchema {  Type = "string", Format = "json" });
 });
 
-/*
-    register with singleton life time
-    now we can use dependency injection for AppConfiguratio
-*/
-builder.Services.AddSingleton(configuration);
-Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", @"D:\exe02-oheca-firebase-adminsdk-htvjl-97f30ef8b4.json");
-
+//Firebase
+var google = JObject.FromObject(configuration.GoogleImage);
+string g = google.ToString();
+string temp = Path.GetTempFileName();
+File.WriteAllText(temp, g);
+Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", temp);
+GoogleCredential credential = GoogleCredential.FromFile(temp);
+//End FireBase
 
 var app = builder.Build();
 
