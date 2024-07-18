@@ -23,5 +23,9 @@ namespace Infrastructures.Repositories
         {
             _dbContext = context;
         }
+        public async Task<IEnumerable<OrderDetail>>GetOrderDetailByOrderID(int id)
+        {
+           return  _dbContext.OrderDetails.Where(x => x.OrderId == id).ToList();
+        }
 }
 }

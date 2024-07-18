@@ -24,10 +24,10 @@ namespace Application.Repositories
 
         public Task<IEnumerable<Product>> GetProductByChildCategory(int childcategoryId, int? pageIndex = null, int? pageSize = null);
 
-        
 
 
-        
+
+
 
     }
 }

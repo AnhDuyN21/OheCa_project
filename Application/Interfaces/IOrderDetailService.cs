@@ -11,5 +11,6 @@ namespace Application.Interfaces
         Task<ServiceResponse<OrderDetailDTO>> CreateOrderDetailAsync(CreateOrderDetailDTO orderDetail);
         Task<ServiceResponse<OrderDetailDTO>> UpdateOrderDetailAsync(int id, UpdateOrderDetailDTO orderDetail);
         Task<ServiceResponse<IEnumerable<OrderDetailViewDTO>>> DeletedOrderDetailRange(int orderid);
+        Task<ServiceResponse<List<OrderDetailDTO>>> GetOrderDetailByOrderId(int id);
     }
 }

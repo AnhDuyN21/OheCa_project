@@ -87,16 +87,15 @@ namespace Application.Services
 
             try
             {
-                var orderentity = _mapper.Map<Order>(order);
+                var orderEntity = _mapper.Map<Order>(order);
                 
-                    await _unitOfWork.OrderRepository.AddAsync(orderentity);
+                    await _unitOfWork.OrderRepository.AddAsync(orderEntity);
                     
                     if (await _unitOfWork.SaveChangeAsync() > 0)
                     {
-                        reponse.Data = _mapper.Map<OrderDTO>(orderentity);
+                        reponse.Data = _mapper.Map<OrderDTO>(orderEntity);
                         reponse.Success = true;
                         reponse.Message = "Create new order successfully";
-                        reponse.Error = string.Empty;
                         return reponse;
                     }
                 }
