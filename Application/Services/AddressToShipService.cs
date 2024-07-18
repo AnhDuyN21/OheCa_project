@@ -23,6 +23,7 @@ namespace Application.Services
             try
             {
                 var Entity = _mapper.Map<AddressToShip>(createDTO);
+                Entity.IsDeleted = false;
                 await _unitOfWork.AddressToShipRepository.AddAsync(Entity);
                 if (await _unitOfWork.SaveChangeAsync() > 0)
                 {
