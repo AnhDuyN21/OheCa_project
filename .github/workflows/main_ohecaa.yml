@@ -18,6 +18,9 @@ jobs:
         with:
           dotnet-version: '8.x'
 
+      - name: Display current directory
+        run: dir "D:\FPT University\CN8\EXE02\project"
+
       - name: Build with dotnet
         run: dotnet build --configuration Release "D:\FPT University\CN8\EXE02\project\EXE_02.sln"
 
