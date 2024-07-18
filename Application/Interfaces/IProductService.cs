@@ -28,5 +28,6 @@ namespace Application.Interfaces
 
 
         Task<ServiceResponse<ProductDetailDTO>> UpdateProductAsync(int id, UpdateProductDTO product);
+        Task<int> GetCountProduct();
     }
 }

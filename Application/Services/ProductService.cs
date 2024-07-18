@@ -419,6 +419,11 @@ namespace Application.Services
                 return reponse;
             }
         }
+        public async Task<int> GetCountProduct()
+        {
+            var getAllProduct = await _unitOfWork.ProductRepository.GetAllAsync();
+            return getAllProduct.Count;
+        }
 
         
     }
