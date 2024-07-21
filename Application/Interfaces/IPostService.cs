@@ -10,8 +10,8 @@ namespace Application.Interfaces
 {
     public interface IPostService
     {
-        Task<ServiceResponse<IEnumerable<PostDTO>>> GetAllPostAsync();
-        Task<ServiceResponse<IEnumerable<PostDTO>>> SearchPostByTitleAsync(string title);
+        Task<ServiceResponse<IEnumerable<PostWithUserDTO>>> GetAllPostAsync();
+        Task<ServiceResponse<IEnumerable<PostWithUserDTO>>> SearchPostByTitleAsync(string title);
         Task<ServiceResponse<PostDTO>> GetPostByPostIdAsync(int id);
         Task<ServiceResponse<bool>> DeletePostAsync(int id); 
         Task<ServiceResponse<PostDTO>> CreatePostAsync(CreatePostDTO createPostDTO);
