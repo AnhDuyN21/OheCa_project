@@ -169,7 +169,7 @@ namespace Application.Services
                     {
                         if (cc.IsDeleted != true)
                         {
-                            var mapper = _mapper.Map<ViewVoucherDTO>(c);
+                            var mapper = _mapper.Map<ViewVoucherDTO>(cc);
                             ListDTO.Add(mapper);
                         }
                     }
