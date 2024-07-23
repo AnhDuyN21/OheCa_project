@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Services;
 using Application.ViewModels.ProductDTOs;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -111,6 +112,15 @@ namespace EXE_02.Controllers
         public async Task<IActionResult> GetCountProduct()
         {
             var result = await _productService.GetCountProduct();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetProducts(int? brandId, int? categoryId)
+        {
+            var result = await _productService.GetProductsForAdminAsync(brandId, categoryId);
             return Ok(result);
         }
 

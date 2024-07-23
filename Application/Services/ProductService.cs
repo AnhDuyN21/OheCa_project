@@ -68,7 +68,8 @@ namespace Application.Services
             }
         }
 
-        
+
+
         async Task<ServiceResponse<ProductDetailDTO>> IProductService.GetProductByIdAsync(int productId)
         {
             var _response = new ServiceResponse<ProductDetailDTO>();
@@ -425,6 +426,40 @@ namespace Application.Services
             return getAllProduct.Count;
         }
 
-        
+        public async Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductsForAdminAsync(int? brandId = null, int? categoryId = null)
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDetailDTO>>();
+            List<ProductDetailDTO> productDTOs = new List<ProductDetailDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetProductForAdminAsync(brandId, categoryId);
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDetailDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
     }
 }

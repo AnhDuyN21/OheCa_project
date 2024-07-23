@@ -24,6 +24,7 @@ namespace Application.ViewModels.ProductDTOs
 
         public string? BrandName { get; set; }
 
+        public int? BrandId { get; set; }
         public string Country { get; set; }
 
         public int? Status { get; set; }
