@@ -22,6 +22,8 @@ namespace Application.ViewModels.ProductDTOs
 
         public int? Quantity { get; set; }
 
+        public string? Description { get; set; }
+
         public int? QuantitySold { get; set; }
 
        // public int? BrandId { get; set; }
@@ -32,7 +34,6 @@ namespace Application.ViewModels.ProductDTOs
 
         public string BrandName { get; set; }
 
-        public string? Description { get; set; }
         public bool? IsDeleted { get; set; }
         public float? DiscountPercent { get; set; }
 

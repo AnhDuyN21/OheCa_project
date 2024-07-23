@@ -16,6 +16,8 @@ namespace Application.Repositories
 
         public Task<IEnumerable<Product>> GetProductAsync(int? pageIndex = null, int? pageSize = null);
 
+        public Task<IEnumerable<Product>> GetProductForAdminAsync(int? brandId = null, int? categoryId = null);
+
         public Task<IEnumerable<Product>> GetProductByDiscount(int? pageIndex = null, int? pageSize = null);
 
         public Task<IEnumerable<Product>> GetProductByBrand(int brandId, int? pageIndex = null, int? pageSize = null);

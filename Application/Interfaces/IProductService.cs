@@ -13,6 +13,10 @@ namespace Application.Interfaces
     public interface IProductService
     {
         Task<ServiceResponse<IEnumerable<ProductDTO>>> GetProductsAsync(int? pageIndex = null, int? pageSize = null);
+
+        
+            Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductsForAdminAsync(int? brandId = null, int? categoryId = null);
+
         Task<ServiceResponse<ProductDetailDTO>> GetProductByIdAsync(int productId);
         Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetProductByCategoryAsync(int categoryid, int? pageIndex, int? pageSize);
 
