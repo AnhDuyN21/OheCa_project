@@ -51,8 +51,8 @@ namespace EXE_02.Controllers
                     items.Add(item);
                 }
 
-                var successUrl = "https://icpih.com/media-intestinal-health-ihsig/PAYMENT-SUCCESS.png";
-                var cancelUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6Z7CgLJ3JfLy4IREsARVyxcBnQQnHN40jw&s";
+                var successUrl = "http://localhost:3000/paymentsuccess";
+                var cancelUrl = "http://localhost:3000/paymentfailed";
 
                 // Tạo đối tượng PaymentData để gửi yêu cầu thanh toán
                 PaymentData paymentData = new PaymentData(orderCode, (int)orders.Data.TotalPrice, "Thanh toán đơn hàng", items, cancelUrl, successUrl);
