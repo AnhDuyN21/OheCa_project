@@ -30,9 +30,22 @@ namespace Infrastructures.Repositories
 
         public async Task<IEnumerable<Product>> GetProductAsync(int? pageIndex = null, int? pageSize = null)
         {
-            var query =  _dbContext.Products.Include(im => im.Images)
-                                                    .Include(br => br.Brand)
-                                                    .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null);
+            var query = _dbContext.Products.Include(im => im.Images)
+                                     .Include(p => p.Brand)
+                                     .Include(p => p.Feedbacks)
+                                            .ThenInclude(fb => fb.User)
+                                     .Include(p => p.Discounts)
+                                     .Include(p => p.Images)
+                                     .Include(p => p.ProductMaterials)
+                                            .ThenInclude(pm => pm.Material)
+                                            .ThenInclude(m => m.ChildCategory)
+                                            .ThenInclude(cc => cc.ParentCategory)
+                                     .Where(im => im.Images.Any(im => im.Thumbnail == true));
+
+            // Filtering by brandId if provided
+           
+
+            // Paging logic
             if (pageIndex.HasValue && pageSize.HasValue)
             {
                 int validPageIndex = pageIndex.Value > 0 ? pageIndex.Value - 1 : 0;
@@ -49,9 +62,51 @@ namespace Infrastructures.Repositories
             }
             else
             {
-                throw new Exception("Don't have any Product ");
+                throw new Exception("Don't have any Product");
             }
         }
+
+
+        public async Task<IEnumerable<Product>> GetProductForAdminAsync(int? brandId = null, int? categoryId = null)
+        {
+            var query = _dbContext.Products.Include(im => im.Images)
+                                     .Include(p => p.Brand)
+                                     .Include(p => p.Feedbacks)
+                                            .ThenInclude(fb => fb.User)
+                                     .Include(p => p.Discounts)
+                                     .Include(p => p.Images)
+                                     .Include(p => p.ProductMaterials)
+                                            .ThenInclude(pm => pm.Material)
+                                            .ThenInclude(m => m.ChildCategory)
+                                            .ThenInclude(cc => cc.ParentCategory)
+                                     .Where(im => im.Images.Any(im => im.Thumbnail == true));
+
+            // Filtering by brandId if provided
+            if (brandId.HasValue)
+            {
+                query = query.Where(p => p.BrandId == brandId.Value);
+            }
+
+            // Filtering by categoryId if provided
+            if (categoryId.HasValue)
+            {
+                query = query.Where(p => p.ProductMaterials.Any(pm => pm.Material.ChildCategoryId == categoryId.Value));
+            }
+
+           
+
+            var products = await query.ToListAsync();
+
+            if (products != null && products.Any())
+            {
+                return products;
+            }
+            else
+            {
+                throw new Exception("Don't have any Product");
+            }
+        }
+
 
         public async Task<IEnumerable<Product>> GetProductByBrand(int brandId, int? pageIndex = null, int? pageSize = null)
         {
@@ -98,6 +153,7 @@ namespace Infrastructures.Repositories
                                                   UnitPrice = p.UnitPrice,
                                                   PriceSold = p.PriceSold,
                                                   Quantity = p.Quantity,
+                                                  Description = p.Description,
                                                   QuantitySold = p.QuantitySold,
                                                   Country = p.Country,
                                                   Status = p.Status,
@@ -165,7 +221,7 @@ namespace Infrastructures.Repositories
         {
             var query =  _dbContext.Products.Include(im => im.Images)
                                                     .Include(im => im.Brand)
-                                                    .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null )
+                                                    .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null)
                                                     .OrderByDescending(im => im.DiscountPercent);
             if (pageIndex.HasValue && pageSize.HasValue)
             {
@@ -258,6 +314,7 @@ namespace Infrastructures.Repositories
                                                   UnitPrice = p.UnitPrice,
                                                   PriceSold = p.PriceSold,
                                                   Quantity = p.Quantity,
+                                                  Description = p.Description,
                                                   QuantitySold = p.QuantitySold,
                                                   Country = p.Country,
                                                   Status = p.Status,
