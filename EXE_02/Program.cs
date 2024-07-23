@@ -1,5 +1,14 @@
 using Application.Commons;
 using EXE_02;
+using EXE_02.Validations.AddressToShipValidations;
+using EXE_02.Validations.FeedBackValidations;
+using EXE_02.Validations.OrderDetailValidations;
+using EXE_02.Validations.OrderValidations;
+using EXE_02.Validations.PaymentValidations;
+using EXE_02.Validations.ShipCompanyValidations;
+using EXE_02.Validations.ShipperValidations;
+using EXE_02.Validations.VoucherValidations;
+using FluentValidation.AspNetCore;
 using Google.Apis.Auth.OAuth2;
 using Infrastructures;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,6 +32,22 @@ var configuration = builder.Configuration.Get<AppConfiguration>() ?? new AppConf
 builder.Services.AddInfrastructuresService(configuration.DatabaseConnection);
 builder.Services.AddWebAPIService();
 builder.Services.AddSingleton(configuration);
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ShipCompanyCreateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ShipCompanyUpdateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ShipperCreateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ShipperUpdateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<VoucherCreateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<VoucherUpdateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PaymentCreateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PaymentUpdateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<OrderCreateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<OrderUpdateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<OrderDetailCreateDTOValidatio>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<OrderDetailUpdateDTOValidatio>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FeedBackCreateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FeedBackUpdateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddressToShipCreateDTOValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddressToShipUpdateDTOValidation>());
 
 //PayOS
 PayOS payOs = new PayOS(configuration.PayOSConfig.PAYOS_CLIENT_ID,

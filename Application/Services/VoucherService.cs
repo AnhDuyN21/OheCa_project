@@ -193,7 +193,7 @@ namespace Application.Services
             try
             {
                 var c = await _unitOfWork.VoucherRepository.GetByIdAsync(Id);
-                if (c == null || c.IsDeleted == true)
+                if (c == null)
                 {
                     reponse.Success = false;
                     reponse.Message = "Don't Have Any Voucher";

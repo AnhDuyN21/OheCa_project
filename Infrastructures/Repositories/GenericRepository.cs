@@ -26,6 +26,7 @@ namespace Infrastructures.Repositories
             {
                 query = query.Include(include);
             }
+            query = query.Where(entity => entity.IsDeleted !=  true);
             return query.ToListAsync();
         }
 
@@ -36,7 +37,7 @@ namespace Infrastructures.Repositories
             {
                 query = query.Include(include);
             }
-            var result = await query.FirstOrDefaultAsync(x => x.Id == id);
+            var result = await query.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted != true);
             return result;
         }
 

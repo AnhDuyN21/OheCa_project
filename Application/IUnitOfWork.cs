@@ -22,6 +22,7 @@ namespace Application
 
         public IProductMaterialRepository ProductMaterialRepository { get; }
         public ICommentRepository CommentRepository { get; }
+        public IFeedbackRepository FeedbackRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }

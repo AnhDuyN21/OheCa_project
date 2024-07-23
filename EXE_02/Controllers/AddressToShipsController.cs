@@ -1,8 +1,12 @@
 ﻿using Application.Interfaces;
 using Application.Services;
 using Application.ViewModels.AddressToShipDTOs;
+using Application.ViewModels.ShipCompanyDTOs;
 using Application.ViewModels.ShipperDTOs;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
@@ -10,9 +14,14 @@ namespace EXE_02.Controllers
     public class AddressToShipsController : BaseController
     {
         private readonly IAddressToShipService _addressToShipService;
-        public AddressToShipsController(IAddressToShipService addressToShipService)
+        private readonly IValidator<CreateAddressToShipDTO> _validator;
+        private readonly IValidator<UpdateAddressToShipDTO> _validatorUpdate;
+
+        public AddressToShipsController(IAddressToShipService addressToShipService, IValidator<CreateAddressToShipDTO> validator, IValidator<UpdateAddressToShipDTO> validatorUpdate)
         {
             _addressToShipService = addressToShipService;
+            _validator = validator;
+            _validatorUpdate = validatorUpdate;
         }
 
         [HttpGet]
@@ -76,6 +85,12 @@ namespace EXE_02.Controllers
             {
                 return BadRequest();
             }
+            ValidationResult result = await _validator.ValidateAsync(createDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var c = await _addressToShipService.CreateAddressToShipAsync(createDto);
             if (!c.Success)
             {
@@ -89,6 +104,12 @@ namespace EXE_02.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateAddressToShip(int id, [FromBody] UpdateAddressToShipDTO updateDto)
         {
+            ValidationResult result = await _validatorUpdate.ValidateAsync(updateDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var c = await _addressToShipService.UpdateAddressToShipAsync(id, updateDto);
             if (!c.Success)
             {
@@ -100,9 +121,9 @@ namespace EXE_02.Controllers
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletedAddressToShip(int Id)
+        public async Task<IActionResult> DeletedAddressToShip(int id)
         {
-            var c = await _addressToShipService.DeleteAddressToShipAsync(Id);
+            var c = await _addressToShipService.DeleteAddressToShipAsync(id);
             if (!c.Success)
             {
                 return BadRequest(c);

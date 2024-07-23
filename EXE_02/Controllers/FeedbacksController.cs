@@ -1,22 +1,25 @@
 ﻿using Application.Interfaces;
-using Application.ViewModels.ShipCompanyDTOs;
+using Application.Services;
+using Application.ViewModels.AddressToShipDTOs;
+using Application.ViewModels.FeedBackDTOs;
+using EXE_02.Validations.FeedBackValidations;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
 {
-    public class ShipCompanysController : BaseController
+   
+    public class FeedbacksController : BaseController
     {
+        private readonly IFeedbackService _feedbackService;
+        private readonly IValidator<FeedBackCreateDTO> _validator;
+        private readonly IValidator<FeedBackUpdateDTO> _validatorUpdate;
 
-        private readonly IShipCompanyService _shipCompanyService;
-        private readonly IValidator<CreateShipCompanyDTO> _validator;
-        private readonly IValidator<UpdateShipCompanyDTO> _validatorUpdate;
-
-        public ShipCompanysController(IShipCompanyService shipCompanyService, IValidator<CreateShipCompanyDTO> validator, IValidator<UpdateShipCompanyDTO> validatorUpdate)
+        public FeedbacksController(IFeedbackService feedbackService, IValidator<FeedBackCreateDTO> validator, IValidator<FeedBackUpdateDTO> validatorUpdate)
         {
-            _shipCompanyService = shipCompanyService;
+            _feedbackService = feedbackService;
             _validator = validator;
             _validatorUpdate = validatorUpdate;
         }
@@ -24,9 +27,9 @@ namespace EXE_02.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ViewAllShipCompanys()
+        public async Task<IActionResult> ViewAllFeedBacks()
         {
-            var result = await _shipCompanyService.GetShipCompanysAsync();
+            var result = await _feedbackService.GetFeedbackAsync();
             if (result == null)
             {
                 return BadRequest();
@@ -41,9 +44,9 @@ namespace EXE_02.Controllers
         [HttpGet("{Id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ViewShipCompanyByID(int Id)
+        public async Task<IActionResult> ViewFeedBackByID(int Id)
         {
-            var result = await _shipCompanyService.GetShipCompanyByIdAsync(Id);
+            var result = await _feedbackService.GetFeedbackByIdAsync(Id);
             if (result == null)
             {
                 return BadRequest();
@@ -55,12 +58,12 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("{Id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SearchShipCompanyByName(string name)
+        public async Task<IActionResult> ViewFeedBackByUserID(int Id)
         {
-            var result = await _shipCompanyService.searchShipCompanyByNameAsync(name);
+            var result = await _feedbackService.GetFeedbackByUserIDAsync(Id);
             if (result == null)
             {
                 return BadRequest();
@@ -76,34 +79,30 @@ namespace EXE_02.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateShipCompany([FromBody] CreateShipCompanyDTO createDto)
+        public async Task<IActionResult> CreateFeedBack([FromBody] FeedBackCreateDTO createDto)
         {
             if (createDto == null)
             {
-                return BadRequest("Request body cannot be null.");
+                return BadRequest();
             }
-
             ValidationResult result = await _validator.ValidateAsync(createDto);
 
             if (!result.IsValid)
             {
                 return BadRequest(result.Errors);
             }
-
-            var c = await _shipCompanyService.CreateShipCompanyAsync(createDto);
+            var c = await _feedbackService.CreateFeedbackAsync(createDto);
             if (!c.Success)
             {
                 return BadRequest(c);
             }
-
             return Ok(c);
         }
-
 
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateShipCompany(int id, [FromBody] UpdateShipCompanyDTO updateDto)
+        public async Task<IActionResult> UpdateFeedBack(int id, [FromBody] FeedBackUpdateDTO updateDto)
         {
             ValidationResult result = await _validatorUpdate.ValidateAsync(updateDto);
 
@@ -111,26 +110,27 @@ namespace EXE_02.Controllers
             {
                 return BadRequest(result.Errors);
             }
-            var c = await _shipCompanyService.UpdateShipCompanyAsync(id, updateDto);
+            var c = await _feedbackService.UpdateFeedbackAsync(id, updateDto);
             if (!c.Success)
             {
                 return BadRequest(c);
             }
-
             return Ok(c);
         }
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletedShipCompany(int id)
+        public async Task<IActionResult> DeletedAddressToShip(int id)
         {
-            var c = await _shipCompanyService.DeleteShipCompanyAsync(id);
+            var c = await _feedbackService.DeleteFeedbackAsync(id);
             if (!c.Success)
             {
                 return BadRequest(c);
             }
             return Ok(c);
         }
+
+
     }
 }

@@ -39,6 +39,9 @@ namespace Infrastructures
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IProductMaterialRepository, ProductMaterialRepository>();
 
+            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
+
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //Firebase
