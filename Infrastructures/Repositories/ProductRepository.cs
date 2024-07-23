@@ -40,7 +40,7 @@ namespace Infrastructures.Repositories
                                             .ThenInclude(pm => pm.Material)
                                             .ThenInclude(m => m.ChildCategory)
                                             .ThenInclude(cc => cc.ParentCategory)
-                                     .Where(im => im.Images.Any(im => im.Thumbnail == true));
+                                     .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null);
 
             // Filtering by brandId if provided
            
@@ -79,7 +79,7 @@ namespace Infrastructures.Repositories
                                             .ThenInclude(pm => pm.Material)
                                             .ThenInclude(m => m.ChildCategory)
                                             .ThenInclude(cc => cc.ParentCategory)
-                                     .Where(im => im.Images.Any(im => im.Thumbnail == true));
+                                     .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null);
 
             // Filtering by brandId if provided
             if (brandId.HasValue)
