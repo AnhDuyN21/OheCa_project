@@ -20,6 +20,7 @@
 		<Compile Include="Repositories\AddressToShipRepository.cs" />
 		<Compile Include="Repositories\AddressUserRepository.cs" />
 		<Compile Include="Repositories\CommentRepository.cs" />
+		<Compile Include="Repositories\FeedbackRepository.cs" />
 		<Compile Include="Repositories\GenericRepository.cs" />
 		<Compile Include="Repositories\ImageRepository.cs" />
 		<Compile Include="Repositories\OrderDetailRepository.cs" />

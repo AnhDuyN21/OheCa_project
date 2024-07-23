@@ -1,8 +1,12 @@
 ﻿using Application.Interfaces;
 using Application.Services;
+using Application.ViewModels.ShipCompanyDTOs;
 using Application.ViewModels.ShipperDTOs;
 using Application.ViewModels.VoucherDTOs;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
@@ -11,10 +15,16 @@ namespace EXE_02.Controllers
     public class VouchersController : BaseController
     {
         private readonly IVoucherService _voucherService;
-        public VouchersController(IVoucherService voucherService) 
+        private readonly IValidator<CreateVoucherDTO> _validator;
+        private readonly IValidator<UpdateVoucherDTO> _validatorUpdate;
+
+        public VouchersController(IVoucherService voucherService, IValidator<CreateVoucherDTO> validator, IValidator<UpdateVoucherDTO> validatorUpdate)
         {
-             _voucherService = voucherService;
+            _voucherService = voucherService;
+            _validator = validator;
+            _validatorUpdate = validatorUpdate;
         }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -76,6 +86,12 @@ namespace EXE_02.Controllers
             {
                 return BadRequest();
             }
+            ValidationResult result = await _validator.ValidateAsync(createDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var c = await _voucherService.CreateVoucherAsync(createDto);
             if (!c.Success)
             {
@@ -89,6 +105,12 @@ namespace EXE_02.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateVoucher(int id, [FromBody] UpdateVoucherDTO updateDto)
         {
+            ValidationResult result = await _validatorUpdate.ValidateAsync(updateDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var c = await _voucherService.UpdateVoucherAsync(id, updateDto);
             if (!c.Success)
             {
@@ -100,9 +122,9 @@ namespace EXE_02.Controllers
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletedVoucher(int Id)
+        public async Task<IActionResult> DeletedVoucher(int id)
         {
-            var c = await _voucherService.DeleteVoucherAsync(Id);
+            var c = await _voucherService.DeleteVoucherAsync(id);
             if (!c.Success)
             {
                 return BadRequest(c);

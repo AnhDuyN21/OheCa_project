@@ -2,6 +2,8 @@
 using Application.Services;
 using Application.ViewModels.OrderDetailDTOs;
 using Application.ViewModels.PaymentDTOs;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +13,14 @@ namespace EXE_02.Controllers
     public class PaymentsController : BaseController
     {
         private readonly IPaymentService _paymentService;
-        public PaymentsController(IPaymentService paymentService) 
+        private readonly IValidator<CreatePaymentDTO> _validator;
+        private readonly IValidator<UpdatePaymentDTO> _validatorUpdate;
+
+        public PaymentsController(IPaymentService paymentService, IValidator<CreatePaymentDTO> validator, IValidator<UpdatePaymentDTO> validatorUpdate)
         {
-           _paymentService = paymentService;
+            _paymentService = paymentService;
+            _validator = validator;
+            _validatorUpdate = validatorUpdate;
         }
 
         [HttpGet]
@@ -77,6 +84,12 @@ namespace EXE_02.Controllers
             {
                 return BadRequest();
             }
+            ValidationResult result = await _validator.ValidateAsync(createDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var c = await _paymentService.CreatePaymentAsync(createDto);
             if (!c.Success)
             {
@@ -90,6 +103,12 @@ namespace EXE_02.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdatePayment(int id, [FromBody] UpdatePaymentDTO updateDto)
         {
+            ValidationResult result = await _validatorUpdate.ValidateAsync(updateDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var c = await _paymentService.UpdatePaymentAsync(id, updateDto);
             if (!c.Success)
             {
@@ -101,9 +120,9 @@ namespace EXE_02.Controllers
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletedPaymentByid(int paymentId)
+        public async Task<IActionResult> DeletedPaymentByid(int id)
         {
-            var c = await _paymentService.DeletePaymentAsync(paymentId);
+            var c = await _paymentService.DeletePaymentAsync(id);
             if (!c.Success)
             {
                 return BadRequest(c);

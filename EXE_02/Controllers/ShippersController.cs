@@ -2,7 +2,10 @@
 using Application.Services;
 using Application.ViewModels.ShipCompanyDTOs;
 using Application.ViewModels.ShipperDTOs;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
@@ -10,9 +13,14 @@ namespace EXE_02.Controllers
     public class ShippersController : BaseController
     {
         private readonly IShipperService _shipperService;
-        public ShippersController(IShipperService shipperService)
+        private readonly IValidator<CreateShipperDTO> _validatorCreate;
+        private readonly IValidator<UpdateShipperDTO> _validatorUpdate;
+
+        public ShippersController(IShipperService shipperService, IValidator<CreateShipperDTO> validatorCreate, IValidator<UpdateShipperDTO> validatorUpdate)
         {
             _shipperService = shipperService;
+            _validatorCreate = validatorCreate;
+            _validatorUpdate = validatorUpdate;
         }
 
         [HttpGet]
@@ -76,6 +84,12 @@ namespace EXE_02.Controllers
             {
                 return BadRequest();
             }
+            ValidationResult result = await _validatorCreate.ValidateAsync(createDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var c = await _shipperService.CreateShipperAsync(createDto);
             if (!c.Success)
             {
@@ -89,6 +103,12 @@ namespace EXE_02.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateShipper(int id, [FromBody] UpdateShipperDTO updateDto)
         {
+            ValidationResult result = await _validatorUpdate.ValidateAsync(updateDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.Errors);
+            }
             var c = await _shipperService.UpdateShippperAsync (id, updateDto);
             if (!c.Success)
             {
@@ -97,7 +117,7 @@ namespace EXE_02.Controllers
             return Ok(c);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{Id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeletedShipper(int Id)

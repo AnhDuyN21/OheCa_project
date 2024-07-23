@@ -25,6 +25,7 @@ namespace Infrastructures
         private readonly IProductRepository _productRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IProductMaterialRepository _productMaterialRepository;
+        private readonly IFeedbackRepository _feedbackRepository;
 
       
         
@@ -33,7 +34,7 @@ namespace Infrastructures
             IPaymentRepository paymentRepository, IShipCompanyRepository shipCompanyRepository, IShipperRepository shipperRepository, IAddressToShipRepository addressToShipRepository,
             IAddressUserRepository addressUserRepository, IVoucherRepository voucherRepository,
             IVoucherUsageRepository _voucherUsageRepository, IVoucherUsageRepository voucherUsageRepository,
-            IPostRepository postRepository, ICommentRepository commentRepository
+            IPostRepository postRepository, ICommentRepository commentRepository, IFeedbackRepository feedbackRepository
             )
         {
             _dbContext = dbContext;
@@ -52,6 +53,7 @@ namespace Infrastructures
             _productMaterialRepository = productMaterialRepository;
             _postRepository = postRepository;
             _commentRepository = commentRepository;
+            _feedbackRepository = feedbackRepository;
         }
         public IOrderRepository OrderRepository => _orderRepository;
         public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
@@ -71,6 +73,8 @@ namespace Infrastructures
         public IProductMaterialRepository ProductMaterialRepository => _productMaterialRepository;
         public IPostRepository PostRepository => _postRepository;
         public ICommentRepository CommentRepository => _commentRepository;
+
+        public IFeedbackRepository FeedbackRepository => _feedbackRepository;
 
         public async Task<int> SaveChangeAsync()
         {

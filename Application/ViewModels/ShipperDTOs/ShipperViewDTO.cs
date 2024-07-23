@@ -10,6 +10,7 @@ namespace Application.ViewModels.ShipperDTOs
 {
     public class ShipperViewDTO
     {
+        public int Id { get; set; }
         public int? ShipCompanyId { get; set; }
 
         public string? Phone { get; set; }

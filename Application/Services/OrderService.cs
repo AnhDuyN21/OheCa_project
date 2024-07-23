@@ -223,7 +223,7 @@ namespace Application.Services
             {
                 var orderChecked = await _unitOfWork.OrderRepository.GetOrderByIDAsync(id);
 
-                if (orderChecked == null && orderChecked.IsDeleted == false)
+                if (orderChecked == null )
                 {
                     reponse.Success = false;
                     reponse.Message = "Not found order, you are sure input";
