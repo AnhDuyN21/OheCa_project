@@ -14,5 +14,9 @@ namespace Application.ViewModels.FeedbackDTOs
 
         public int? Rate { get; set; }
 
+        public string UserName { get; set; }
+
+        public string? Avatar { get; set; }
+
     }
 }

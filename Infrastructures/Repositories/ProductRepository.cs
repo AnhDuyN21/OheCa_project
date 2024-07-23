@@ -244,6 +244,7 @@ namespace Infrastructures.Repositories
             var product = await _dbContext.Products.Where(p => p.Id == id)
                                               .Include(p => p.Brand)
                                               .Include(p => p.Feedbacks)
+                                                   .ThenInclude(fb => fb.User)
                                               .Include(p => p.Discounts)
                                               .Include(p => p.Images)
                                               .Include(p => p.ProductMaterials)
