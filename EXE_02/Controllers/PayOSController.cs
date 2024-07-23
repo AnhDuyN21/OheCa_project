@@ -20,7 +20,7 @@ namespace EXE_02.Controllers
             _productService = productService;
         }
         [HttpPost]
-        public async Task<IActionResult> Checkout([FromQuery] int userId, [FromQuery] int orderId)
+        public async Task<IActionResult> Checkout([FromQuery] int orderId)
         {
             try
             {
