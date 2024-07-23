@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels.PostDTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Application.Repositories
 {
     public interface IPostRepository : IGenericRepository<Post>
     {
-        Task<IEnumerable<Post>> SearchPostByTitleAsync(string title);
+        Task<IEnumerable<PostWithUserDTO>> SearchPostByTitleAsync(string title);
+        Task<IEnumerable<PostWithUserDTO>> GetAllPostWithUsernameAndAvatar();
     }
 }

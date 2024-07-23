@@ -25,19 +25,16 @@ namespace Application.Services
             _mapper = mapper;
             _claimsService = claimsService;
         }
-        public async Task<ServiceResponse<IEnumerable<PostDTO>>> GetAllPostAsync()
+        public async Task<ServiceResponse<IEnumerable<PostWithUserDTO>>> GetAllPostAsync()
         {
-            var response = new ServiceResponse<IEnumerable<PostDTO>>();
+            var response = new ServiceResponse<IEnumerable<PostWithUserDTO>>();
             try
             {
-                var getAllPosts = await _unitOfWork.PostRepository.GetAllAsync();
-                var newListPosts = new List<PostDTO>();
+                var getAllPosts = await _unitOfWork.PostRepository.GetAllPostWithUsernameAndAvatar();
+                var newListPosts = new List<PostWithUserDTO>();
                 foreach (var post in getAllPosts)
                 {
-                    if(post.IsDeleted == false)
-                    {
-                        newListPosts.Add(_mapper.Map<PostDTO>(post));
-                    }
+                        newListPosts.Add(_mapper.Map<PostWithUserDTO>(post));
                 }
                 if (newListPosts.Count != 0)
                 {
@@ -60,19 +57,17 @@ namespace Application.Services
             }
             return response;
         }       
-        public async Task<ServiceResponse<IEnumerable<PostDTO>>> SearchPostByTitleAsync(string title)
+        public async Task<ServiceResponse<IEnumerable<PostWithUserDTO>>> SearchPostByTitleAsync(string title)
         {
-            var response = new ServiceResponse<IEnumerable<PostDTO>>();
+            var response = new ServiceResponse<IEnumerable<PostWithUserDTO>>();
             try
             {
                 var getPostByTitle = await _unitOfWork.PostRepository.SearchPostByTitleAsync(title);
-                var newListPosts = new List<PostDTO>();
+                var newListPosts = new List<PostWithUserDTO>();
                 foreach (var post in getPostByTitle)
                 {
-                    if(post.IsDeleted == false)
-                    {
-                        newListPosts.Add(_mapper.Map<PostDTO>(post));
-                    }
+
+                        newListPosts.Add(_mapper.Map<PostWithUserDTO>(post));
                 }
                 if (newListPosts.Count != 0)
                 {
@@ -183,7 +178,7 @@ namespace Application.Services
                 newPost.IsDeleted = false;
                 newPost.LikeQuantity = 0;;
                 newPost.UserId = _claimsService.GetUserId();
-
+                newPost.CreationDate = DateTime.Now;
                 await _unitOfWork.PostRepository.AddAsync(newPost);
                 var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
                 if (isSuccess)
