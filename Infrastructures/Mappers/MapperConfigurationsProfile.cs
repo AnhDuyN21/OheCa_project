@@ -103,7 +103,9 @@ namespace Infrastructures.Mappers
             CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
             CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
             CreateMap<OrderDetail, UpdateOrderDetailDTO>().ReverseMap();
-            CreateMap<Feedback, FeedbackDTO>().ReverseMap();
+            CreateMap<Feedback, FeedbackDTO>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.LastName))
+                .ForMember(dest => dest.Avatar, opt => opt.MapFrom(src => src.User.Avatar));
             CreateMap<Discount, DiscountDTO>().ReverseMap();
             //CreateMap<ProductMaterialDTO, ProductMaterial>()
             //    .ForMember(dest => dest.Detail, opt => opt.MapFrom(src => src.Detail))
