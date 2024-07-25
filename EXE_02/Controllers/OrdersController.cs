@@ -28,7 +28,7 @@ namespace EXE_02.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ViewAllOrder() 
+        public async Task<IActionResult> ViewAllOrder()
         {
             var result = await _orderService.GetOrdersAsync();
             return Ok(result);
@@ -113,6 +113,41 @@ namespace EXE_02.Controllers
             return Ok(c);
         }
 
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CheckOut([FromBody] CheckoutDTO createDto)
+        {
+            if (createDto == null)
+            {
+                return BadRequest();
+            }
+            //ValidationResult result = await _validator.ValidateAsync(createDto);
 
+            //if (!result.IsValid)
+            //{
+            //    return BadRequest(result.Errors);
+            //}
+            var c = await _orderService.CheckoutAsync(createDto);
+            if (!c.Success)
+            {
+                return BadRequest(c);
+            }
+            return Ok(c);
+        }
+
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ConfirmOrder(int id)
+        {
+            var c = await _orderService.ConfirmOrder(id);
+            if (!c.Success)
+            {
+                return BadRequest(c);
+            }
+            return Ok(c);
+        }
     }
 }

@@ -3,6 +3,7 @@ using Application.ServiceResponse;
 using Application.ViewModels.OrderDTOs;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enum;
 using System.Linq.Expressions;
 using System.Security.Claims;
 
@@ -68,6 +69,116 @@ namespace Application.Services
                     {
                         reponse.Success = false;
                         reponse.Message = "Update order fail, order is deleted, cannot update";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                reponse.Success = false;
+                reponse.Message = "Update order fail!, exception";
+                reponse.ErrorMessages = new List<string> { e.Message };
+            }
+
+            return reponse;
+        }
+
+        public async Task<ServiceResponse<OrderDTO>> CheckoutAsync(CheckoutDTO order)
+        {
+            var response = new ServiceResponse<OrderDTO>();
+
+            if (order.Carts == null || !order.Carts.Any() || order.Carts.Any(c => c.ProductId == null || c.Quantity == null || c.Quantity <= 0))
+            {
+                response.Success = false;
+                response.ErrorMessages = new List<string> { "Must have at least one valid product for checkout." };
+                return response;
+            }
+
+            try
+            {
+                double totalPrice = 0;
+                var orderEntity = _mapper.Map<Order>(order);
+                await _unitOfWork.OrderRepository.AddAsync(orderEntity);
+                if( await _unitOfWork.SaveChangeAsync() > 0)
+                {
+                    foreach (var cart in order.Carts)
+                    {
+                        var product = await _unitOfWork.ProductRepository.GetProductByIDAsync((int)cart.ProductId);
+                        var orderDetail = new OrderDetail
+                        {
+                            OrderId = orderEntity.Id,
+                            ProductId = cart.ProductId.Value,
+                            Quantity = cart.Quantity.Value,
+                            Price = product.PriceSold.Value
+                        };
+                        totalPrice += product.PriceSold.Value * cart.Quantity.Value;
+                        await _unitOfWork.OrderDetailRepository.AddAsync(orderDetail);
+                    }
+
+                    var shipper = await _unitOfWork.ShipperRepository.GetAllAsync();
+                    orderEntity.TotalPrice = totalPrice;
+                    orderEntity.ShipperId = shipper.FirstOrDefault().Id;
+                    orderEntity.ShipDate = DateTime.Now.AddDays(1);
+                    orderEntity.ReceiveDate = DateTime.Now.AddDays(5);
+                    orderEntity.IsConfirm = 0;
+                    orderEntity.Status = (int)OrderStatusEnum.Pending;
+                    orderEntity.StatusOfPayment = 0;
+                    orderEntity.TotalPrice = totalPrice;
+                    _unitOfWork.OrderRepository.Update(orderEntity);
+                    if (await _unitOfWork.SaveChangeAsync() > 0)
+                    {
+                        response.Data = _mapper.Map<OrderDTO>(orderEntity);
+                        response.Success = true;
+                        response.Message = "Create new order successfully";
+                        return response;
+                    }
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.ErrorMessages = new List<string> { ex.Message };
+                return response;
+            }
+
+            response.Success = false;
+            response.Message = "Failed to create new order.";
+            return response;
+        }
+
+        public async Task<ServiceResponse<string>> ConfirmOrder(int id)
+        {
+            var reponse = new ServiceResponse<string>();
+            try
+            {
+                var orderChecked = await _unitOfWork.OrderRepository.GetOrderByIDAsync(id);
+
+                if (orderChecked == null)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Not found order, you are sure input";
+                    reponse.Error = "Not found order";
+                }
+                else
+                {
+                    if (orderChecked.IsConfirm == 0)
+                    {
+                        orderChecked.IsConfirm = 1;
+                        if (await _unitOfWork.SaveChangeAsync() > 0)
+                        {
+                            reponse.Success = true;
+                            reponse.Message = "Confirm order successfully";
+                        }
+                        else
+                        {
+                            reponse.Success = false;
+                            reponse.Message = "Confirm order fail!";
+                        }
+                    }
+                    else
+                    {
+                        reponse.Success = false;
+                        reponse.Message = "Update order fail, order is confirmed, cannot update";
                     }
                 }
             }
