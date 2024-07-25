@@ -32,4 +32,5 @@ namespace Application.ViewModels.OrderDTOs
 
         public double? TotalPrice { get; set; }
     }
+
 }

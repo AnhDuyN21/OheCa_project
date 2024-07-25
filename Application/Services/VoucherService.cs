@@ -353,7 +353,6 @@ namespace Application.Services
 
                 foreach (var item in createDTOs)
                 {
-                    // Kiểm tra xem voucher đã tồn tại với orderId trong cơ sở dữ liệu chưa
                     var existingVoucherUsages = await _unitOfWork.VoucherUsageRepository.GetAllAsync();
 
                     var existingVoucherUsage =  existingVoucherUsages.FirstOrDefault(vu => vu.VoucherId == item.VoucherId && vu.OrderId == item.OrderId);
@@ -366,7 +365,6 @@ namespace Application.Services
                         return response;
                     }
 
-                    // Kiểm tra tính hợp lệ của voucher
                     var voucher = await _unitOfWork.VoucherRepository.GetByIdAsync((int)item.VoucherId);
                     if (voucher != null && ValidateVoucher(voucher))
                     {
