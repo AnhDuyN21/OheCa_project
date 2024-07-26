@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace EXE_02.Validations.VoucherValidations
 {
-    public class VoucherUpdateDTOValidation : AbstractValidator<CreateVoucherDTO>
+    public class VoucherUpdateDTOValidation : AbstractValidator<UpdateVoucherDTO>
     {
         public VoucherUpdateDTOValidation()
         {
