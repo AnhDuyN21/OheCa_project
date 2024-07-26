@@ -33,5 +33,9 @@ namespace Application.Interfaces
 
         Task<ServiceResponse<ProductDetailDTO>> UpdateProductAsync(int id, UpdateProductDTO product);
         Task<int> GetCountProduct();
+
+        Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetTop5BestSelling();
+
+        Task<ServiceResponse<IEnumerable<decimal>>> GetRevenueForMonth();
     }
 }

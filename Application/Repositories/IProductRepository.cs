@@ -28,8 +28,10 @@ namespace Application.Repositories
 
 
 
+        public Task<IEnumerable<Product>> GetTop5BestProductSelling();
 
 
+        public Task<IEnumerable<decimal>> GetRevenueForMonth();
 
     }
 }
