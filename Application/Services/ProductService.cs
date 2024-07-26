@@ -461,5 +461,77 @@ namespace Application.Services
                 return reponse;
             }
         }
+
+        public async Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetTop5BestSelling()
+        {
+            var reponse = new ServiceResponse<IEnumerable<ProductDetailDTO>>();
+            List<ProductDetailDTO> productDTOs = new List<ProductDetailDTO>();
+            try
+            {
+                var products = await _unitOfWork.ProductRepository.GetTop5BestProductSelling();
+                foreach (var product in products)
+                {
+                    productDTOs.Add(_mapper.Map<ProductDetailDTO>(product));
+                }
+                if (productDTOs.Count > 0)
+                {
+                    reponse.Data = productDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {productDTOs.Count} product.";
+                    reponse.Error = "Not have a product";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<decimal>>> GetRevenueForMonth()
+        {
+            var reponse = new ServiceResponse<IEnumerable<decimal>>();
+            List<decimal> revenueDTOs = new List<decimal>();
+            try
+            {
+                var revenues = await _unitOfWork.ProductRepository.GetRevenueForMonth();
+                foreach (var revenueForEachMonth in revenues)
+                {
+                    revenueDTOs.Add(_mapper.Map<decimal>(revenueForEachMonth));
+                }
+                if (revenueDTOs.Count > 0)
+                {
+                    reponse.Data = revenueDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {revenueDTOs.Count} revenues.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {revenueDTOs.Count} revenue.";
+                    reponse.Error = "Not have a revenue";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
     }
 }
