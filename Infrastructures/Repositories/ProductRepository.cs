@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 
 namespace Infrastructures.Repositories
 {
@@ -341,7 +342,70 @@ namespace Infrastructures.Repositories
             }
         }
 
+        public async Task<IEnumerable<Product>> GetTop5BestProductSelling()
+        {
+            var query = _dbContext.Products.Include(p => p.Images)
+                                     .Include(p => p.Brand)
+                                     .Include(p => p.Feedbacks)
+                                            .ThenInclude(fb => fb.User)
+                                     .Include(p => p.Discounts)
+                                     .Include(p => p.Images)
+                                     .Include(p => p.ProductMaterials)
+                                            .ThenInclude(pm => pm.Material)
+                                            .ThenInclude(m => m.ChildCategory)
+                                            .ThenInclude(cc => cc.ParentCategory)
+                                     .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null);
+
+            // Filtering by brandId if provided
 
 
+            // Paging logic
+           
+
+            var products = await query.OrderByDescending(p => p.QuantitySold).Take(5).ToListAsync();
+
+            if (products != null && products.Any())
+            {
+                return products;
+            }
+            else
+            {
+                throw new Exception("Don't have any Product");
+            }
+        }
+
+        public async Task<IEnumerable<decimal>> GetRevenueForMonth()
+        {
+            int currentYear = DateTime.Now.Year;
+            var query = await _dbContext.Orders.Where(x => x.Status == 4).Select(p => new
+            {
+
+                ReceiveDate = (DateTime)p.ReceiveDate,
+                OrderId = p.Id,
+                TotalPrice = (decimal?)p.TotalPrice
+            }).ToListAsync();
+
+
+
+            // Khoi tao mang chua kq TotalRevenue của moi thang
+            decimal[] monthlyRevenue = new decimal[12];
+
+            for (int i = 0; i < 12; i++)
+            {
+                DateTime currentMonthStart = new DateTime(currentYear, i + 1, 1);
+                DateTime currentMonthEnd = currentMonthStart.AddMonths(1).AddDays(-1);
+
+
+
+
+                // Tính tổng doanh thu của shop trong tháng hiện tại
+                decimal totalRevenue =  query.Where(p => p.ReceiveDate >= currentMonthStart && p.ReceiveDate <= currentMonthEnd).Sum(p => p.TotalPrice ?? 0m);
+
+                // Gán đối tượng tháng vào mảng monthlyRevenue
+                monthlyRevenue[i] = totalRevenue;
+            }
+
+            return monthlyRevenue;
+        }
     }
 }
