@@ -15,6 +15,23 @@ namespace EXE_02.Controllers
             _addressUserService = addressUserService;
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ViewAllAddressUsers()
+        {
+            var result = await _addressUserService.ViewAll();
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

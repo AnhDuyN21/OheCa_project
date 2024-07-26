@@ -27,14 +27,26 @@ namespace Application.Services
             ServiceResponse<ViewAddressUserDTO> reponse = new ServiceResponse<ViewAddressUserDTO>();
             try
             {
-                var Entity = _mapper.Map<AddressUser>(createDTO);
-                await _unitOfWork.AddressUserRepository.AddAsync(Entity);
-                if (await _unitOfWork.SaveChangeAsync() > 0)
+                var AddressUsers = await _unitOfWork.AddressUserRepository.GetAllAsync(x => x.AddressToShip);
+                var adexited = AddressUsers.Where(x => x.AddressToShipId == createDTO.AddressToShipId).First();
+                if(adexited != null)
                 {
-                    reponse.Data = _mapper.Map<ViewAddressUserDTO>(Entity);
-                    reponse.Success = true;
-                    reponse.Message = "Create new AddressToShip successfully";
+                    reponse.Data = _mapper.Map<ViewAddressUserDTO>(adexited);
+                    reponse.Success = false;
+                    reponse.Message = $"Create new AddressUser Fail,Address is exits by user have id {adexited.UserId}, Please choose another addresstoship for user.";
                 }
+                else
+                {
+                    var Entity = _mapper.Map<AddressUser>(createDTO);
+                    await _unitOfWork.AddressUserRepository.AddAsync(Entity);
+                    if (await _unitOfWork.SaveChangeAsync() > 0)
+                    {
+                        reponse.Data = _mapper.Map<ViewAddressUserDTO>(Entity);
+                        reponse.Success = true;
+                        reponse.Message = "Create new AddressToShip successfully";
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
@@ -137,6 +149,42 @@ namespace Application.Services
                 reponse.ErrorMessages = new List<string> { e.Message };
             }
 
+            return reponse;
+        }
+
+        public async Task<ServiceResponse<IEnumerable<ViewAddressUserDTO>>> ViewAll()
+        {
+            var reponse = new ServiceResponse<IEnumerable<ViewAddressUserDTO>>();
+            try
+            {
+                var c = await _unitOfWork.AddressUserRepository.GetAllAsync(x => x.User, x => x.AddressToShip);
+                if (c == null)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Don't Have Any AddressUser";
+                }
+                else
+                {
+                    if (c.Count <= 0)
+                    {
+                        reponse.Success = true;
+                        reponse.Message = "AddressUser Retrieved Successfully, But List is empty , please add new.";
+                    }
+                    else
+                    {
+                        reponse.Data = _mapper.Map<IEnumerable<ViewAddressUserDTO>>(c);
+                        reponse.Success = true;
+                        reponse.Message = "AddressUser Retrieved Successfully";
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Message = ex.Message;
+                reponse.ErrorMessages = new List<string> { ex.InnerException.ToString() };
+            }
             return reponse;
         }
     }

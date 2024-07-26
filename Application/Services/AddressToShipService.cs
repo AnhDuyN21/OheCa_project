@@ -140,7 +140,7 @@ namespace Application.Services
                 }
                 else
                 {
-                    var s = c.Where(x => x.IsDeleted == false && x.AddressUsers.Select(x => x.UserId == userID).First()).ToList();
+                    var s = c.Where(x => x.AddressUsers.Select(x => x.UserId == userID).First()).ToList();
                     reponse.Data = _mapper.Map<IEnumerable<ViewAddressToShipDTO>>(s);
                     reponse.Success = true;
                     reponse.Message = "Address to Ship Retrieved Successfully";
