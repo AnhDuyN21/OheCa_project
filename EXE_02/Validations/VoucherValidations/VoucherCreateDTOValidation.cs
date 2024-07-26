@@ -9,7 +9,7 @@ namespace EXE_02.Validations.VoucherValidations
         {
             RuleFor(x => x.Discount)
                     .NotNull().WithMessage("Discount cannot be null.")
-                    .InclusiveBetween(0, 1).WithMessage("Discount must be between 0 and 1.");
+                    .InclusiveBetween(0, 100).WithMessage("Discount must be between 0 and 1.");
 
             RuleFor(x => x.StartTime)
                 .NotNull().WithMessage("StartTime cannot be null.")

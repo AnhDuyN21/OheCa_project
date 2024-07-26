@@ -1,12 +1,7 @@
 ﻿using Application.Interfaces;
-using Application.Services;
-using Application.ViewModels.ShipCompanyDTOs;
-using Application.ViewModels.ShipperDTOs;
 using Application.ViewModels.VoucherDTOs;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers

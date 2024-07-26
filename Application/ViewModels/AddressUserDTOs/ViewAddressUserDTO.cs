@@ -1,11 +1,12 @@
 ﻿using Application.ViewModels.AddressToShipDTOs;
+using Domain.Entities;
 
 namespace Application.ViewModels.AddressUserDTOs
 {
     public class ViewAddressUserDTO
     {
-        public virtual IEnumerable<ViewAddressToShipDTO> AddressToShipDTOs { get; set; }
+        public int? UserId { get; set; }
 
-        public virtual UserDTO.UserDTO User { get; set; }
+        public int? AddressToShipId { get; set; }
     }
 }
