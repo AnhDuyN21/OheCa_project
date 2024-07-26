@@ -63,7 +63,6 @@ namespace EXE_02.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> SearchAddressToShipByName(int UserId)
         {
-<<<<<<< HEAD
             var result = await _addressToShipService.GetAddressToShipByUserIDAsync(UserId);
             if (result == null)
             {
@@ -71,15 +70,6 @@ namespace EXE_02.Controllers
             }
             if (!result.Success)
             {
-=======
-           var result = await _addressToShipService.GetAddressToShipByUserIDAsync(UserId);
-            if (result == null)
-           {
-                return BadRequest();
-            }
-           if (!result.Success)
-           {
->>>>>>> d0305ecce55da3a4b3d46b640075bf526dde3984
                 return BadRequest(result);
             }
             return Ok(result);
