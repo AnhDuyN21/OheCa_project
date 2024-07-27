@@ -339,7 +339,7 @@ namespace Application.Services
                 var orders = await _unitOfWork.OrderRepository.GetAllAsync();
                 foreach (var order in orders)
                 {
-                    if(order.Status == 4)
+                    if(order.Status == 3)
                     {
                         OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
                     }
