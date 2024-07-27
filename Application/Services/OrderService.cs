@@ -433,7 +433,7 @@ namespace Application.Services
                 {
                     if (orderChecked.Status == 0 || orderChecked.Status == 1)
                     {
-                        orderChecked.Status = 4;
+                        orderChecked.Status = 3;
                         var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
                         var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
                         if (await _unitOfWork.SaveChangeAsync() > 0)
