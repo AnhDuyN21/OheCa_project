@@ -20,6 +20,52 @@ namespace Application.Services
             _mapper = mapper;
         }
 
+        public async Task<ServiceResponse<string>> CancelOrder(int id)
+        {
+            var reponse = new ServiceResponse<string>();
+            try
+            {
+                var orderChecked = await _unitOfWork.OrderRepository.GetOrderByIDAsync(id);
+
+                if (orderChecked == null)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Not found order, you are sure input";
+                    reponse.Error = "Not found order";
+                }
+                else
+                {
+                    if (orderChecked.IsConfirm == 0)
+                    {
+                        orderChecked.IsConfirm = 2;
+                        if (await _unitOfWork.SaveChangeAsync() > 0)
+                        {
+                            reponse.Success = true;
+                            reponse.Message = "Confirm order successfully";
+                        }
+                        else
+                        {
+                            reponse.Success = false;
+                            reponse.Message = "Confirm order fail!";
+                        }
+                    }
+                    else
+                    {
+                        reponse.Success = false;
+                        reponse.Message = "Cancel order fail, order is confirmed, cannot cancel";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                reponse.Success = false;
+                reponse.Message = "Update order fail!, exception";
+                reponse.ErrorMessages = new List<string> { e.Message };
+            }
+
+            return reponse;
+        }
+
         public async Task<ServiceResponse<OrderDTO>> CancelOrderAsync(int id)
         {
             var reponse = new ServiceResponse<OrderDTO>();
@@ -120,7 +166,7 @@ namespace Application.Services
                     orderEntity.ShipDate = DateTime.Now.AddDays(1);
                     orderEntity.ReceiveDate = DateTime.Now.AddDays(5);
                     orderEntity.IsConfirm = 0;
-                    orderEntity.Status = (int)OrderStatusEnum.Pending;
+                    orderEntity.Status = (int)OrderStatusEnum.Processing;
                     orderEntity.StatusOfPayment = 0;
                     orderEntity.TotalPrice = totalPrice;
                     _unitOfWork.OrderRepository.Update(orderEntity);
@@ -199,8 +245,7 @@ namespace Application.Services
             try
             {
                 var orderEntity = _mapper.Map<Order>(order);
-                
-                    await _unitOfWork.OrderRepository.AddAsync(orderEntity);
+                        await _unitOfWork.OrderRepository.AddAsync(orderEntity);
                     
                     if (await _unitOfWork.SaveChangeAsync() > 0)
                     {
@@ -285,6 +330,45 @@ namespace Application.Services
             }
         }
 
+        public async Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderCompleteAsync()
+        {
+            var reponse = new ServiceResponse<IEnumerable<OrderDTO>>();
+            List<OrderDTO> OrderDTOs = new List<OrderDTO>();
+            try
+            {
+                var orders = await _unitOfWork.OrderRepository.GetAllAsync();
+                foreach (var order in orders)
+                {
+                    if(order.Status == 4)
+                    {
+                        OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
+                    }
+                }
+                if (OrderDTOs.Count > 0)
+                {
+                    reponse.Data = OrderDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {OrderDTOs.Count} order.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {OrderDTOs.Count} order.";
+                    reponse.Error = "Not have a order";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
         public async Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrdersAsync()
         {
             var reponse = new ServiceResponse<IEnumerable<OrderDTO>>();
@@ -325,6 +409,66 @@ namespace Application.Services
         public Task<ServiceResponse<IEnumerable<OrderDTO>>> GetSortedOrdersAsync(string sortName)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<string>> ReceivedOrder(int id)
+        {
+            var reponse = new ServiceResponse<string>();
+            try
+            {
+                var orderChecked = await _unitOfWork.OrderRepository.GetOrderByIDAsync(id);
+
+                if (orderChecked == null)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Not found order, you are sure input";
+                    reponse.Error = "Not found order";
+                }
+                else if (orderChecked.IsDeleted == true)
+                {
+                    reponse.Success = false;
+                    reponse.Message = "Order are deleted, can not received order.";
+                }
+                else if (orderChecked.IsConfirm == 1)
+                {
+                    if (orderChecked.Status == 0 || orderChecked.Status == 1)
+                    {
+                        orderChecked.Status = 4;
+                        var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
+                        var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
+                        if (await _unitOfWork.SaveChangeAsync() > 0)
+                        {
+                            reponse.Success = true;
+                            reponse.Message = "received order successfully";
+                        }
+                        else
+                        {
+                            reponse.Success = false;
+                            reponse.Message = "received order fail!";
+                        }
+                    }
+                    else
+                    {
+                        reponse.Success = false;
+                        reponse.Message = "received order fail, order is unpaid or not yet delivered , cannot received";
+                    }
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = "received order fail";
+                }
+                
+                    
+            }
+            catch (Exception e)
+            {
+                reponse.Success = false;
+                reponse.Message = "Update order fail!, exception";
+                reponse.ErrorMessages = new List<string> { e.Message };
+            }
+
+            return reponse;
         }
 
         public async Task<ServiceResponse<OrderDTO>> UpdateOrderAsync(int id, UpdateOrderDTO order)
