@@ -61,7 +61,7 @@ namespace EXE_02.Controllers
         [HttpGet("{UserId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SearchAddressToShipByName(int UserId)
+        public async Task<IActionResult> SearchAddressToShipByUserId(int UserId)
         {
             var result = await _addressToShipService.GetAddressToShipByUserIDAsync(UserId);
             if (result == null)
