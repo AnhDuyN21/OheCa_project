@@ -5,6 +5,7 @@ using Application.ViewModels.ShipCompanyDTOs;
 using Application.ViewModels.ShipperDTOs;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,7 @@ namespace EXE_02.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
