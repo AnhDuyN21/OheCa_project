@@ -27,26 +27,52 @@ namespace Application.Services
             ServiceResponse<ViewAddressUserDTO> reponse = new ServiceResponse<ViewAddressUserDTO>();
             try
             {
-                var AddressUsers = await _unitOfWork.AddressUserRepository.GetAllAsync(x => x.AddressToShip);
-                var adexited = AddressUsers.Where(x => x.AddressToShipId == createDTO.AddressToShipId).First();
-                if(adexited != null)
+                var addressUsersList = await _unitOfWork.AddressUserRepository.GetAllAsync(x => x.AddressToShip);
+                //var adexited = AddressUsers.Where(x => x.AddressToShipId == createDTO.AddressToShipId).First();
+                //if (adexited != null)
+                //{
+                //    reponse.Data = _mapper.Map<ViewAddressUserDTO>(adexited);
+                //    reponse.Success = false;
+                //    reponse.Message = $"Create new AddressUser Fail,Address is exits by user have id {adexited.UserId}, Please choose another addresstoship for user.";
+                //}
+                //else
+                //{
+                //    var Entity = _mapper.Map<AddressUser>(createDTO);
+                //    await _unitOfWork.AddressUserRepository.AddAsync(Entity);
+                //    if (await _unitOfWork.SaveChangeAsync() > 0)
+                //    {
+                //        reponse.Data = _mapper.Map<ViewAddressUserDTO>(Entity);
+                //        reponse.Success = true;
+                //        reponse.Message = "Create new AddressToShip successfully";
+                //    }
+                //}
+
+                foreach (var addressUser in addressUsersList)
                 {
-                    reponse.Data = _mapper.Map<ViewAddressUserDTO>(adexited);
-                    reponse.Success = false;
-                    reponse.Message = $"Create new AddressUser Fail,Address is exits by user have id {adexited.UserId}, Please choose another addresstoship for user.";
-                }
-                else
-                {
-                    var Entity = _mapper.Map<AddressUser>(createDTO);
-                    await _unitOfWork.AddressUserRepository.AddAsync(Entity);
-                    if (await _unitOfWork.SaveChangeAsync() > 0)
+                    if (createDTO.AddressToShipId == addressUser.AddressToShip.Id)
                     {
-                        reponse.Data = _mapper.Map<ViewAddressUserDTO>(Entity);
-                        reponse.Success = true;
-                        reponse.Message = "Create new AddressToShip successfully";
+                        reponse.Success = false;
+                        reponse.Message = $"Address belong to User id {addressUser.UserId}";
+                        return reponse;
                     }
                 }
-                
+                var addressToShip = await _unitOfWork.AddressToShipRepository.GetByIdAsync((int)createDTO.AddressToShipId);
+                if (addressToShip == null)
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Address with id {createDTO.AddressToShipId} is not exist";
+                    return reponse;
+                }
+                var Entity = _mapper.Map<AddressUser>(createDTO);
+                await _unitOfWork.AddressUserRepository.AddAsync(Entity);
+                if (await _unitOfWork.SaveChangeAsync() > 0)
+                {
+                    reponse.Data = _mapper.Map<ViewAddressUserDTO>(Entity);
+                    reponse.Success = true;
+                    reponse.Message = "Create new AddressToShip successfully";
+                }
+
+
             }
             catch (Exception ex)
             {
