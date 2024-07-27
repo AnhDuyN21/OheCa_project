@@ -2,7 +2,9 @@
 using Application.ServiceResponse;
 using Application.ViewModels.AddressToShipDTOs;
 using AutoMapper;
+using Azure;
 using Domain.Entities;
+using static Google.Apis.Requests.BatchRequest;
 
 
 namespace Application.Services
@@ -129,30 +131,42 @@ namespace Application.Services
 
         public async Task<ServiceResponse<IEnumerable<ViewAddressToShipDTO>>> GetAddressToShipByUserIDAsync(int userID)
         {
-            var reponse = new ServiceResponse<IEnumerable<ViewAddressToShipDTO>>();
+            var response = new ServiceResponse<IEnumerable<ViewAddressToShipDTO>>();
             try
             {
-                var c = await _unitOfWork.AddressToShipRepository.GetAllAsync(x => x.AddressUsers);
-                if (c == null)
+                var addresses = await _unitOfWork.AddressToShipRepository.GetAllAsync(x => x.AddressUsers);
+                if (addresses == null)
                 {
-                    reponse.Success = false;
-                    reponse.Message = "Don't Have Any Address to Ship";
+                    response.Success = false;
+                    response.Message = "Don't Have Any Address to Ship";
                 }
                 else
                 {
-                    var s = c.Where(x => x.AddressUsers.Select(x => x.UserId == userID).First()).ToList();
-                    reponse.Data = _mapper.Map<IEnumerable<ViewAddressToShipDTO>>(s);
-                    reponse.Success = true;
-                    reponse.Message = "Address to Ship Retrieved Successfully";
+                    var userAddresses = addresses.Where(item => item.CreatedBy == userID).ToList();
+                    if (userAddresses.Any())
+                    {
+                        response.Data = _mapper.Map<IEnumerable<ViewAddressToShipDTO>>(userAddresses);
+                        response.Success = true;
+                        response.Message = "Address to Ship Retrieved Successfully";
+                    }
+                    else
+                    {
+                        response.Success = false;
+                        response.Message = "No Addresses Found for the Given User ID";
+                    }
+                    //var s = c.Where(x => x.AddressUsers.Select(x => x.UserId == userID).First()).ToList();
+                    //var 
+                    //reponse.Data = _mapper.Map<IEnumerable<ViewAddressToShipDTO>>(s);
+
                 }
             }
             catch (Exception ex)
             {
-                reponse.Success = false;
-                reponse.Message = ex.Message;
-                reponse.ErrorMessages = new List<string> { ex.InnerException.ToString() };
+                response.Success = false;
+                response.Message = ex.Message;
+                response.ErrorMessages = new List<string> { ex.InnerException.ToString() };
             }
-            return reponse;
+            return response;
         }
 
         public async Task<ServiceResponse<ViewAddressToShipDTO>> GetAddressToShipByIdAsync(int Id)

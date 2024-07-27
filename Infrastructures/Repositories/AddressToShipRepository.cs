@@ -3,6 +3,7 @@ using Application.Repositories;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace Infrastructures.Repositories
         : base(context, timeService, claimsService)
         {
             _dbContext = context;
+            
         }
+
     }
 }
