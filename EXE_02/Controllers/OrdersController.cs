@@ -34,6 +34,15 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ViewAllOrderCompleted()
+        {
+            var result = await _orderService.GetOrderCompleteAsync();
+            return Ok(result);
+        }
+
         //[Authorize(Roles = "Customer")]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -143,6 +152,32 @@ namespace EXE_02.Controllers
         public async Task<IActionResult> ConfirmOrder(int id)
         {
             var c = await _orderService.ConfirmOrder(id);
+            if (!c.Success)
+            {
+                return BadRequest(c);
+            }
+            return Ok(c);
+        }
+
+        //[HttpPut("{id:int}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> CancelOrder(int id)
+        //{
+        //    var c = await _orderService.ConfirmOrder(id);
+        //    if (!c.Success)
+        //    {
+        //        return BadRequest(c);
+        //    }
+        //    return Ok(c);
+        //}
+
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ReceivedOrder(int id)
+        {
+            var c = await _orderService.ReceivedOrder(id);
             if (!c.Success)
             {
                 return BadRequest(c);
