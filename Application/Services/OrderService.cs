@@ -141,7 +141,6 @@ namespace Application.Services
 
             try
             {
-                double totalPrice = 0;
                 var orderEntity = _mapper.Map<Order>(order);
                 await _unitOfWork.OrderRepository.AddAsync(orderEntity);
                 if( await _unitOfWork.SaveChangeAsync() > 0)
@@ -156,19 +155,16 @@ namespace Application.Services
                             Quantity = cart.Quantity.Value,
                             Price = product.PriceSold.Value
                         };
-                        totalPrice += product.PriceSold.Value * cart.Quantity.Value;
                         await _unitOfWork.OrderDetailRepository.AddAsync(orderDetail);
                     }
 
                     var shipper = await _unitOfWork.ShipperRepository.GetAllAsync();
-                    orderEntity.TotalPrice = totalPrice;
                     orderEntity.ShipperId = shipper.FirstOrDefault().Id;
                     orderEntity.ShipDate = DateTime.Now.AddDays(1);
                     orderEntity.ReceiveDate = DateTime.Now.AddDays(5);
                     orderEntity.IsConfirm = 0;
                     orderEntity.Status = (int)OrderStatusEnum.Processing;
                     orderEntity.StatusOfPayment = 0;
-                    orderEntity.TotalPrice = totalPrice;
                     _unitOfWork.OrderRepository.Update(orderEntity);
                     if (await _unitOfWork.SaveChangeAsync() > 0)
                     {

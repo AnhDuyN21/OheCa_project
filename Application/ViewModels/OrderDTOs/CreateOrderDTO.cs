@@ -57,7 +57,7 @@ namespace Application.ViewModels.OrderDTOs
 
         public int? AddressToShipId { get; set; }
 
-        //public double? TotalPrice { get; set; }
+        public double? TotalPrice { get; set; }
 
         //public int? OrderId { get; set; }
 
