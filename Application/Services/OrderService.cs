@@ -141,7 +141,6 @@ namespace Application.Services
 
             try
             {
-                double totalPrice = 0;
                 var orderEntity = _mapper.Map<Order>(order);
                 await _unitOfWork.OrderRepository.AddAsync(orderEntity);
                 if( await _unitOfWork.SaveChangeAsync() > 0)
@@ -156,19 +155,16 @@ namespace Application.Services
                             Quantity = cart.Quantity.Value,
                             Price = product.PriceSold.Value
                         };
-                        totalPrice += product.PriceSold.Value * cart.Quantity.Value;
                         await _unitOfWork.OrderDetailRepository.AddAsync(orderDetail);
                     }
 
                     var shipper = await _unitOfWork.ShipperRepository.GetAllAsync();
-                    orderEntity.TotalPrice = totalPrice;
                     orderEntity.ShipperId = shipper.FirstOrDefault().Id;
                     orderEntity.ShipDate = DateTime.Now.AddDays(1);
                     orderEntity.ReceiveDate = DateTime.Now.AddDays(5);
                     orderEntity.IsConfirm = 0;
                     orderEntity.Status = (int)OrderStatusEnum.Processing;
                     orderEntity.StatusOfPayment = 0;
-                    orderEntity.TotalPrice = totalPrice;
                     _unitOfWork.OrderRepository.Update(orderEntity);
                     if (await _unitOfWork.SaveChangeAsync() > 0)
                     {
@@ -339,7 +335,7 @@ namespace Application.Services
                 var orders = await _unitOfWork.OrderRepository.GetAllAsync();
                 foreach (var order in orders)
                 {
-                    if(order.Status == 4)
+                    if(order.Status == 3)
                     {
                         OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
                     }
@@ -433,7 +429,7 @@ namespace Application.Services
                 {
                     if (orderChecked.Status == 0 || orderChecked.Status == 1)
                     {
-                        orderChecked.Status = 4;
+                        orderChecked.Status = 3;
                         var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
                         var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
                         if (await _unitOfWork.SaveChangeAsync() > 0)
