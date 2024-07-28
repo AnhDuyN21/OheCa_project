@@ -335,7 +335,7 @@ namespace Application.Services
                 var orders = await _unitOfWork.OrderRepository.GetAllAsync();
                 foreach (var order in orders)
                 {
-                    if(order.Status == 4)
+                    if(order.Status == 3)
                     {
                         OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
                     }
@@ -429,7 +429,7 @@ namespace Application.Services
                 {
                     if (orderChecked.Status == 0 || orderChecked.Status == 1)
                     {
-                        orderChecked.Status = 4;
+                        orderChecked.Status = 3;
                         var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
                         var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
                         if (await _unitOfWork.SaveChangeAsync() > 0)
