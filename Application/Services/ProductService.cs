@@ -533,5 +533,80 @@ namespace Application.Services
                 return reponse;
             }
         }
+
+        public async Task<ServiceResponse<decimal>> GetTotalRevenue()
+        {
+            var reponse = new ServiceResponse<decimal>();
+           
+            try
+            {
+                var revenues = await _unitOfWork.ProductRepository.GetTotalRevenue();
+                
+                if (revenues != null)
+                {
+                    reponse.Data = revenues;
+                    reponse.Success = true;
+                    reponse.Message = $"Have revenues.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have not revenue.";
+                    reponse.Error = "Not have a revenue";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<decimal>>> GetRevenueForWeek()
+        {
+            var reponse = new ServiceResponse<IEnumerable<decimal>>();
+            List<decimal> revenueDTOs = new List<decimal>();
+            try
+            {
+                var revenues = await _unitOfWork.ProductRepository.GetRevenueForWeek();
+                foreach (var revenueForEachMonth in revenues)
+                {
+                    revenueDTOs.Add(_mapper.Map<decimal>(revenueForEachMonth));
+                }
+                if (revenueDTOs.Count > 0)
+                {
+                    reponse.Data = revenueDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {revenueDTOs.Count} revenues.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {revenueDTOs.Count} revenue.";
+                    reponse.Error = "Not have a revenue";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
+        public async Task<int> GetCountProductDiscount()
+        {
+            var getAllProduct = await _unitOfWork.ProductRepository.GetProductdDiscountAsync();
+            return getAllProduct.Count();
+        }
     }
 }

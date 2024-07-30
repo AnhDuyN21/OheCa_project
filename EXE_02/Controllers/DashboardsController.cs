@@ -29,5 +29,33 @@ namespace EXE_02.Controllers
             var result = await _productService.GetRevenueForMonth();
             return Ok(result);
         }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetTotalRevenue()
+        {
+            var result = await _productService.GetTotalRevenue();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RevenueForWeek()
+        {
+            var result = await _productService.GetRevenueForWeek();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetCountProductDiscount()
+        {
+            var result = await _productService.GetCountProductDiscount();
+            return Ok(result);
+        }
+
     }
 }
