@@ -124,7 +124,16 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
-      
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateQuantityAsync(int id, int quantity)
+        {
+            var result = await _productService.UpdateQuanityAsync(id, quantity);
+            return Ok(result);
+        }
+
 
     }
 }

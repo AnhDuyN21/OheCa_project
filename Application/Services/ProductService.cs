@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+using static Google.Apis.Requests.BatchRequest;
 
 
 namespace Application.Services
@@ -607,6 +608,48 @@ namespace Application.Services
         {
             var getAllProduct = await _unitOfWork.ProductRepository.GetProductdDiscountAsync();
             return getAllProduct.Count();
+        }
+
+
+        public async Task<ServiceResponse<ProductDetailDTO>> UpdateQuanityAsync(int id, int quantity)
+        {
+            var _response = new ServiceResponse<ProductDetailDTO>();
+
+            try
+            {
+                var productById = await _unitOfWork.ProductRepository.GetByIdAsync(id);
+
+                if (productById != null)
+                {
+                    productById.Quantity = productById.Quantity - quantity;
+                    productById.QuantitySold = productById.QuantitySold + quantity;
+
+
+
+                    _unitOfWork.ProductRepository.Update(productById);
+                    await _unitOfWork.SaveChangeAsync();
+                    var productDTO = _mapper.Map<ProductDetailDTO>(productById);
+
+
+                    _response.Data = productDTO;
+                    _response.Success = true;
+                    _response.Message = "Found Product By Id";
+                }
+                else
+                {
+                    _response.Success = false;
+                    _response.Message = "Don't Have Any Product ";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _response.Success = false;
+                _response.ErrorMessages = new List<string> { ex.Message };
+                return _response;
+            }
+
+            return _response;
         }
     }
 }
