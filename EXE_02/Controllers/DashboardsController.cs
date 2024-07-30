@@ -57,5 +57,14 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetCountProductSold()
+        {
+            var result = await _productService.GetCountProductSold();
+            return Ok(result);
+        }
+
     }
 }

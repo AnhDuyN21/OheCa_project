@@ -39,8 +39,8 @@ namespace Application.Repositories
 
         public Task<IEnumerable<Product>> GetProductdDiscountAsync(int? pageIndex = null, int? pageSize = null);
 
-        
 
+        public Task<IEnumerable<Product>> GetProductSoldAsync(int? pageIndex = null, int? pageSize = null);
 
 
     }

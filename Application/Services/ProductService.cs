@@ -651,5 +651,11 @@ namespace Application.Services
 
             return _response;
         }
+
+        public async Task<int> GetCountProductSold()
+        {
+            var getAllProduct = await _unitOfWork.ProductRepository.GetProductSoldAsync();
+            return getAllProduct.Count();
+        }
     }
 }
