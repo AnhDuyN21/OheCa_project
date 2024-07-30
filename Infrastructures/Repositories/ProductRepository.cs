@@ -507,5 +507,7 @@ namespace Infrastructures.Repositories
             int firstWeekDay = 7 * (week - 1) - daysToFirstDayOfWeek;
             return jan1.AddDays(firstWeekDay);
         }
+
+     
     }
 }
