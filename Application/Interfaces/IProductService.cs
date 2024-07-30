@@ -37,5 +37,13 @@ namespace Application.Interfaces
         Task<ServiceResponse<IEnumerable<ProductDetailDTO>>> GetTop5BestSelling();
 
         Task<ServiceResponse<IEnumerable<decimal>>> GetRevenueForMonth();
+
+        Task<ServiceResponse<decimal>> GetTotalRevenue();
+
+        Task<ServiceResponse<IEnumerable<decimal>>> GetRevenueForWeek();
+
+
+        Task<int> GetCountProductDiscount();
+
     }
 }

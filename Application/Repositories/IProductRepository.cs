@@ -33,5 +33,11 @@ namespace Application.Repositories
 
         public Task<IEnumerable<decimal>> GetRevenueForMonth();
 
+        public Task<decimal> GetTotalRevenue();
+
+        public Task<IEnumerable<decimal>> GetRevenueForWeek();
+
+        public Task<IEnumerable<Product>> GetProductdDiscountAsync(int? pageIndex = null, int? pageSize = null);
+
     }
 }
