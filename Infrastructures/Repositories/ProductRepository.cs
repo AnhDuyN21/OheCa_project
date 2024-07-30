@@ -378,7 +378,7 @@ namespace Infrastructures.Repositories
         public async Task<IEnumerable<decimal>> GetRevenueForMonth()
         {
             int currentYear = DateTime.Now.Year;
-            var query = await _dbContext.Orders.Where(x => x.Status == 4).Select(p => new
+            var query = await _dbContext.Orders.Where(x => x.Status == 3).Select(p => new
             {
 
                 ReceiveDate = (DateTime)p.ReceiveDate,
@@ -412,7 +412,7 @@ namespace Infrastructures.Repositories
         public async Task<decimal> GetTotalRevenue()
         {
             
-            var query = await _dbContext.Orders.Where(x => x.Status == 4).Select(p => new
+            var query = await _dbContext.Orders.Where(x => x.Status == 3).Select(p => new
             {               
                 OrderId = p.Id,
                 TotalPrice = (decimal?)p.TotalPrice
@@ -430,7 +430,7 @@ namespace Infrastructures.Repositories
             int currentWeek = cal.GetWeekOfYear(today, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
             int currentYear = today.Year;
 
-            var query = await _dbContext.Orders.Where(x => x.Status == 4).Select(p => new
+            var query = await _dbContext.Orders.Where(x => x.Status == 3).Select(p => new
             {
 
                 ReceiveDate = (DateTime)p.ReceiveDate,
@@ -508,6 +508,43 @@ namespace Infrastructures.Repositories
             return jan1.AddDays(firstWeekDay);
         }
 
-     
+
+        public async Task<IEnumerable<Product>> GetProductSoldAsync(int? pageIndex = null, int? pageSize = null)
+        {
+            var query = _dbContext.Products.Include(im => im.Images)
+                                    .Include(p => p.Brand)
+                                    .Include(p => p.Feedbacks)
+                                           .ThenInclude(fb => fb.User)
+                                    .Include(p => p.Discounts)
+                                    .Include(p => p.Images)
+                                    .Include(p => p.ProductMaterials)
+                                           .ThenInclude(pm => pm.Material)
+                                           .ThenInclude(m => m.ChildCategory)
+                                           .ThenInclude(cc => cc.ParentCategory)
+                                    .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null && im.QuantitySold > 0);
+
+            // Filtering by brandId if provided
+
+
+            // Paging logic
+            if (pageIndex.HasValue && pageSize.HasValue)
+            {
+                int validPageIndex = pageIndex.Value > 0 ? pageIndex.Value - 1 : 0;
+                int validPageSize = pageSize.Value > 0 ? pageSize.Value : 10; // Assuming a default pageSize of 10 if an invalid value is passed
+
+                query = query.Skip(validPageIndex * validPageSize).Take(validPageSize);
+            }
+
+            var products = await query.ToListAsync();
+
+            if (products != null && products.Any())
+            {
+                return products;
+            }
+            else
+            {
+                throw new Exception("Don't have any Product");
+            }
+        }
     }
 }

@@ -47,5 +47,7 @@ namespace Application.Interfaces
 
         Task<ServiceResponse<ProductDetailDTO>> UpdateQuanityAsync(int id, int quantity);
 
+        Task<int> GetCountProductSold();
+
     }
 }
