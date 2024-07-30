@@ -31,22 +31,16 @@ namespace EXE_02.Controllers
                 var orders = await _orderService.GetOrderByIdAsync(orderId);
                 foreach (var o in order.Data)
                 {
-                    //    //Ép kiểu int? thành int
                     int productId = (int)o.ProductId;
 
-                    //Lấy product với productID trong OrderDetail
                     var product = await _productService.GetProductByIdAsync(productId);
 
-                    //Gán Name product có được
                     string itemName = product.Data.Name;
 
-                    //Gán Quantity từ OrderDetail
                     int quantity = (int)o.Quantity;
 
-                    //Gán Price từ OrderDetail
                     int price = (int)o.Price;
 
-                    // Khởi tạo đối tượng ItemData với các giá trị đã lấy được
                     ItemData item = new(itemName, quantity, price);
                     items.Add(item);
                 }

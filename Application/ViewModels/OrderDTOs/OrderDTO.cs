@@ -15,7 +15,7 @@ namespace Application.ViewModels.OrderDTOs
 
         public int? ShipperId { get; set; }
 
-        public DateTime? OrderDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         public DateTime? ShipDate { get; set; }
 

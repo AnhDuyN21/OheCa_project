@@ -91,11 +91,9 @@ namespace Application.Services
                 }
                 else
                 {
-                    //trang thai đơn hàng chưa active thì cho phép update
                     if (orderChecked.Status == 1)
                     {
-                        //var orderFofUpdate = _mapper.Map(order, orderChecked);
-                        orderChecked.Status = 0;
+                        orderChecked.Status = 2;
                         var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
                         var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
                         if (await _unitOfWork.SaveChangeAsync() > 0)
@@ -159,6 +157,7 @@ namespace Application.Services
                     }
 
                     var shipper = await _unitOfWork.ShipperRepository.GetAllAsync();
+
                     orderEntity.ShipperId = shipper.FirstOrDefault().Id;
                     orderEntity.ShipDate = DateTime.Now.AddDays(1);
                     orderEntity.ReceiveDate = DateTime.Now.AddDays(5);
@@ -482,8 +481,7 @@ namespace Application.Services
                 }
                 else
                 {
-                    //trang thai đơn hàng chưa active thì cho phép update
-                    if (orderChecked.Status == 1)
+                    if (orderChecked.Status < 2)
                     {
                         var orderFofUpdate = _mapper.Map(order, orderChecked);
                         var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
@@ -503,7 +501,7 @@ namespace Application.Services
                     else
                     {
                         reponse.Success = false;
-                        reponse.Message = "Update order fail, order is deleted, cannot update";
+                        reponse.Message = "Update order fail, order is cancel or complete, cannot update";
                     }
                 }
             }

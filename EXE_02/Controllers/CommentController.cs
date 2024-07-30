@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EXE_02.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CommentController : BaseController
     {
         private readonly ICommentService _commentService;
