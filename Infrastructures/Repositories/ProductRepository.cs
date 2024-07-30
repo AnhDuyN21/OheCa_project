@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Printing;
+using System.Globalization;
 
 namespace Infrastructures.Repositories
 {
@@ -408,19 +409,103 @@ namespace Infrastructures.Repositories
             return monthlyRevenue;
         }
 
-        public Task<decimal> GetTotalRevenue()
+        public async Task<decimal> GetTotalRevenue()
         {
-            throw new NotImplementedException();
+            
+            var query = await _dbContext.Orders.Where(x => x.Status == 4).Select(p => new
+            {               
+                OrderId = p.Id,
+                TotalPrice = (decimal?)p.TotalPrice
+            }).ToListAsync();     
+                decimal totalRevenue = query.Sum(p => p.TotalPrice ?? 0m);
+            return totalRevenue;
         }
 
-        public Task<IEnumerable<decimal>> GetRevenueForWeek()
+        public async Task<IEnumerable<decimal>> GetRevenueForWeek()
         {
-            throw new NotImplementedException();
+            DateTime today = DateTime.Today;
+            DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+            Calendar cal = dfi.Calendar;
+
+            int currentWeek = cal.GetWeekOfYear(today, dfi.CalendarWeekRule, dfi.FirstDayOfWeek);
+            int currentYear = today.Year;
+
+            var query = await _dbContext.Orders.Where(x => x.Status == 4).Select(p => new
+            {
+
+                ReceiveDate = (DateTime)p.ReceiveDate,
+                OrderId = p.Id,
+                TotalPrice = (decimal?)p.TotalPrice
+            }).ToListAsync();
+
+
+
+            // Khoi tao mang chua kq TotalRevenue của moi thang
+            decimal[] dailyRevenue = new decimal[7];
+
+            for (int i = 0; i < 7; i++)
+            {
+                DateTime currentDate = FirstDateOfWeek(currentYear, currentWeek).AddDays(i);
+
+                // Tính tổng doanh thu của shop trong ngày hiện tại
+                decimal totalRevenue = query.Where(p => p.ReceiveDate.Date == currentDate.Date).Sum(p => p.TotalPrice ?? 0m);
+
+                // Gán giá trị tổng doanh thu vào mảng dailyRevenue
+                dailyRevenue[i] = totalRevenue;
+               
+            }
+            return dailyRevenue;
         }
 
-        public Task<IEnumerable<Product>> GetProductdDiscountAsync(int? pageIndex = null, int? pageSize = null)
+        public async Task<IEnumerable<Product>> GetProductdDiscountAsync(int? pageIndex = null, int? pageSize = null)
         {
-            throw new NotImplementedException();
+            var query = _dbContext.Products.Include(im => im.Images)
+                                    .Include(p => p.Brand)
+                                    .Include(p => p.Feedbacks)
+                                           .ThenInclude(fb => fb.User)
+                                    .Include(p => p.Discounts)
+                                    .Include(p => p.Images)
+                                    .Include(p => p.ProductMaterials)
+                                           .ThenInclude(pm => pm.Material)
+                                           .ThenInclude(m => m.ChildCategory)
+                                           .ThenInclude(cc => cc.ParentCategory)
+                                    .Where(im => im.Images.Any(im => im.Thumbnail == true) && im.IsDeleted == null && im.DiscountPercent > 0);
+
+            // Filtering by brandId if provided
+
+
+            // Paging logic
+            if (pageIndex.HasValue && pageSize.HasValue)
+            {
+                int validPageIndex = pageIndex.Value > 0 ? pageIndex.Value - 1 : 0;
+                int validPageSize = pageSize.Value > 0 ? pageSize.Value : 10; // Assuming a default pageSize of 10 if an invalid value is passed
+
+                query = query.Skip(validPageIndex * validPageSize).Take(validPageSize);
+            }
+
+            var products = await query.ToListAsync();
+
+            if (products != null && products.Any())
+            {
+                return products;
+            }
+            else
+            {
+                throw new Exception("Don't have any Product");
+            }
+        }
+
+        public static DateTime FirstDateOfWeek(int year, int week)
+        {
+            DateTime jan1 = new DateTime(year, 1, 1);
+            int daysToFirstDayOfWeek = (int)jan1.DayOfWeek - (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+
+            if (daysToFirstDayOfWeek < 0)
+            {
+                daysToFirstDayOfWeek += 7;
+            }
+            int firstWeekDay = 7 * (week - 1) - daysToFirstDayOfWeek;
+            return jan1.AddDays(firstWeekDay);
         }
     }
 }
