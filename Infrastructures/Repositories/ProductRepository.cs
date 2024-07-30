@@ -407,5 +407,20 @@ namespace Infrastructures.Repositories
 
             return monthlyRevenue;
         }
+
+        public Task<decimal> GetTotalRevenue()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<decimal>> GetRevenueForWeek()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Product>> GetProductdDiscountAsync(int? pageIndex = null, int? pageSize = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
