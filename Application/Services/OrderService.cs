@@ -4,6 +4,7 @@ using Application.ViewModels.OrderDTOs;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enum;
+using MailKit.Search;
 using System.Linq.Expressions;
 using System.Security.Claims;
 
@@ -14,12 +15,14 @@ namespace Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IProductService _productService;
+        private readonly IOrderDetailService _orderDetailService;
 
-        public OrderService(IUnitOfWork unitOfWork, IMapper mapper, IProductService productService)
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper, IProductService productService, IOrderDetailService orderDetailService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _productService = productService;
+            _orderDetailService = orderDetailService;
         }
 
         public async Task<ServiceResponse<string>> CancelOrder(int id)
@@ -275,18 +278,34 @@ namespace Application.Services
             var _response = new ServiceResponse<OrderDTO>();
             try
             {
-                var c = await _unitOfWork.OrderRepository.GetOrderByIDAsync(orderId);
-                if (c == null)
+                var order = await _unitOfWork.OrderRepository.GetOrderByIDAsync(orderId);
+
+                if (order == null)
                 {
                     _response.Success = false;
-                    _response.Message = "Don't Have Any Order ";
+                    _response.Message = "Don't Have Any Order";
+                    return _response;
                 }
-                else
+
+                var orderDetailResponse = await _orderDetailService.GetOrderDetailByOrderId(orderId);
+                if (!orderDetailResponse.Success || orderDetailResponse.Data == null || !orderDetailResponse.Data.Any())
                 {
-                    _response.Data = _mapper.Map<OrderDTO>(c);
-                    _response.Success = true;
-                    _response.Message = "Order Retrieved Successfully";
+                    _response.Success = false;
+                    _response.Message = "Order details not found.";
+                    return _response;
                 }
+
+                var orderDto = _mapper.Map<OrderDTO>(order);
+
+                var productId = orderDetailResponse.Data.FirstOrDefault()?.ProductId;
+                if (productId.HasValue)
+                {
+                    orderDto.ImageLink =  _productService.GetProductByIdAsync(productId.Value).Result.Data.Images.FirstOrDefault().ImageLink.ToString();
+                }
+
+                _response.Data = orderDto;
+                _response.Success = true;
+                _response.Message = "Order Retrieved Successfully";
             }
             catch (Exception ex)
             {
@@ -295,8 +314,8 @@ namespace Application.Services
             }
 
             return _response;
-
         }
+
 
         public async Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderByUserIDAsync(int userId)
         {
@@ -307,7 +326,16 @@ namespace Application.Services
                 List<Order> orders =  (await _unitOfWork.OrderRepository.GetAllOrderByUserIdAsync(userId)).ToList();
                 foreach (var order in orders)
                 {
-                    OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
+                    var orderDetailResponse = await _orderDetailService.GetOrderDetailByOrderId(order.Id);
+                    var orderDto = _mapper.Map<OrderDTO>(order);
+
+                    var productId = orderDetailResponse.Data.FirstOrDefault()?.ProductId;
+                    if (productId.HasValue)
+                    {
+                        orderDto.ImageLink = _productService.GetProductByIdAsync(productId.Value).Result.Data.Images.FirstOrDefault().ImageLink.ToString();
+                    }
+                    OrderDTOs.Add(orderDto);
+
                 }
                 if (OrderDTOs.Count > 0)
                 {
@@ -345,7 +373,15 @@ namespace Application.Services
                 {
                     if(order.Status == 3)
                     {
-                        OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
+                        var orderDetailResponse = await _orderDetailService.GetOrderDetailByOrderId(order.Id);
+                        var orderDto = _mapper.Map<OrderDTO>(order);
+
+                        var productId = orderDetailResponse.Data.FirstOrDefault()?.ProductId;
+                        if (productId.HasValue)
+                        {
+                            orderDto.ImageLink = _productService.GetProductByIdAsync(productId.Value).Result.Data.Images.FirstOrDefault().ImageLink.ToString();
+                        }
+                        OrderDTOs.Add(orderDto);
                     }
                 }
                 if (OrderDTOs.Count > 0)
@@ -382,7 +418,16 @@ namespace Application.Services
                 var orders = await _unitOfWork.OrderRepository.GetAllAsync();
                 foreach (var order in orders)
                 {
-                    OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
+                    var orderDetailResponse = await _orderDetailService.GetOrderDetailByOrderId(order.Id);
+                    var orderDto = _mapper.Map<OrderDTO>(order);
+
+                    var productId = orderDetailResponse.Data.FirstOrDefault()?.ProductId;
+                    if (productId.HasValue)
+                    {
+                        orderDto.ImageLink = _productService.GetProductByIdAsync(productId.Value).Result.Data.Images.FirstOrDefault().ImageLink.ToString();
+                    }
+                    OrderDTOs.Add(orderDto);
+
                 }
                 if (OrderDTOs.Count > 0)
                 {

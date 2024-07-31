@@ -34,6 +34,7 @@ namespace Application.ViewModels.OrderDTOs
         public int? AddressToShipId { get; set; }
 
         public double? TotalPrice { get; set; }
+        public string? ImageLink { get; set; }
 
     }
 
