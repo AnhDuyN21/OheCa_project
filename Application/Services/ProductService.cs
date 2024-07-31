@@ -623,14 +623,9 @@ namespace Application.Services
                 {
                     productById.Quantity = productById.Quantity - quantity;
                     productById.QuantitySold = productById.QuantitySold + quantity;
-
-
-
                     _unitOfWork.ProductRepository.Update(productById);
                     await _unitOfWork.SaveChangeAsync();
                     var productDTO = _mapper.Map<ProductDetailDTO>(productById);
-
-
                     _response.Data = productDTO;
                     _response.Success = true;
                     _response.Message = "Found Product By Id";

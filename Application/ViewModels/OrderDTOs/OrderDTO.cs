@@ -36,4 +36,13 @@ namespace Application.ViewModels.OrderDTOs
         public double? TotalPrice { get; set; }
 
     }
+
+    public class TotalOrderDTO
+    {
+        public int? totalOrder { get; set; }
+        public int? totalOrderCompleted { get; set; }
+        public int? totalOrderFailed { get; set; }
+        public int? totalOrderIsShipping { get; set; }
+        public decimal? totalRevenue { get; set; }
+    }
 }
