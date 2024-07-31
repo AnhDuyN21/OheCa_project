@@ -13,11 +13,13 @@ namespace Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IProductService _productService;
 
-        public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper, IProductService productService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _productService = productService;
         }
 
         public async Task<ServiceResponse<string>> CancelOrder(int id)
@@ -153,6 +155,13 @@ namespace Application.Services
                             Quantity = cart.Quantity.Value,
                             Price = product.PriceSold.Value
                         };
+                        var updateQuanity = await _productService.UpdateQuanityAsync((int)cart.ProductId, (int)cart.Quantity);
+                        if(updateQuanity.Success == false)
+                        {
+                            response.Success = false;
+                            response.Message = updateQuanity.Message + updateQuanity.Error;
+                            return response;
+                        }
                         await _unitOfWork.OrderDetailRepository.AddAsync(orderDetail);
                     }
 
@@ -404,6 +413,43 @@ namespace Application.Services
         public Task<ServiceResponse<IEnumerable<OrderDTO>>> GetSortedOrdersAsync(string sortName)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<TotalOrderDTO>> GetTotalOrderAsync()
+        {
+            var reponse = new ServiceResponse<TotalOrderDTO>();
+            try
+            {
+                var orders = await _unitOfWork.OrderRepository.GetAllAsync();
+                
+                if (orders.Count > 0)
+                {
+                    var orderView = new TotalOrderDTO();
+                    orderView.totalOrder = orders.Count;
+                    orderView.totalOrderFailed = orders.Where(x => x.Status == (int)Domain.Enum.OrderStatusEnum.Cancelled).Count();
+                    orderView.totalRevenue = (decimal)orders.Where(x => x.TotalPrice.HasValue).Sum(x => x.TotalPrice.Value);
+                    orderView.totalOrderIsShipping = orders.Where(x => x.Status == (int)Domain.Enum.OrderStatusEnum.Processing).Count();
+                    orderView.totalOrderCompleted = orders.Where(x => x.Status == (int)Domain.Enum.OrderStatusEnum.Completed).Count(); 
+                    reponse.Data = orderView;
+                    reponse.Success = true;
+                    reponse.Message = $"Successfully.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Fail.";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
         }
 
         public async Task<ServiceResponse<string>> ReceivedOrder(int id)
