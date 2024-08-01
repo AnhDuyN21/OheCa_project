@@ -96,7 +96,7 @@ namespace Application.Services
                 }
                 else
                 {
-                    if (orderChecked.Status == 1)
+                    if (orderChecked.Status == 0)
                     {
                         orderChecked.Status = 2;
                         var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
@@ -117,7 +117,7 @@ namespace Application.Services
                     else
                     {
                         reponse.Success = false;
-                        reponse.Message = "Update order fail, order is deleted, cannot update";
+                        reponse.Message = "Update order fail!, Because order is processing or completed";
                     }
                 }
             }
@@ -174,7 +174,7 @@ namespace Application.Services
                     orderEntity.ShipDate = DateTime.Now.AddDays(1);
                     orderEntity.ReceiveDate = DateTime.Now.AddDays(5);
                     orderEntity.IsConfirm = 0;
-                    orderEntity.Status = (int)OrderStatusEnum.Processing;
+                    orderEntity.Status = (int)OrderStatusEnum.Pending;
                     orderEntity.StatusOfPayment = 0;
                     _unitOfWork.OrderRepository.Update(orderEntity);
                     if (await _unitOfWork.SaveChangeAsync() > 0)
@@ -217,6 +217,7 @@ namespace Application.Services
                     if (orderChecked.IsConfirm == 0)
                     {
                         orderChecked.IsConfirm = 1;
+                        orderChecked.Status = (int)Domain.Enum.OrderStatusEnum.Processing;
                         if (await _unitOfWork.SaveChangeAsync() > 0)
                         {
                             reponse.Success = true;
