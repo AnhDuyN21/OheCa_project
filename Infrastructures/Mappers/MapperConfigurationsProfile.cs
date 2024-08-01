@@ -47,7 +47,7 @@ namespace Infrastructures.Mappers
             CreateMap<User, RegisterUserDTO>().ReverseMap();
             CreateMap<User, CreateUserDTO>().ReverseMap();
             CreateMap<User, AuthResponseDTO>().ReverseMap();
-            CreateMap<User, UpdateOrderDTO>().ReverseMap();
+            CreateMap<User, UpdateUserDTO>().ReverseMap();
 
 
             CreateMap<Order, CheckoutDTO>().ReverseMap();
