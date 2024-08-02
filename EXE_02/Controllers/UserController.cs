@@ -69,11 +69,11 @@ namespace EXE_02.Controllers
                 return BadRequest("Invalid request data.");
             }
         }
-        [Authorize(Policy = "Admin")]
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDTO userDTO)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDTO)
         {
-            var updatedUser = await _userService.UpdateUserAsync(id, userDTO);
+            var updatedUser = await _userService.UpdateUserAsync(id, updateUserDTO);
             if (!updatedUser.Success)
             {
                 return NotFound(updatedUser);

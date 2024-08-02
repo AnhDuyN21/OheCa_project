@@ -48,7 +48,7 @@ namespace Application.Services
             try
             {
                 var account = _mapper.Map<User>(createdUserDTO);
-                //account.PasswordHash = Utils.HashPassword.HashWithSHA256(createdUserDTO.Password);
+                account.Password = Utils.HashPassword.HashWithSHA256(createdUserDTO.Password);
 
                 account.Status = 1;
                 account.IsDeleted = false;
@@ -231,7 +231,7 @@ namespace Application.Services
         }
 
 
-        public async Task<ServiceResponse<UserDTO>> UpdateUserAsync(int id, UserDTO userDTO)
+        public async Task<ServiceResponse<UserDTO>> UpdateUserAsync(int id, UpdateUserDTO updateUserDTO)
         {
             var response = new ServiceResponse<UserDTO>();
 
@@ -255,8 +255,7 @@ namespace Application.Services
 
 
                 // Map accountDT0 => existingUser
-                var updated = _mapper.Map(userDTO, existingUser);
-                //updated.PasswordHash = Utils.HashPassword.HashWithSHA256(accountDTO.PasswordHash);
+                var updated = _mapper.Map(updateUserDTO, existingUser);
 
                 _unitOfWork.UserRepository.Update(existingUser);
 

@@ -1,6 +1,7 @@
 ﻿using Application.ServiceResponse;
 using Application.ViewModels.OrderDTOs;
 using Domain.Entities;
+using Org.BouncyCastle.Utilities;
 using System.Linq.Expressions;
 using System.Security.Claims;
 
@@ -11,6 +12,7 @@ namespace Application.Interfaces
     {
         Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrdersAsync();
         Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderCompleteAsync();
+        Task<ServiceResponse<TotalOrderDTO>> GetTotalOrderAsync();
         Task<ServiceResponse<OrderDTO>> GetOrderByIdAsync(int orderId);
         Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderByUserIDAsync(int userId);
         Task<ServiceResponse<OrderDTO>> CreateOrderAsync(CreateOrderDTO order);
