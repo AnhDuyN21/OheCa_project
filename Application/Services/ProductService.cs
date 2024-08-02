@@ -614,26 +614,51 @@ namespace Application.Services
         public async Task<ServiceResponse<ProductDetailDTO>> UpdateQuanityAsync(int id, int quantity)
         {
             var _response = new ServiceResponse<ProductDetailDTO>();
-
+            int? newquantity;
+            int? newquantitysold;
             try
             {
                 var productById = await _unitOfWork.ProductRepository.GetByIdAsync(id);
 
                 if (productById != null)
                 {
-                    productById.Quantity = productById.Quantity - quantity;
-                    productById.QuantitySold = productById.QuantitySold + quantity;
+                    newquantity = productById.Quantity - quantity;
+                    newquantitysold = productById.QuantitySold + quantity;
+
+                    if (newquantity < 0)
+                    {
+                        _response.Success = false;
+                        _response.Message = "Not Enought Product";
+
+                    }
+                    else if (newquantity == 0)
+                    {
+                        productById.IsDeleted = true;
+                        productById.Quantity = newquantity;
+                        productById.QuantitySold = newquantitysold;
+                        _unitOfWork.ProductRepository.Update(productById);
+                        await _unitOfWork.SaveChangeAsync();
+                        var productDTO = _mapper.Map<ProductDetailDTO>(productById);
 
 
+                        _response.Data = productDTO;
+                        _response.Success = true;
+                        _response.Message = "Found Product By Id";
+                    }
+                    else
+                    {
+                        productById.Quantity = newquantity;
+                        productById.QuantitySold = newquantitysold;
+                        _unitOfWork.ProductRepository.Update(productById);
+                        await _unitOfWork.SaveChangeAsync();
+                        var productDTO = _mapper.Map<ProductDetailDTO>(productById);
 
-                    _unitOfWork.ProductRepository.Update(productById);
-                    await _unitOfWork.SaveChangeAsync();
-                    var productDTO = _mapper.Map<ProductDetailDTO>(productById);
 
-
-                    _response.Data = productDTO;
-                    _response.Success = true;
-                    _response.Message = "Found Product By Id";
+                        _response.Data = productDTO;
+                        _response.Success = true;
+                        _response.Message = "Found Product By Id";
+                    }
+                   
                 }
                 else
                 {
