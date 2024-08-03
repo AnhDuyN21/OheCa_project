@@ -51,6 +51,20 @@ namespace Infrastructures.Repositories
             }
             return Order;
         }
+
+        public async Task<bool> ChangeStatusOfPayment(int orderId)
+        {
+            var order = await _dbContext.Orders.FirstOrDefaultAsync(x => x.Id == orderId);
+            if (order is null)
+            {
+                return false;
+            }
+            else
+            {
+                order.StatusOfPayment = 1;
+                return true;
+            }
+        }
     }
 
 }

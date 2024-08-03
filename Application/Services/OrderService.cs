@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.ServiceResponse;
 using Application.ViewModels.OrderDTOs;
+using Application.ViewModels.UserDTO;
 using AutoMapper;
+using Azure;
 using Domain.Entities;
 using Domain.Enum;
 using MailKit.Search;
@@ -617,6 +619,45 @@ namespace Application.Services
 
             return reponse;
 
+        }
+        public async Task<ServiceResponse<bool>> ChangeStatusOfPaymentAsync(int orderId)
+        {
+            var response = new ServiceResponse<bool>();
+            try
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+                if(order == null)
+                {
+                    response.Success = false;
+                    response.Message = "orderId not found!";
+                    return response;
+                }
+                if(order.StatusOfPayment == 1)
+                {
+                    response.Success = false;
+                    response.Message = $"Status of payment in this orderID( {order.Id} ) already equal 1";
+                    return response;
+                }
+                await _unitOfWork.OrderRepository.ChangeStatusOfPayment(orderId);
+                var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
+                if (isSuccess)
+                {
+                    response.Success = true;
+                    response.Message = "change successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error.";
+                }
+            }
+            catch(Exception e)
+            {
+                response.Success = false;
+                response.Message = "Update order fail!, exception";
+                response.ErrorMessages = new List<string> { e.Message };
+            }
+            return response;
         }
     }
 }
