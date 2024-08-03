@@ -522,18 +522,28 @@ namespace Application.Services
                     if (orderChecked.Status == 0 || orderChecked.Status == 1)
                     {
                         orderChecked.Status = 3;
-                        var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
-                        var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
-                        if (await _unitOfWork.SaveChangeAsync() > 0)
+                        if(orderChecked.StatusOfPayment == 0)
                         {
-                            reponse.Success = true;
-                            reponse.Message = "received order successfully";
+                            orderChecked.StatusOfPayment = 1;
+                            var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
+                            var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
+                            if (await _unitOfWork.SaveChangeAsync() > 0)
+                            {
+                                reponse.Success = true;
+                                reponse.Message = "received order successfully";
+                            }
+                            else
+                            {
+                                reponse.Success = false;
+                                reponse.Message = "received order fail!";
+                            }
                         }
                         else
                         {
-                            reponse.Success = false;
-                            reponse.Message = "received order fail!";
+                            reponse.Success = true;
+                            reponse.Message = "received order succesful!";
                         }
+                        
                     }
                     else
                     {
