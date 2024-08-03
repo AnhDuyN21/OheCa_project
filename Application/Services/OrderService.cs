@@ -176,6 +176,7 @@ namespace Application.Services
                     orderEntity.IsConfirm = 0;
                     orderEntity.Status = (int)OrderStatusEnum.Pending;
                     orderEntity.StatusOfPayment = 0;
+                    orderEntity.CreationDate = DateTime.Now.AddHours(7);
                     _unitOfWork.OrderRepository.Update(orderEntity);
                     if (await _unitOfWork.SaveChangeAsync() > 0)
                     {
