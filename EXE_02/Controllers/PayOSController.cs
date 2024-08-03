@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Net.payOS;
@@ -64,5 +65,14 @@ namespace EXE_02.Controllers
                 return Redirect("https://localhost:5001/swagger/index.html");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeStatusOfPayment(int orderId)
+        {
+            var result = _orderService.ChangeStatusOfPaymentAsync(orderId);
+            return Ok(result);
+
+        }
+
     }
 }

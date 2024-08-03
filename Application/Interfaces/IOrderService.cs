@@ -23,6 +23,7 @@ namespace Application.Interfaces
         Task<ServiceResponse<string>> ConfirmOrder(int id);
         Task<ServiceResponse<string>> CancelOrder(int id);
         Task<ServiceResponse<string>> ReceivedOrder(int id);
+        Task<ServiceResponse<bool>> ChangeStatusOfPaymentAsync(int orderId);
 
     }
 }
