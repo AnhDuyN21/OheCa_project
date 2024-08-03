@@ -45,7 +45,7 @@ namespace EXE_02.Controllers
                     items.Add(item);
                 }
 
-                var successUrl = "http://localhost:3000/paymentsuccess";
+                var successUrl = "http://localhost:3000/paymentsuccess?orderId={orderId}";
                 var cancelUrl = "http://localhost:3000/paymentfailed";
 
                 // Tạo đối tượng PaymentData để gửi yêu cầu thanh toán
