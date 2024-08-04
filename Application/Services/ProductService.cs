@@ -717,5 +717,42 @@ namespace Application.Services
                 return reponse;
             }
         }
+
+
+        public async Task<ServiceResponse<IEnumerable<ChildCategory>>> GetChildCategoryAsync()
+        {
+            var reponse = new ServiceResponse<IEnumerable<ChildCategory>>();
+            List<ChildCategory> brandDTOs = new List<ChildCategory>();
+            try
+            {
+                var brands = await _unitOfWork.ProductRepository.GetChildCateAsync();
+                foreach (var brand in brands)
+                {
+                    brandDTOs.Add(_mapper.Map<ChildCategory>(brand));
+                }
+                if (brandDTOs.Count > 0)
+                {
+                    reponse.Data = brandDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {brandDTOs.Count} ChildCategorys.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {brandDTOs.Count} ChildCategorys.";
+                    reponse.Error = "Not have a ChildCategory";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
     }
 }
