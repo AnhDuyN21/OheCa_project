@@ -565,5 +565,25 @@ namespace Infrastructures.Repositories
                 throw new Exception("Don't have any Brand");
             }
         }
+
+
+        public async Task<IEnumerable<ChildCategory>> GetChildCateAsync()
+        {
+            var query = await _dbContext.ChildCategories.ToListAsync();
+
+            // Filtering by brandId if provided
+
+
+
+
+            if (query != null && query.Any())
+            {
+                return query;
+            }
+            else
+            {
+                throw new Exception("Don't have any ChildCategories");
+            }
+        }
     }
 }

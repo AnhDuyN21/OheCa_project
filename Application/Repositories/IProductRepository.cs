@@ -44,6 +44,8 @@ namespace Application.Repositories
 
         public Task<IEnumerable<Brand>> GetBrandAsync();
 
+        public Task<IEnumerable<ChildCategory>> GetChildCateAsync();
+
 
 
     }

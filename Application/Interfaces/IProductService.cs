@@ -51,5 +51,7 @@ namespace Application.Interfaces
 
         Task<ServiceResponse<IEnumerable<Brand>>> GetBrandAsync();
 
+        Task<ServiceResponse<IEnumerable<ChildCategory>>> GetChildCategoryAsync();
+
     }
 }
