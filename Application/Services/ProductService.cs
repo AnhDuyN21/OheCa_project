@@ -682,5 +682,41 @@ namespace Application.Services
             var getAllProduct = await _unitOfWork.ProductRepository.GetProductSoldAsync();
             return getAllProduct.Count();
         }
+
+        public async Task<ServiceResponse<IEnumerable<Brand>>> GetBrandAsync()
+        {
+            var reponse = new ServiceResponse<IEnumerable<Brand>>();
+            List<Brand> brandDTOs = new List<Brand>();
+            try
+            {
+                var brands = await _unitOfWork.ProductRepository.GetBrandAsync();
+                foreach (var brand in brands)
+                {
+                    brandDTOs.Add(_mapper.Map<Brand>(brand));
+                }
+                if (brandDTOs.Count > 0)
+                {
+                    reponse.Data = brandDTOs;
+                    reponse.Success = true;
+                    reponse.Message = $"Have {brandDTOs.Count} brands.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Have {brandDTOs.Count} brands.";
+                    reponse.Error = "Not have a brand";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
     }
 }
