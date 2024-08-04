@@ -49,5 +49,7 @@ namespace Application.Interfaces
 
         Task<int> GetCountProductSold();
 
+        Task<ServiceResponse<IEnumerable<Brand>>> GetBrandAsync();
+
     }
 }

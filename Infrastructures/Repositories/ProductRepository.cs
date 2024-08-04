@@ -546,5 +546,24 @@ namespace Infrastructures.Repositories
                 throw new Exception("Don't have any Product");
             }
         }
+
+        public async Task<IEnumerable<Brand>> GetBrandAsync()
+        {
+            var query = await _dbContext.Brands.ToListAsync() ;
+
+            // Filtering by brandId if provided
+
+
+           
+
+            if (query != null && query.Any())
+            {
+                return query;
+            }
+            else
+            {
+                throw new Exception("Don't have any Brand");
+            }
+        }
     }
 }
