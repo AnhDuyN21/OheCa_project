@@ -47,7 +47,7 @@ namespace EXE_02.Controllers
                 }
 
                 var successUrl = $"http://localhost:3000/paymentsuccess?orderId={orderId}";
-                var cancelUrl = $"http://localhost:3000/paymentfailed";
+                var cancelUrl = $"http://localhost:3000/paymentfailed?orderId={orderId}";
 
                 // Tạo đối tượng PaymentData để gửi yêu cầu thanh toán
                 PaymentData paymentData = new PaymentData(orderCode, (int)orders.Data.TotalPrice, "Thanh toán đơn hàng", items, cancelUrl, successUrl);
@@ -66,13 +66,7 @@ namespace EXE_02.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ChangeStatusOfPayment(int orderId)
-        {
-            var result = _orderService.ChangeStatusOfPaymentAsync(orderId);
-            return Ok(result);
 
-        }
 
     }
 }
