@@ -1,9 +1,12 @@
 ﻿using Application.Interfaces;
 using Application.ServiceResponse;
 using Application.ViewModels.OrderDTOs;
+using Application.ViewModels.UserDTO;
 using AutoMapper;
+using Azure;
 using Domain.Entities;
 using Domain.Enum;
+using MailKit.Search;
 using System.Linq.Expressions;
 using System.Security.Claims;
 
@@ -13,11 +16,15 @@ namespace Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IProductService _productService;
+        private readonly IOrderDetailService _orderDetailService;
 
-        public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper, IProductService productService, IOrderDetailService orderDetailService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _productService = productService;
+            _orderDetailService = orderDetailService;
         }
 
         public async Task<ServiceResponse<string>> CancelOrder(int id)
@@ -91,7 +98,7 @@ namespace Application.Services
                 }
                 else
                 {
-                    if (orderChecked.Status == 1)
+                    if (orderChecked.Status == 0)
                     {
                         orderChecked.Status = 2;
                         var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
@@ -112,7 +119,7 @@ namespace Application.Services
                     else
                     {
                         reponse.Success = false;
-                        reponse.Message = "Update order fail, order is deleted, cannot update";
+                        reponse.Message = "Update order fail!, Because order is processing or completed";
                     }
                 }
             }
@@ -153,6 +160,13 @@ namespace Application.Services
                             Quantity = cart.Quantity.Value,
                             Price = product.PriceSold.Value
                         };
+                        var updateQuanity = await _productService.UpdateQuanityAsync((int)cart.ProductId, (int)cart.Quantity);
+                        if(updateQuanity.Success == false)
+                        {
+                            response.Success = false;
+                            response.Message = updateQuanity.Message + updateQuanity.Error;
+                            return response;
+                        }
                         await _unitOfWork.OrderDetailRepository.AddAsync(orderDetail);
                     }
 
@@ -162,8 +176,9 @@ namespace Application.Services
                     orderEntity.ShipDate = DateTime.Now.AddDays(1);
                     orderEntity.ReceiveDate = DateTime.Now.AddDays(5);
                     orderEntity.IsConfirm = 0;
-                    orderEntity.Status = (int)OrderStatusEnum.Processing;
+                    orderEntity.Status = (int)OrderStatusEnum.Pending;
                     orderEntity.StatusOfPayment = 0;
+                    orderEntity.CreationDate = DateTime.Now.AddHours(7);
                     _unitOfWork.OrderRepository.Update(orderEntity);
                     if (await _unitOfWork.SaveChangeAsync() > 0)
                     {
@@ -205,6 +220,7 @@ namespace Application.Services
                     if (orderChecked.IsConfirm == 0)
                     {
                         orderChecked.IsConfirm = 1;
+                        orderChecked.Status = (int)Domain.Enum.OrderStatusEnum.Processing;
                         if (await _unitOfWork.SaveChangeAsync() > 0)
                         {
                             reponse.Success = true;
@@ -266,18 +282,34 @@ namespace Application.Services
             var _response = new ServiceResponse<OrderDTO>();
             try
             {
-                var c = await _unitOfWork.OrderRepository.GetOrderByIDAsync(orderId);
-                if (c == null)
+                var order = await _unitOfWork.OrderRepository.GetOrderByIDAsync(orderId);
+
+                if (order == null)
                 {
                     _response.Success = false;
-                    _response.Message = "Don't Have Any Order ";
+                    _response.Message = "Don't Have Any Order";
+                    return _response;
                 }
-                else
+
+                var orderDetailResponse = await _orderDetailService.GetOrderDetailByOrderId(orderId);
+                if (!orderDetailResponse.Success || orderDetailResponse.Data == null || !orderDetailResponse.Data.Any())
                 {
-                    _response.Data = _mapper.Map<OrderDTO>(c);
-                    _response.Success = true;
-                    _response.Message = "Order Retrieved Successfully";
+                    _response.Success = false;
+                    _response.Message = "Order details not found.";
+                    return _response;
                 }
+
+                var orderDto = _mapper.Map<OrderDTO>(order);
+
+                var productId = orderDetailResponse.Data.FirstOrDefault()?.ProductId;
+                if (productId.HasValue)
+                {
+                    orderDto.ImageLink =  _productService.GetProductByIdAsync(productId.Value).Result.Data.Images.FirstOrDefault().ImageLink.ToString();
+                }
+
+                _response.Data = orderDto;
+                _response.Success = true;
+                _response.Message = "Order Retrieved Successfully";
             }
             catch (Exception ex)
             {
@@ -286,8 +318,8 @@ namespace Application.Services
             }
 
             return _response;
-
         }
+
 
         public async Task<ServiceResponse<IEnumerable<OrderDTO>>> GetOrderByUserIDAsync(int userId)
         {
@@ -298,7 +330,16 @@ namespace Application.Services
                 List<Order> orders =  (await _unitOfWork.OrderRepository.GetAllOrderByUserIdAsync(userId)).ToList();
                 foreach (var order in orders)
                 {
-                    OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
+                    var orderDetailResponse = await _orderDetailService.GetOrderDetailByOrderId(order.Id);
+                    var orderDto = _mapper.Map<OrderDTO>(order);
+
+                    var productId = orderDetailResponse.Data.FirstOrDefault()?.ProductId;
+                    if (productId.HasValue)
+                    {
+                        orderDto.ImageLink = _productService.GetProductByIdAsync(productId.Value).Result.Data.Images.FirstOrDefault().ImageLink.ToString();
+                    }
+                    OrderDTOs.Add(orderDto);
+
                 }
                 if (OrderDTOs.Count > 0)
                 {
@@ -336,7 +377,15 @@ namespace Application.Services
                 {
                     if(order.Status == 3)
                     {
-                        OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
+                        var orderDetailResponse = await _orderDetailService.GetOrderDetailByOrderId(order.Id);
+                        var orderDto = _mapper.Map<OrderDTO>(order);
+
+                        var productId = orderDetailResponse.Data.FirstOrDefault()?.ProductId;
+                        if (productId.HasValue)
+                        {
+                            orderDto.ImageLink = _productService.GetProductByIdAsync(productId.Value).Result.Data.Images.FirstOrDefault().ImageLink.ToString();
+                        }
+                        OrderDTOs.Add(orderDto);
                     }
                 }
                 if (OrderDTOs.Count > 0)
@@ -373,7 +422,16 @@ namespace Application.Services
                 var orders = await _unitOfWork.OrderRepository.GetAllAsync();
                 foreach (var order in orders)
                 {
-                    OrderDTOs.Add(_mapper.Map<OrderDTO>(order));
+                    var orderDetailResponse = await _orderDetailService.GetOrderDetailByOrderId(order.Id);
+                    var orderDto = _mapper.Map<OrderDTO>(order);
+
+                    var productId = orderDetailResponse.Data.FirstOrDefault()?.ProductId;
+                    if (productId.HasValue)
+                    {
+                        orderDto.ImageLink = _productService.GetProductByIdAsync(productId.Value).Result.Data.Images.FirstOrDefault().ImageLink.ToString();
+                    }
+                    OrderDTOs.Add(orderDto);
+
                 }
                 if (OrderDTOs.Count > 0)
                 {
@@ -406,6 +464,43 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
+        public async Task<ServiceResponse<TotalOrderDTO>> GetTotalOrderAsync()
+        {
+            var reponse = new ServiceResponse<TotalOrderDTO>();
+            try
+            {
+                var orders = await _unitOfWork.OrderRepository.GetAllAsync();
+                
+                if (orders.Count > 0)
+                {
+                    var orderView = new TotalOrderDTO();
+                    orderView.totalOrder = orders.Count;
+                    orderView.totalOrderFailed = orders.Where(x => x.Status == (int)Domain.Enum.OrderStatusEnum.Cancelled).Count();
+                    orderView.totalRevenue = (decimal)orders.Where(x => x.TotalPrice.HasValue).Sum(x => x.TotalPrice.Value);
+                    orderView.totalOrderIsShipping = orders.Where(x => x.Status == (int)Domain.Enum.OrderStatusEnum.Processing).Count();
+                    orderView.totalOrderCompleted = orders.Where(x => x.Status == (int)Domain.Enum.OrderStatusEnum.Completed).Count(); 
+                    reponse.Data = orderView;
+                    reponse.Success = true;
+                    reponse.Message = $"Successfully.";
+                    reponse.Error = "Not error";
+                    return reponse;
+                }
+                else
+                {
+                    reponse.Success = false;
+                    reponse.Message = $"Fail.";
+                    return reponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                reponse.Success = false;
+                reponse.Error = "Exception";
+                reponse.ErrorMessages = new List<string> { ex.Message };
+                return reponse;
+            }
+        }
+
         public async Task<ServiceResponse<string>> ReceivedOrder(int id)
         {
             var reponse = new ServiceResponse<string>();
@@ -429,18 +524,28 @@ namespace Application.Services
                     if (orderChecked.Status == 0 || orderChecked.Status == 1)
                     {
                         orderChecked.Status = 3;
-                        var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
-                        var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
-                        if (await _unitOfWork.SaveChangeAsync() > 0)
+                        if(orderChecked.StatusOfPayment == 0)
                         {
-                            reponse.Success = true;
-                            reponse.Message = "received order successfully";
+                            orderChecked.StatusOfPayment = 1;
+                            var orderFofUpdate = _mapper.Map<OrderDTO>(orderChecked);
+                            var orderDTOAfterUpdate = _mapper.Map<OrderDTO>(orderFofUpdate);
+                            if (await _unitOfWork.SaveChangeAsync() > 0)
+                            {
+                                reponse.Success = true;
+                                reponse.Message = "received order successfully";
+                            }
+                            else
+                            {
+                                reponse.Success = false;
+                                reponse.Message = "received order fail!";
+                            }
                         }
                         else
                         {
-                            reponse.Success = false;
-                            reponse.Message = "received order fail!";
+                            reponse.Success = true;
+                            reponse.Message = "received order succesful!";
                         }
+                        
                     }
                     else
                     {
@@ -514,6 +619,45 @@ namespace Application.Services
 
             return reponse;
 
+        }
+        public async Task<ServiceResponse<bool>> ChangeStatusOfPaymentAsync(int orderId)
+        {
+            var response = new ServiceResponse<bool>();
+            try
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+                if(order == null)
+                {
+                    response.Success = false;
+                    response.Message = "orderId not found!";
+                    return response;
+                }
+                if(order.StatusOfPayment == 1)
+                {
+                    response.Success = false;
+                    response.Message = $"Status of payment in this orderID( {order.Id} ) already equal 1";
+                    return response;
+                }
+                await _unitOfWork.OrderRepository.ChangeStatusOfPayment(orderId);
+                var isSuccess = await _unitOfWork.SaveChangeAsync() > 0;
+                if (isSuccess)
+                {
+                    response.Success = true;
+                    response.Message = "change successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Error.";
+                }
+            }
+            catch(Exception e)
+            {
+                response.Success = false;
+                response.Message = "Update order fail!, exception";
+                response.ErrorMessages = new List<string> { e.Message };
+            }
+            return response;
         }
     }
 }

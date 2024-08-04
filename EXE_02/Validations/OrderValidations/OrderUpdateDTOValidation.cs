@@ -35,7 +35,7 @@ namespace EXE_02.Validations.OrderValidations
                 .When(x => x.IsConfirm.HasValue);
 
             RuleFor(x => x.Status)
-                .GreaterThan(0).WithMessage("Status must be a positive integer.")
+                .GreaterThan(-1).WithMessage("Status must be a positive integer.")
                 .When(x => x.Status.HasValue);
 
             RuleFor(x => x.PaymentId)

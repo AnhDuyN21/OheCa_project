@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Net.payOS;
@@ -45,8 +46,8 @@ namespace EXE_02.Controllers
                     items.Add(item);
                 }
 
-                var successUrl = "http://localhost:3000/paymentsuccess";
-                var cancelUrl = "http://localhost:3000/paymentfailed";
+                var successUrl = $"https://ohecaproject-gduycats-projects.vercel.app/paymentsuccess?orderId={orderId}";
+                var cancelUrl = $"https://ohecaproject-gduycats-projects.vercel.app/paymentfailed?orderId={orderId}";
 
                 // Tạo đối tượng PaymentData để gửi yêu cầu thanh toán
                 PaymentData paymentData = new PaymentData(orderCode, (int)orders.Data.TotalPrice, "Thanh toán đơn hàng", items, cancelUrl, successUrl);
@@ -64,5 +65,8 @@ namespace EXE_02.Controllers
                 return Redirect("https://localhost:5001/swagger/index.html");
             }
         }
+
+
+
     }
 }

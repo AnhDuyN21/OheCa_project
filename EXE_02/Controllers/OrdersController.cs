@@ -63,6 +63,15 @@ namespace EXE_02.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ViewTotalAllOfOrder()
+        {
+            var result = await _orderService.GetTotalOrderAsync();
+            return Ok(result);
+        }
+
         //[Authorize (Roles = "Manager")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
