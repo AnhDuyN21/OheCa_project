@@ -24,10 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-builder.Services.AddCors(option => option.AddPolicy("oheca", build =>
-{
-    build.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
-}));
+
 var configuration = builder.Configuration.Get<AppConfiguration>() ?? new AppConfiguration();
 builder.Services.AddInfrastructuresService(configuration.DatabaseConnection);
 builder.Services.AddWebAPIService();
@@ -138,7 +135,7 @@ app.UseHttpsRedirection();
 
 // todo authentication
 app.UseAuthentication();
-app.UseCors("oheca");
+
 app.UseAuthorization();
 
 
